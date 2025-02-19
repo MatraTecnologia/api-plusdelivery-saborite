@@ -32,6 +32,9 @@ COPY . .
 # Instalar as dependências do Node.js
 RUN npm install
 
+# Instalar os navegadores do Playwright
+RUN npx playwright install
+
 # Rodar o comando de build do Next.js
 RUN npm run build
 
