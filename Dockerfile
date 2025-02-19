@@ -1,7 +1,7 @@
-# Use a imagem do Node.js
-FROM node:16-buster
+# Usar uma imagem base oficial do Node.js
+FROM node:18-buster
 
-# Instalar dependências para o Playwright
+# Instalar dependências do sistema necessárias para o Playwright
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -23,14 +23,17 @@ RUN apt-get update && apt-get install -y \
   libgbm1 \
   && rm -rf /var/lib/apt/lists/*
 
-# Crie e entre no diretório do projeto
+# Definir o diretório de trabalho dentro do container
 WORKDIR /usr/src/app
 
-# Copie os arquivos de projeto
+# Copiar os arquivos de código fonte para dentro do container
 COPY . .
 
-# Instalar dependências do Node.js
+# Instalar as dependências do Node.js
 RUN npm install
 
-# Comando para rodar a aplicação
+# Expor a porta 3000 (padrão do Next.js)
+EXPOSE 3000
+
+# Comando para rodar a aplicação Next.js
 CMD ["npm", "start"]
