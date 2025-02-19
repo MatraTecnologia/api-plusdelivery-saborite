@@ -23,19 +23,25 @@ export default function Home() {
     setShowModal(true); // Exibe o modal com o progresso
     setProgress(0); // Resetando o progresso
     setLog(""); // Limpando o log
-
+  
     try {
       const response = await fetch('/api/scrape');
       const data = await response.json();
-      setPedidos(data);
-
-      // Simulando o progresso (você deve substituir isso com a lógica real de scraping)
+      
+      // Verificando se data é realmente um array
+      if (Array.isArray(data)) {
+        setPedidos(data);
+      } else {
+        console.error("A resposta do servidor não é um array:", data);
+        setLog((prevLog) => prevLog + "Erro: a resposta do servidor não é um array.\n");
+      }
+  
+      // Simulando o progresso com base nos dados que estamos recebendo
       for (let i = 0; i <= 100; i += 10) {
         setProgress(i);
         setLog((prevLog) => prevLog + `Progresso: ${i}%\n`); // Atualiza o log
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simula o tempo de scraping
       }
-
     } catch (error) {
       console.error('Erro ao buscar pedidos:', error);
       setLog((prevLog) => prevLog + "Erro ao buscar pedidos.\n");
@@ -44,6 +50,7 @@ export default function Home() {
       setShowModal(false); // Fecha o modal quando terminar
     }
   };
+  
 
   // Função para visualizar os detalhes de um pedido
   const visualizarDetalhes = async (pedidoId: any) => {
