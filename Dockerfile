@@ -1,4 +1,4 @@
-# Usar uma imagem base oficial do Node.js
+# Usar uma imagem base do Node.js 18
 FROM node:18-buster
 
 # Instalar dependências do sistema necessárias para o Playwright
@@ -31,6 +31,9 @@ COPY . .
 
 # Instalar as dependências do Node.js
 RUN npm install
+
+# Rodar o comando de build do Next.js
+RUN npm run build
 
 # Expor a porta 3000 (padrão do Next.js)
 EXPOSE 3000
