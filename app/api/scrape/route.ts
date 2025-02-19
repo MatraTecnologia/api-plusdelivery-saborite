@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'; // Isso força o Next.js a tratar como d
 // Manipulador para o método GET
 export async function GET() {
   try {
-    const browser = await chromium.launch({ headless: false }); // `headless: false` é útil para debugging
+    const browser = await chromium.launch({ headless: true}); // `headless: false` é útil para debugging
     const page = await browser.newPage();
 
     // Realizando o login
