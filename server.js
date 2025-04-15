@@ -165,12 +165,33 @@ app.get('/', (req, res) => {
         overflow-x: auto;
         font-family: 'Courier New', Courier, monospace;
       }
+      .author-info {
+        background-color: #e6f2ff;
+        border-left: 4px solid #0066cc;
+        padding: 15px;
+        margin: 20px 0;
+      }
+      footer {
+        margin-top: 50px;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
     </style>
   </head>
   <body>
     <h1>API do Bot Maurício - Backend</h1>
     <p>API para scraping e retorno de pedidos do sistema de delivery.</p>
     <p><strong>Versão:</strong> 1.0.0</p>
+    
+    <div class="author-info">
+      <h3>Informações do Sistema</h3>
+      <p><strong>Proprietário:</strong> Maurício</p>
+      <p><strong>Desenvolvido por:</strong> Ryan Varela</p>
+      <p><strong>Empresa:</strong> Matra Tecnologia</p>
+    </div>
     
     <h2>Autenticação</h2>
     <div class="auth-info">
@@ -351,8 +372,11 @@ app.get('/', (req, res) => {
     <h2>Observações</h2>
     <p>Se email e senha não forem fornecidos na requisição, serão usados os valores do arquivo <code>.env</code>.</p>
     
-    <footer style="margin-top: 50px; text-align: center; border-top: 1px solid #ddd; padding-top: 20px;">
+    <footer>
       <p>API do Bot Maurício - Versão 1.0.0</p>
+      <p>Desenvolvido por Ryan Varela - Matra Tecnologia</p>
+      <p>Proprietário: Maurício</p>
+      <p>&copy; ${new Date().getFullYear()} - Todos os direitos reservados</p>
     </footer>
   </body>
   </html>
