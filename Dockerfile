@@ -33,7 +33,7 @@ COPY package*.json ./
 RUN npm install
 
 # Instalar os navegadores do Playwright (com a opção --with-deps para garantir todas as dependências)
-RUN npx playwright install chromium --with-deps
+RUN npx playwright install
 
 # Copiar o restante dos arquivos do projeto para dentro do container
 COPY . .
