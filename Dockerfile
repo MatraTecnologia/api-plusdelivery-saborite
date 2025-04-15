@@ -26,20 +26,20 @@ RUN apt-get update && apt-get install -y \
 # Definir o diretório de trabalho dentro do container
 WORKDIR /usr/src/app
 
-# Copiar os arquivos de código fonte para dentro do container
-COPY . .
+# Copiar package.json e package-lock.json (ou yarn.lock)
+COPY package*.json ./
 
 # Instalar as dependências do Node.js
 RUN npm install
 
-# Instalar os navegadores do Playwright
-RUN npx playwright install
+# Instalar os navegadores do Playwright (com a opção --with-deps para garantir todas as dependências)
+RUN npx playwright install chromium --with-deps
 
-# Rodar o comando de build do Next.js
-RUN npm run build
+# Copiar o restante dos arquivos do projeto para dentro do container
+COPY . .
 
-# Expor a porta 3000 (padrão do Next.js)
+# Expor a porta 3000 (utilizada pelo Express)
 EXPOSE 3000
 
-# Comando para rodar a aplicação Next.js
+# Comando para rodar a aplicação Express
 CMD ["npm", "start"]
