@@ -32,7 +32,7 @@ COPY package*.json ./
 # Instalar as dependências do Node.js
 RUN npm install
 
-# Instalar os navegadores do Playwright (com a opção --with-deps para garantir todas as dependências)
+# Instalar os navegadores do Playwright
 RUN npx playwright install
 
 # Copiar o restante dos arquivos do projeto para dentro do container

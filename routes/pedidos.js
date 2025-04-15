@@ -2,6 +2,19 @@ const express = require('express');
 const { chromium } = require('playwright');
 const router = express.Router();
 
+// Tipos de erro para facilitar a identificação de problemas
+const TIPOS_ERRO = {
+  CREDENCIAIS_INVALIDAS: 'ERR_CREDENCIAIS_INVALIDAS',
+  CREDENCIAIS_AUSENTES: 'ERR_CREDENCIAIS_AUSENTES',
+  FALHA_LOGIN: 'ERR_FALHA_LOGIN',
+  FALHA_CONEXAO: 'ERR_FALHA_CONEXAO',
+  PEDIDO_NAO_ENCONTRADO: 'ERR_PEDIDO_NAO_ENCONTRADO',
+  TABELA_NAO_ENCONTRADA: 'ERR_TABELA_NAO_ENCONTRADA',
+  TIMEOUT: 'ERR_TIMEOUT',
+  DETALHES_NAO_ENCONTRADOS: 'ERR_DETALHES_NAO_ENCONTRADOS',
+  ERRO_INTERNO: 'ERR_INTERNO'
+};
+
 // Rota para obter todos os pedidos
 router.get('/', async (req, res) => {
   try {
@@ -13,18 +26,44 @@ router.get('/', async (req, res) => {
 
     if (!email || !senha) {
       console.log('[GET /api/pedidos] Erro: Email ou senha não fornecidos');
-      return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+      return res.status(400).json({ 
+        error: 'Credenciais ausentes',
+        tipo: TIPOS_ERRO.CREDENCIAIS_AUSENTES,
+        detalhes: 'Email e senha são obrigatórios para acessar esta rota',
+        codigo: 400
+      });
     }
 
     console.log("[GET /api/pedidos] Iniciando a busca por pedidos...");
     
     console.log("[GET /api/pedidos] Iniciando navegador...");
-    const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
+    try {
+      var browser = await chromium.launch({ headless: true });
+      var page = await browser.newPage();
+    } catch (error) {
+      console.error("[GET /api/pedidos] Erro ao iniciar o navegador:", error);
+      return res.status(500).json({
+        error: 'Falha ao iniciar o navegador',
+        tipo: TIPOS_ERRO.FALHA_CONEXAO,
+        detalhes: error.message,
+        codigo: 500
+      });
+    }
 
     // Realizando o login com as credenciais recebidas
     console.log("[GET /api/pedidos] Navegando para a página de login...");
-    await page.goto('https://minhaloja.plusdelivery.com.br/admin/login/');
+    try {
+      await page.goto('https://minhaloja.plusdelivery.com.br/admin/login/');
+    } catch (error) {
+      console.error("[GET /api/pedidos] Erro ao acessar página de login:", error);
+      await browser.close();
+      return res.status(503).json({
+        error: 'Falha ao acessar o site',
+        tipo: TIPOS_ERRO.FALHA_CONEXAO,
+        detalhes: 'Não foi possível acessar o site de delivery',
+        codigo: 503
+      });
+    }
     
     console.log("[GET /api/pedidos] Preenchendo credenciais...");
     await page.fill('#login', email);
@@ -35,17 +74,33 @@ router.get('/', async (req, res) => {
 
     // Esperar a página carregar completamente após o login
     console.log("[GET /api/pedidos] Aguardando carregamento após login...");
-    await page.waitForSelector('.navbar-brand');
-    const count = await page.locator('.navbar-brand').count();
-    
-    console.log(`[GET /api/pedidos] Elementos navbar-brand encontrados: ${count}`);
-    if (count > 0) {
-      console.log('[GET /api/pedidos] Login bem-sucedido!');
-    } else {
-      console.log('[GET /api/pedidos] Falha no login ou o seletor não foi encontrado.');
+    try {
+      await page.waitForSelector('.navbar-brand', { timeout: 15000 });
+      const count = await page.locator('.navbar-brand').count();
+      
+      console.log(`[GET /api/pedidos] Elementos navbar-brand encontrados: ${count}`);
+      if (count === 0) {
+        console.log('[GET /api/pedidos] Falha no login ou o seletor não foi encontrado.');
+        await browser.close();
+        return res.status(401).json({ 
+          error: 'Falha no login', 
+          tipo: TIPOS_ERRO.FALHA_LOGIN,
+          detalhes: 'Credenciais inválidas ou problema no site',
+          codigo: 401
+        });
+      }
+    } catch (error) {
+      console.error("[GET /api/pedidos] Timeout ao esperar pelo login:", error);
       await browser.close();
-      return res.status(400).json({ error: 'Falha no login' });
+      return res.status(401).json({ 
+        error: 'Timeout no login', 
+        tipo: TIPOS_ERRO.TIMEOUT,
+        detalhes: 'Tempo limite excedido ao fazer login',
+        codigo: 401
+      });
     }
+
+    console.log('[GET /api/pedidos] Login bem-sucedido!');
 
     // Aguardar carregamento da tabela
     console.log('[GET /api/pedidos] Aguardando 5 segundos para carregar a tabela...');
@@ -58,7 +113,12 @@ router.get('/', async (req, res) => {
     if (tabelaExiste === 0) {
       console.log('[GET /api/pedidos] Tabela de pedidos não encontrada');
       await browser.close();
-      return res.status(404).json({ error: 'Tabela de pedidos não encontrada' });
+      return res.status(404).json({ 
+        error: 'Tabela de pedidos não encontrada', 
+        tipo: TIPOS_ERRO.TABELA_NAO_ENCONTRADA,
+        detalhes: 'A tabela de pedidos não está disponível no momento',
+        codigo: 404
+      });
     }
 
     // Verificar se existem linhas na tabela
@@ -91,7 +151,11 @@ router.get('/', async (req, res) => {
     if (pedidos.length === 0) {
       console.log('[GET /api/pedidos] Nenhum pedido encontrado');
       await browser.close();
-      return res.json([]);
+      return res.json({
+        pedidos: [],
+        mensagem: 'Nenhum pedido encontrado para este usuário',
+        total: 0
+      });
     }
 
     // Limitar os pedidos para apenas os 10 primeiros
@@ -112,7 +176,11 @@ router.get('/', async (req, res) => {
         console.log(`[GET /api/pedidos] Botão de detalhes não encontrado para pedido #${pedido.id}`);
         pedidosCompletos.push({
           ...pedido,
-          detalhes: "Detalhes não disponíveis"
+          detalhes: null,
+          erro: {
+            mensagem: 'Detalhes não disponíveis',
+            tipo: TIPOS_ERRO.DETALHES_NAO_ENCONTRADOS
+          }
         });
         continue;
       }
@@ -153,7 +221,12 @@ router.get('/', async (req, res) => {
         console.error(`[GET /api/pedidos] Erro ao coletar detalhes do pedido #${pedido.id}:`, error);
         pedidosCompletos.push({
           ...pedido,
-          detalhes: "Erro ao coletar detalhes"
+          detalhes: null,
+          erro: {
+            mensagem: 'Erro ao coletar detalhes',
+            tipo: TIPOS_ERRO.DETALHES_NAO_ENCONTRADOS,
+            detalhes: error.message
+          }
         });
       }
 
@@ -167,10 +240,32 @@ router.get('/', async (req, res) => {
     
     // Retorna os pedidos com detalhes
     console.log(`[GET /api/pedidos] Retornando ${pedidosCompletos.length} pedidos completos`);
-    return res.json(pedidosCompletos);
+    return res.json({
+      pedidos: pedidosCompletos,
+      total: pedidosCompletos.length,
+      sucesso: true
+    });
   } catch (error) {
     console.error('[GET /api/pedidos] Erro ao coletar os pedidos:', error);
-    return res.status(500).json({ error: 'Falha ao coletar os pedidos', mensagem: error.message });
+    
+    // Determinar o tipo de erro com base na mensagem
+    let tipoErro = TIPOS_ERRO.ERRO_INTERNO;
+    let statusCode = 500;
+    
+    if (error.message.includes('timeout')) {
+      tipoErro = TIPOS_ERRO.TIMEOUT;
+      statusCode = 504;
+    } else if (error.message.includes('net::') || error.message.includes('Navigation')) {
+      tipoErro = TIPOS_ERRO.FALHA_CONEXAO;
+      statusCode = 503;
+    }
+    
+    return res.status(statusCode).json({ 
+      error: 'Falha ao coletar os pedidos', 
+      tipo: tipoErro,
+      detalhes: error.message,
+      codigo: statusCode
+    });
   }
 });
 
@@ -186,18 +281,54 @@ router.get('/:id', async (req, res) => {
 
     if (!email || !senha) {
       console.log(`[GET /api/pedidos/${pedidoId}] Erro: Email ou senha não fornecidos`);
-      return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+      return res.status(400).json({ 
+        error: 'Credenciais ausentes', 
+        tipo: TIPOS_ERRO.CREDENCIAIS_AUSENTES,
+        detalhes: 'Email e senha são obrigatórios para acessar esta rota',
+        codigo: 400
+      });
+    }
+
+    if (!pedidoId || pedidoId.trim() === '') {
+      console.log(`[GET /api/pedidos/${pedidoId}] ID do pedido inválido`);
+      return res.status(400).json({
+        error: 'ID de pedido inválido',
+        tipo: TIPOS_ERRO.PEDIDO_NAO_ENCONTRADO,
+        detalhes: 'O ID do pedido não pode estar vazio',
+        codigo: 400
+      });
     }
 
     console.log(`[GET /api/pedidos/${pedidoId}] Buscando pedido #${pedidoId}...`);
     
     console.log(`[GET /api/pedidos/${pedidoId}] Iniciando navegador...`);
-    const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
+    try {
+      var browser = await chromium.launch({ headless: true });
+      var page = await browser.newPage();
+    } catch (error) {
+      console.error(`[GET /api/pedidos/${pedidoId}] Erro ao iniciar o navegador:`, error);
+      return res.status(500).json({
+        error: 'Falha ao iniciar o navegador',
+        tipo: TIPOS_ERRO.FALHA_CONEXAO,
+        detalhes: error.message,
+        codigo: 500
+      });
+    }
 
     // Realizando o login com as credenciais recebidas
     console.log(`[GET /api/pedidos/${pedidoId}] Navegando para a página de login...`);
-    await page.goto('https://minhaloja.plusdelivery.com.br/admin/login/');
+    try {
+      await page.goto('https://minhaloja.plusdelivery.com.br/admin/login/');
+    } catch (error) {
+      console.error(`[GET /api/pedidos/${pedidoId}] Erro ao acessar página de login:`, error);
+      await browser.close();
+      return res.status(503).json({
+        error: 'Falha ao acessar o site',
+        tipo: TIPOS_ERRO.FALHA_CONEXAO,
+        detalhes: 'Não foi possível acessar o site de delivery',
+        codigo: 503
+      });
+    }
     
     console.log(`[GET /api/pedidos/${pedidoId}] Preenchendo credenciais...`);
     await page.fill('#login', email);
@@ -208,7 +339,30 @@ router.get('/:id', async (req, res) => {
 
     // Esperar a página carregar
     console.log(`[GET /api/pedidos/${pedidoId}] Aguardando carregamento após login...`);
-    await page.waitForSelector('.navbar-brand');
+    try {
+      await page.waitForSelector('.navbar-brand', { timeout: 15000 });
+      const loginSuccess = await page.locator('.navbar-brand').count() > 0;
+      
+      if (!loginSuccess) {
+        console.log(`[GET /api/pedidos/${pedidoId}] Falha no login - seletor não encontrado`);
+        await browser.close();
+        return res.status(401).json({ 
+          error: 'Falha no login', 
+          tipo: TIPOS_ERRO.FALHA_LOGIN,
+          detalhes: 'Credenciais inválidas ou problema no site',
+          codigo: 401
+        });
+      }
+    } catch (error) {
+      console.log(`[GET /api/pedidos/${pedidoId}] Timeout ao esperar pelo login`);
+      await browser.close();
+      return res.status(401).json({ 
+        error: 'Timeout no login', 
+        tipo: TIPOS_ERRO.TIMEOUT,
+        detalhes: 'Tempo limite excedido ao fazer login',
+        codigo: 401
+      });
+    }
     
     // Aguardar carregamento da tabela
     console.log(`[GET /api/pedidos/${pedidoId}] Aguardando 5 segundos para carregar a tabela...`);
@@ -221,7 +375,12 @@ router.get('/:id', async (req, res) => {
     if (tabelaExiste === 0) {
       console.log(`[GET /api/pedidos/${pedidoId}] Tabela de pedidos não encontrada`);
       await browser.close();
-      return res.status(404).json({ error: 'Tabela de pedidos não encontrada' });
+      return res.status(404).json({ 
+        error: 'Tabela de pedidos não encontrada', 
+        tipo: TIPOS_ERRO.TABELA_NAO_ENCONTRADA,
+        detalhes: 'A tabela de pedidos não está disponível no momento',
+        codigo: 404
+      });
     }
 
     // Verificar se o pedido existe
@@ -232,7 +391,12 @@ router.get('/:id', async (req, res) => {
     if (pedidoExiste === 0) {
       console.log(`[GET /api/pedidos/${pedidoId}] Pedido #${pedidoId} não encontrado`);
       await browser.close();
-      return res.status(404).json({ error: 'Pedido não encontrado' });
+      return res.status(404).json({ 
+        error: 'Pedido não encontrado', 
+        tipo: TIPOS_ERRO.PEDIDO_NAO_ENCONTRADO,
+        detalhes: `O pedido com ID ${pedidoId} não foi encontrado no sistema`,
+        codigo: 404
+      });
     }
 
     // Clica no pedido específico
@@ -271,7 +435,12 @@ router.get('/:id', async (req, res) => {
       if (!infoPedido) {
         console.log(`[GET /api/pedidos/${pedidoId}] Informações básicas não encontradas para o pedido #${pedidoId}`);
         await browser.close();
-        return res.status(404).json({ error: 'Informações do pedido não encontradas' });
+        return res.status(404).json({ 
+          error: 'Informações do pedido não encontradas', 
+          tipo: TIPOS_ERRO.PEDIDO_NAO_ENCONTRADO,
+          detalhes: `Não foi possível obter informações para o pedido ${pedidoId}`,
+          codigo: 404
+        });
       }
 
       // Coleta os detalhes
@@ -283,7 +452,8 @@ router.get('/:id', async (req, res) => {
       // Cria o objeto completo do pedido
       const pedidoCompleto = {
         ...infoPedido,
-        detalhes: detalhes
+        detalhes: detalhes,
+        sucesso: true
       };
 
       console.log(`[GET /api/pedidos/${pedidoId}] Fechando navegador...`);
@@ -294,11 +464,34 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
       console.error(`[GET /api/pedidos/${pedidoId}] Erro ao coletar detalhes:`, error);
       await browser.close();
-      return res.status(500).json({ error: 'Falha ao coletar detalhes do pedido', mensagem: error.message });
+      return res.status(500).json({ 
+        error: 'Falha ao coletar detalhes do pedido', 
+        tipo: TIPOS_ERRO.DETALHES_NAO_ENCONTRADOS,
+        detalhes: error.message,
+        codigo: 500
+      });
     }
   } catch (error) {
     console.error(`[GET /api/pedidos/${req.params.id}] Erro ao buscar o pedido:`, error);
-    return res.status(500).json({ error: 'Falha ao buscar o pedido', mensagem: error.message });
+    
+    // Determinar o tipo de erro com base na mensagem
+    let tipoErro = TIPOS_ERRO.ERRO_INTERNO;
+    let statusCode = 500;
+    
+    if (error.message.includes('timeout')) {
+      tipoErro = TIPOS_ERRO.TIMEOUT;
+      statusCode = 504;
+    } else if (error.message.includes('net::') || error.message.includes('Navigation')) {
+      tipoErro = TIPOS_ERRO.FALHA_CONEXAO;
+      statusCode = 503;
+    }
+    
+    return res.status(statusCode).json({ 
+      error: 'Falha ao buscar o pedido', 
+      tipo: tipoErro,
+      detalhes: error.message,
+      codigo: statusCode
+    });
   }
 });
 

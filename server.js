@@ -286,9 +286,67 @@ app.get('/', (req, res) => {
     <div class="json-response">
 {
   <span class="key">"error"</span>: <span class="string">"Não autorizado"</span>,
-  <span class="key">"mensagem"</span>: <span class="string">"Cabeçalho X-Secret inválido ou não fornecido"</span>
+  <span class="key">"tipo"</span>: <span class="string">"ERR_CREDENCIAIS_INVALIDAS"</span>,
+  <span class="key">"detalhes"</span>: <span class="string">"Cabeçalho X-Secret inválido ou não fornecido"</span>,
+  <span class="key">"codigo"</span>: <span class="number">401</span>
 }
     </div>
+    
+    <h2>Códigos de Erro</h2>
+    <p>A API utiliza códigos de erro específicos para facilitar a identificação e tratamento de problemas:</p>
+    
+    <table>
+      <tr>
+        <th>Tipo de Erro</th>
+        <th>Descrição</th>
+        <th>Código HTTP</th>
+      </tr>
+      <tr>
+        <td>ERR_CREDENCIAIS_INVALIDAS</td>
+        <td>Credenciais de autenticação inválidas</td>
+        <td>401</td>
+      </tr>
+      <tr>
+        <td>ERR_CREDENCIAIS_AUSENTES</td>
+        <td>Email e/ou senha não foram fornecidos</td>
+        <td>400</td>
+      </tr>
+      <tr>
+        <td>ERR_FALHA_LOGIN</td>
+        <td>Falha ao tentar fazer login no sistema</td>
+        <td>401</td>
+      </tr>
+      <tr>
+        <td>ERR_FALHA_CONEXAO</td>
+        <td>Falha de conexão com o servidor de delivery</td>
+        <td>503</td>
+      </tr>
+      <tr>
+        <td>ERR_PEDIDO_NAO_ENCONTRADO</td>
+        <td>Pedido com o ID informado não foi encontrado</td>
+        <td>404</td>
+      </tr>
+      <tr>
+        <td>ERR_TABELA_NAO_ENCONTRADA</td>
+        <td>Tabela de pedidos não disponível no momento</td>
+        <td>404</td>
+      </tr>
+      <tr>
+        <td>ERR_TIMEOUT</td>
+        <td>Tempo limite excedido durante a operação</td>
+        <td>504</td>
+      </tr>
+      <tr>
+        <td>ERR_DETALHES_NAO_ENCONTRADOS</td>
+        <td>Não foi possível obter os detalhes do pedido</td>
+        <td>500</td>
+      </tr>
+      <tr>
+        <td>ERR_INTERNO</td>
+        <td>Erro interno do servidor</td>
+        <td>500</td>
+      </tr>
+    </table>
     
     <h2>Observações</h2>
     <p>Se email e senha não forem fornecidos na requisição, serão usados os valores do arquivo <code>.env</code>.</p>
