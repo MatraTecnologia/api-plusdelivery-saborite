@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bot Maurício - Backend
 
-## Getting Started
+API para scraping e retorno de pedidos do sistema de delivery.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 18+
+- NPM ou Yarn
+
+## Instalação
+
+1. Clone o repositório
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure o arquivo `.env` com suas credenciais (opcional, pois também podem ser enviadas na requisição):
+
+```
+EMAIL='seu-email@exemplo.com'
+SENHA='sua-senha'
+PORT=3000
+```
+
+## Executando o sistema
+
+Para iniciar o servidor em modo de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para iniciar o servidor em produção:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Endpoints da API
 
-## Learn More
+### Listar todos os pedidos
 
-To learn more about Next.js, take a look at the following resources:
+```
+GET /api/pedidos?email=seu-email@exemplo.com&senha=sua-senha
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Retorna uma lista com todos os pedidos recentes e seus detalhes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Parâmetros de consulta:
 
-## Deploy on Vercel
+- `email` (string): Email de acesso ao sistema de delivery
+- `senha` (string): Senha de acesso ao sistema de delivery
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Se email e senha não forem fornecidos na requisição, serão usados os valores do arquivo `.env`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Obter um pedido específico
+
+```
+GET /api/pedidos/:id?email=seu-email@exemplo.com&senha=sua-senha
+```
+
+Retorna os detalhes de um pedido específico pelo ID.
+
+#### Parâmetros de consulta:
+
+- `email` (string): Email de acesso ao sistema de delivery
+- `senha` (string): Senha de acesso ao sistema de delivery
+- `:id` (string): ID do pedido a ser consultado
+
+Se email e senha não forem fornecidos na requisição, serão usados os valores do arquivo `.env`.
+
+## Resposta da API
+
+A resposta contém os seguintes campos:
+
+```json
+[
+  {
+    "id": "123456",
+    "cliente": "Nome do Cliente",
+    "dataHora": "01/01/2025 12:34",
+    "status": "Entregue",
+    "detalhes": "HTML com detalhes do pedido"
+  }
+]
+```
