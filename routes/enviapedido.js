@@ -21,8 +21,8 @@ router.post('/', async (req, res) => {
   const email = pedido.email;
   const senha = pedido.senha;
   let browser;
-let page;
-let context;
+  let page;
+
   console.log(pedido);
   try {
     if (!pedido) {
@@ -43,10 +43,9 @@ let context;
       });
     }
 
-   
-    
     try {
-      
+      browser = await chromium.launch({ headless: false });
+      page = await browser.newPage();
       
       await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
       await page.waitForLoadState('networkidle');
