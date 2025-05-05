@@ -40,13 +40,10 @@ router.post('/', async (req, res) => {
       });
     }
 
-    browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    const page = await context.newPage();
+   
     
     try {
-      await context.clearCookies();
-      console.log('Cookies limpos com sucesso!');
+      
       
       await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
       await page.waitForLoadState('networkidle');
