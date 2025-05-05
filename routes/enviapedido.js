@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
   const pedido = req.body;
   const email = pedido.email;
   const senha = pedido.senha;
+  console.log(pedido);
   try {
     if (!pedido) {
       return res.status(400).json({
