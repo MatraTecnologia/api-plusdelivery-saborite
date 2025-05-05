@@ -20,6 +20,9 @@ router.post('/', async (req, res) => {
   const pedido = req.body;
   const email = pedido.email;
   const senha = pedido.senha;
+  let browser;
+let page;
+let context;
   console.log(pedido);
   try {
     if (!pedido) {
