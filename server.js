@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pedidosRoutes = require('./routes/pedidos');
-
+const enviapedidoRoutes = require('./routes/enviapedido');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_SECRET = process.env.API_SECRET || 'chave-secreta-padrao';
@@ -36,6 +36,7 @@ app.use(verificarSecret);
 
 // Rotas
 app.use('/api/pedidos', pedidosRoutes);
+app.use('/api/enviapedido', enviapedidoRoutes);
 
 // Rota raiz - Documentação da API em HTML estilizado
 app.get('/', (req, res) => {
@@ -286,6 +287,131 @@ app.get('/', (req, res) => {
       
       <h4>Exemplo de requisição:</h4>
       <div class="curl">curl -X GET "http://localhost:3000/api/pedidos/123456?email=seu-email@exemplo.com&senha=sua-senha" -H "X-Secret: sua-chave-secreta"</div>
+    </div>
+
+    <div class="endpoint">
+      <h3>Enviar novo pedido</h3>
+      <div class="url"><span class="method">POST</span>/api/enviapedido</div>
+      <p>Envia um novo pedido para o sistema de delivery.</p>
+      
+      <h4>Cabeçalhos obrigatórios:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>X-Secret</td>
+          <td>Chave de autenticação da API</td>
+        </tr>
+        <tr>
+          <td>Content-Type</td>
+          <td>application/json</td>
+        </tr>
+      </table>
+      
+      <h4>Corpo da requisição:</h4>
+      <table>
+        <tr>
+          <th>Campo</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th>Obrigatório</th>
+        </tr>
+        <tr>
+          <td>nome</td>
+          <td>string</td>
+          <td>Nome completo do cliente</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>telefone</td>
+          <td>string</td>
+          <td>Telefone do cliente</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>cep</td>
+          <td>string</td>
+          <td>CEP do endereço</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>bairro</td>
+          <td>string</td>
+          <td>Bairro do endereço</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>endereco</td>
+          <td>string</td>
+          <td>Endereço completo</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>numero</td>
+          <td>string</td>
+          <td>Número do endereço</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>complemento</td>
+          <td>string</td>
+          <td>Complemento do endereço</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>pagamento</td>
+          <td>string</td>
+          <td>Forma de pagamento</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>id_produtos</td>
+          <td>array</td>
+          <td>Array com IDs dos produtos</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td>Email de acesso ao sistema</td>
+          <td>Sim</td>
+        </tr>
+        <tr>
+          <td>senha</td>
+          <td>string</td>
+          <td>Senha de acesso ao sistema</td>
+          <td>Sim</td>
+        </tr>
+      </table>
+      
+      <h4>Exemplo de requisição:</h4>
+      <div class="curl">curl -X POST "http://localhost:3000/api/enviapedido" \
+  -H "X-Secret: sua-chave-secreta" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Cliente Teste",
+    "telefone": "(27) 99999-9999",
+    "cep": "29100-291",
+    "bairro": "Centro",
+    "endereco": "Rua Teste",
+    "numero": "123",
+    "complemento": "Apto 101",
+    "pagamento": "Dinheiro",
+    "id_produtos": ["1", "2", "3"],
+    "email": "seu-email@exemplo.com",
+    "senha": "sua-senha"
+  }'</div>
+
+      <h4>Exemplo de resposta de sucesso:</h4>
+      <div class="json-response">
+{
+  <span class="key">"sucesso"</span>: <span class="string">true</span>,
+  <span class="key">"mensagem"</span>: <span class="string">"Pedido enviado com sucesso"</span>,
+  <span class="key">"produtos_adicionados"</span>: <span class="number">3</span>
+}
+      </div>
     </div>
     
     <h2>Exemplos de respostas</h2>
