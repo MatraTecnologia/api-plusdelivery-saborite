@@ -88,11 +88,12 @@ router.post('/', async (req, res) => {
       
       await page.fill('input[name="nome"]', pedido.nome);
       await page.fill('input[name="tel"]', pedido.telefone);
-      await page.fill('input[name="cep"]', pedido.cep);
-      await page.selectOption('select[name="bairro"]', pedido.bairro);
-      await page.fill('input[name="end"]', pedido.endereco);
-      await page.fill('input[name="nm"]', pedido.numero);
-      await page.fill('input[name="complemento"]', pedido.complemento);
+      
+      if (pedido.cep) await page.fill('input[name="cep"]', pedido.cep);
+      if (pedido.bairro) await page.selectOption('select[name="bairro"]', pedido.bairro);
+      if (pedido.endereco) await page.fill('input[name="end"]', pedido.endereco);
+      if (pedido.numero) await page.fill('input[name="nm"]', pedido.numero);
+      if (pedido.complemento) await page.fill('input[name="complemento"]', pedido.complemento);
       
       await page.click('button[class="btn btn-primary"]');
       await page.waitForTimeout(1000);
