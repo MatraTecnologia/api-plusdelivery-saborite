@@ -81,7 +81,8 @@ router.post('/', async (req, res) => {
       await page.goto('https://demonstracao.saborite.com/adm/pdv/index/');
       await page.waitForLoadState('networkidle');
 
-      await page.click('a[href="javascript:addUsuario();"]');
+      await page.keyboard.press('Shift+D');
+      await page.waitForTimeout(1000);
       
       await page.waitForSelector('#form-usuario');
       
