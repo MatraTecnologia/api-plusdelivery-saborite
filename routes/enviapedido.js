@@ -18,7 +18,6 @@ const TIPOS_ERRO = {
 // Rota para enviar pedido
 router.post('/', async (req, res) => {
   const pedido = req.body;
-  let browser;
   const email = pedido.email;
   const senha = pedido.senha;
   try {
