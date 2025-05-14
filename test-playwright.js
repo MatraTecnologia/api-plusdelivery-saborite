@@ -1,7 +1,5 @@
 const { chromium } = require('playwright');
 
-const pedido = {'nome': 'Cliente Teste', 'telefone': '(27) 99999-9999', 'cep': '29100-291', 'bairro': 'Centro', 'endereco': 'Rua Teste', 'numero': '123', 'complemento': 'Apto 101', 'pagamento': 'Dinheiro', 'id_produto': '1'};
-
 const testPlaywright = async () => {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
@@ -11,26 +9,26 @@ const testPlaywright = async () => {
     await context.clearCookies();
     console.log('Cookies limpos com sucesso!');
     
-    await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
+    await page.goto('https://minhaloja.plusdelivery.com.br/admin/login/');
     await page.waitForLoadState('networkidle');
     
     const isLoggedIn = await page.evaluate(() => {
-      return document.querySelector('input[name="email"]');
+      return document.querySelector('input[name="login"]');
     });
 
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
       await page.waitForLoadState('networkidle');
       console.log('Usuário não está logado. Iniciando fluxo de login...');
       await page.waitForTimeout(100);
       console.log('Preenchendo o email...');
-      await page.click('input[name="email"]');
+      await page.click('input[name="login"]');
       await page.waitForTimeout(100);
-      await page.keyboard.type('varela.suporte@gmail.com');
+      await page.keyboard.type('elzalanches2019@gmail.com');
       await page.waitForTimeout(100);
       console.log('Preenchendo a senha...');
       await page.click('input[name="senha"]');
       await page.waitForTimeout(100);
-      await page.keyboard.type('Varela123mafra');
+      await page.keyboard.type('Plus2910@vermelho');
       await page.waitForTimeout(100);
       console.log('Clicando no botão de login...');
       await page.click('input[type="submit"]');
@@ -42,62 +40,87 @@ const testPlaywright = async () => {
     await page.waitForLoadState('networkidle');
     console.log('Página carregada com sucesso!');
     //navega ate a pagina de pedidos
-    await page.goto('https://demonstracao.saborite.com/adm/pdv/index/');
+    await page.waitForTimeout(10000);
+    console.log('Navegando para a página de pedidos...');
+    await page.click('a[href="javascript:void(0)"][id="cardapio_button"]');
     await page.waitForLoadState('networkidle');
-
-    await page.click('a[href="javascript:addUsuario();"]');
-    
-    // Aguarda o modal do formulário aparecer
-    await page.waitForSelector('#form-usuario');
-    
-    // Preenche o nome
-    await page.fill('input[name="nome"]', cliente.nome);
-    
-    // Preenche o telefone
-    await page.fill('input[name="tel"]', cliente.telefone);
-    
-    // Preenche o CEP
-    await page.fill('input[name="cep"]', cliente.cep);
-    
-    // Seleciona o bairro
-    await page.selectOption('select[name="bairro"]', cliente.bairro);
-    
-    // Preenche o endereço
-    await page.fill('input[name="end"]', cliente.endereco);
-    
-    // Preenche o número
-    await page.fill('input[name="nm"]', cliente.numero);
-    
-    // Preenche o complemento
-    await page.fill('input[name="complemento"]', cliente.complemento);
-    
-    // Clica no botão salvar
-    await page.click('button[class="btn btn-primary"]');
-    
-    // Aguarda o modal fechar
     await page.waitForTimeout(1000);
+    console.log('Aguardando carregamento da tabela de menus...');
+    const frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]');
+    const frameContent = await frame.contentFrame();
+    const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 10000 });
+    console.log('Container de menus encontrado');
+    await frameContent.waitForSelector('table#menus tr');
+    console.log('Tabela de menus carregada com sucesso!');
+    
+    console.log('Obtendo linhas da tabela de menus...');
+    const menuRows = await frameContent.$$('table#menus tr');
+    console.log(`Total de ${menuRows.length} menus encontrados`);
+    
+    for (const row of menuRows) {
+      console.log('Verificando disponibilidade do menu...');
+      const isDisabled = await row.$('.indisponivel');
+      
+      if (!isDisabled) {
+        console.log('Menu disponível, clicando para abrir...');
+        await row.click();
+        await frameContent.waitForTimeout(500);
+        
+        console.log('Aguardando carregamento do modal de produtos...');
+        await frameContent.waitForSelector('.content', { timeout: 5000 }).catch(() => {
+          console.log('Modal não encontrado para este menu');
+        });
+        
+        console.log('Obtendo lista de produtos...');
+        const produtos = await frameContent.$$('table#produtos tr');
+        console.log(`Total de ${produtos.length} produtos encontrados`);
+        
+        const produtosData = [];
 
-    //faz a busca do pedido
-    await page.click('span[class="input-group-text"]');
-    await page.waitForTimeout(1000);
-    await page.click('input[class="swal2-input"]');
-    await page.keyboard.type(pedido.id_produto);
-    //clica no botao de enviar pedido
-    await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
-    await page.waitForTimeout(1000);
-    //clica no botao de enviar pedido
-    await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
-    await page.waitForTimeout(1000);
+        for (const produto of produtos) {
+          console.log('Extraindo dados do produto...');
+          try {
+            const id = await produto.$eval('.id', el => el.textContent.trim()).catch(() => 'ID não encontrado');
+            const nome = await produto.$eval('.nome', el => el.textContent.trim()).catch(() => 'Nome não encontrado');
+            
+            // Verifica se o elemento existe antes de tentar extrair seu valor
+            let valor = 'Valor não encontrado';
+            if (await produto.$('.valor div')) {
+              valor = await produto.$eval('.valor div', el => el.textContent.trim());
+            }
+            
+            // Verifica se o elemento existe antes de tentar extrair o valor de promoção
+            let promocao = 'Promoção não encontrada';
+            if (await produto.$('.promocao div div')) {
+              promocao = await produto.$eval('.promocao div div', el => el.textContent.trim());
+            }
+            
+            // Verifica se o elemento existe antes de tentar extrair se está habilitado
+            let habilitado = false;
+            if (await produto.$('.habilitado input')) {
+              habilitado = await produto.$eval('.habilitado input', el => el.checked);
+            }
 
+            produtosData.push({
+              id,
+              nome,
+              valor,
+              promocao,
+              habilitado
+            });
+            console.log(`Produto ${id} - ${nome} processado`);
+          } catch (err) {
+            console.log(`Erro ao processar produto: ${err.message}`);
+          }
+        }
 
-    //pagamento
-
-    await page.click('select[name="pagamento"]');
-    await page.selectOption('select[name="pagamento"]', pedido.pagamento);
-    //finalizar pedido
-    await page.keyboard.press('Shift+F');
-    await page.waitForTimeout(1000);
-   
+        console.log('Lista completa de produtos:', produtosData);
+      } else {
+        console.log('Menu indisponível, pulando...');
+      }
+    }
+    
+  
   
     await new Promise(resolve => setTimeout(resolve, 3000));
   } catch (error) {

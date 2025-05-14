@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const pedidosRoutes = require('./routes/pedidos');
 const enviapedidoRoutes = require('./routes/enviapedido');
+const buscarpedidoRoutes = require('./buscarpedido');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_SECRET = process.env.API_SECRET || 'chave-secreta-padrao';
@@ -37,6 +38,7 @@ app.use(verificarSecret);
 // Rotas
 app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/enviapedido', enviapedidoRoutes);
+app.use('/api/cardapio', buscarpedidoRoutes);
 
 // Rota raiz - Documentação da API em HTML estilizado
 app.get('/', (req, res) => {
