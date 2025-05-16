@@ -1,0 +1,2567 @@
+<!DOCTYPE html><html lang="pt-br" style="overflow: inherit; cursor: default;"><head>
+    <meta charset="utf-8">
+    <title>Saborite - Loja Modelo - Saborite    </title>
+    <meta name="author" content="Saborite">
+    <meta name="description" content="Área restrita da administração da loja.">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="manifest" href="/manifest_adm.webmanifest">
+
+    <!-- CHAT -->
+    
+    
+    
+    <!-- Custom fonts for this template-->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Scripts -->
+    <style>
+        :root {
+            --cor_primaria:
+                #29204b            ;
+            --cor_secundaria:
+                #003761            ;
+        }
+    </style>
+            <link href="/media/css/sb-admin-2.min.css?1733886036" rel="stylesheet">
+        <link href="/vendor/datatables/dataTables.bootstrap4.min.css?1733886036" rel="stylesheet">
+        <link href="/vendor/datatables/rowReorder.bootstrap4.min.css?1733886036" rel="stylesheet">
+        <link href="/vendor/fontawesome-free/css/all.min.css?1733886036" rel="stylesheet" type="text/css">
+        <link href="/vendor/introjs/introjs.min.css?1733886036" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/vendor/multiselect/bootstrap-multiselect.css?1733886036" type="text/css">
+    <link href="/media/css/adm.css?1744028741" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="/vendor/js/ifood.js?1747245716"></script>
+    <script src="/vendor/js/qz-tray.js?1733886036"></script>
+    <script src="/vendor/js/impressao.js?1744309488"></script>
+            <script src="/vendor/jquery/jquery.min.js?1733886036">
+        </script>
+    
+    <!-- Constantes -->
+    <script>
+        const VERSAO = 'v5.2.80';
+        const RAIZ = '/';
+        const PATH = '/home2/gamadewm/public_html/revendas/saborite.com/clientes/demonstracao/';
+        const ENTREGAS = '';
+        const INTERROMPER_FECHAMENTO_AUTOMATICO = '2025-05-05 10:35:46';
+        const CAIXA = '';
+        const VALOR_ABERTURA = '';
+        const NUMERO_PEDIDOS = '0';
+        const NUMERO_ITEM_MESA = '0';
+        const BLOCK = '';
+        const VENCIMENTO = '2025-05-31';
+        const NOTIFICACAO = '';
+        const DUMP = '';
+        const MANUTENCAO = '';
+        const MANUTENCAO_INICIO = '0';
+        const URL_SITE = 'https://demonstracao.saborite.com/';
+        const HOST = 'demonstracao.saborite.com';
+        const URL_ATUAL = 'https://demonstracao.saborite.com/adm/usuarios/lista/';
+        const SITE = 'saborite.com';
+        const SISTEMA = 'Saborite';
+        const CSRF_TOKEN = '385093a1aea8f1ac10d4412a9456a774caab6af13048ded0fdc048c07f93aa77';
+        const MESA = '';
+        const IDENTIFICACAO = 'ebd80f8334825baedfe32efc0acce9d9';
+        const SESSAO = 'ebd80f8334825baedfe32efc0acce9d9';
+        const ATUALIZADO = '1';
+        const DESENVOLVIMENTO = '';
+        const LOGADO = '1';
+        const FUNCIONARIO = '1';
+        const SUPORTE = '';
+        const IFOOD = '';
+        const DISPOSITIVO = 'DESKTOP';
+        const TIMEZONE = 'America/Sao_Paulo';
+        const DISABLE_CACHE = '';
+        const IS_REVENDA = '1';
+        const IS_FRANQUIA = '';
+    </script>
+
+    
+            <!-- Feedback -->
+        <script src="https://sak.userreport.com/gamadelivery/launcher.js" async="" id="userreport-launcher-script"></script>
+    
+    <!-- Icon -->
+    <link rel="icon" type="image/png" href="/favicon.ico">
+
+<style>.swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 1px rgba(0,0,0,.075),0 1px 2px rgba(0,0,0,.075),1px 2px 4px rgba(0,0,0,.075),1px 3px 8px rgba(0,0,0,.075),2px 4px 16px rgba(0,0,0,.075);pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{animation:swal2-toast-hide .1s forwards}.swal2-container{display:grid;position:fixed;z-index:1060;top:0;right:0;bottom:0;left:0;box-sizing:border-box;grid-template-areas:"top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:.625em;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}.swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{background:rgba(0,0,0,.4)}.swal2-container.swal2-backdrop-hide{background:rgba(0,0,0,0) !important}.swal2-container.swal2-top-start,.swal2-container.swal2-center-start,.swal2-container.swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}.swal2-container.swal2-top,.swal2-container.swal2-center,.swal2-container.swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}.swal2-container.swal2-top-end,.swal2-container.swal2-center-end,.swal2-container.swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}.swal2-container.swal2-top-start>.swal2-popup{align-self:start}.swal2-container.swal2-top>.swal2-popup{grid-column:2;align-self:start;justify-self:center}.swal2-container.swal2-top-end>.swal2-popup,.swal2-container.swal2-top-right>.swal2-popup{grid-column:3;align-self:start;justify-self:end}.swal2-container.swal2-center-start>.swal2-popup,.swal2-container.swal2-center-left>.swal2-popup{grid-row:2;align-self:center}.swal2-container.swal2-center>.swal2-popup{grid-column:2;grid-row:2;align-self:center;justify-self:center}.swal2-container.swal2-center-end>.swal2-popup,.swal2-container.swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;align-self:center;justify-self:end}.swal2-container.swal2-bottom-start>.swal2-popup,.swal2-container.swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}.swal2-container.swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;justify-self:center;align-self:end}.swal2-container.swal2-bottom-end>.swal2-popup,.swal2-container.swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;align-self:end;justify-self:end}.swal2-container.swal2-grow-row>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}.swal2-container.swal2-grow-column>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}.swal2-container.swal2-no-transition{transition:none !important}.swal2-popup{display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}.swal2-popup:focus{outline:none}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-title{position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-actions{display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:auto;margin:1.25em auto 0;padding:0}.swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))}.swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))}.swal2-loader{display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}.swal2-styled{margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}.swal2-styled:not([disabled]){cursor:pointer}.swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7066e0;color:#fff;font-size:1em}.swal2-styled.swal2-confirm:focus{box-shadow:0 0 0 3px rgba(112,102,224,.5)}.swal2-styled.swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#dc3741;color:#fff;font-size:1em}.swal2-styled.swal2-deny:focus{box-shadow:0 0 0 3px rgba(220,55,65,.5)}.swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7881;color:#fff;font-size:1em}.swal2-styled.swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,120,129,.5)}.swal2-styled.swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}.swal2-styled:focus{outline:none}.swal2-styled::-moz-focus-inner{border:0}.swal2-footer{justify-content:center;margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:inherit;font-size:1em}.swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}.swal2-timer-progress-bar{width:100%;height:.25em;background:rgba(0,0,0,.2)}.swal2-image{max-width:100%;margin:2em auto 1em}.swal2-close{z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:rgba(0,0,0,0);color:#ccc;font-family:serif;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}.swal2-close:hover{transform:none;background:rgba(0,0,0,0);color:#f27474}.swal2-close:focus{outline:none;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}.swal2-close::-moz-focus-inner{border:0}.swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}.swal2-input,.swal2-file,.swal2-textarea,.swal2-select,.swal2-radio,.swal2-checkbox{margin:1em 2em 3px}.swal2-input,.swal2-file,.swal2-textarea{box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:rgba(0,0,0,0);box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(0,0,0,0);color:inherit;font-size:1.125em}.swal2-input.swal2-inputerror,.swal2-file.swal2-inputerror,.swal2-textarea.swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}.swal2-input:focus,.swal2-file:focus,.swal2-textarea:focus{border:1px solid #b4dbed;outline:none;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}.swal2-input::placeholder,.swal2-file::placeholder,.swal2-textarea::placeholder{color:#ccc}.swal2-range{margin:1em 2em 3px;background:#fff}.swal2-range input{width:80%}.swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}.swal2-range input,.swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}.swal2-input{height:2.625em;padding:0 .75em}.swal2-file{width:75%;margin-right:auto;margin-left:auto;background:rgba(0,0,0,0);font-size:1.125em}.swal2-textarea{height:6.75em;padding:.75em}.swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:rgba(0,0,0,0);color:inherit;font-size:1.125em}.swal2-radio,.swal2-checkbox{align-items:center;justify-content:center;background:#fff;color:inherit}.swal2-radio label,.swal2-checkbox label{margin:0 .6em;font-size:1.125em}.swal2-radio input,.swal2-checkbox input{flex-shrink:0;margin:0 .4em}.swal2-input-label{display:flex;justify-content:center;margin:1em auto 0}.swal2-validation-message{align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}.swal2-validation-message::before{content:"!";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}.swal2-icon{position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:0.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}.swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474;color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}.swal2-icon.swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}.swal2-icon.swal2-success{border-color:#a5dc86;color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}.swal2-progress-steps li{display:inline-block;position:relative}.swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}.swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:swal2-show .3s}.swal2-hide{animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-show{0%{transform:scale(0.7)}45%{transform:scale(1.05)}80%{transform:scale(0.95)}100%{transform:scale(1)}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(0.5);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static !important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{top:50%;right:auto;bottom:auto;left:0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}</style></head>
+
+<!-- Loading -->
+<body id="page-top" style="overflow: inherit; cursor: default;"><div id="loader-bg" style="display: none;"></div>
+<div id="loader" style="display: none;"></div>
+<div id="imagem-fundo"></div>
+
+<!-- Situação da loja -->
+
+    
+
+
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <nav class="navbar navbar-expand navbar-light text-light background-v3 topbar static-top shadow">
+
+                <a href="https://demonstracao.saborite.com/adm/usuarios/lista/"><img src="/media/logos/logo_saborite_light.png" width="140" height="50" class="mr-3"></a>
+
+                                    <a href="javascript:void(0);" class="d-sm-inline-block btn btn-sm btn-light shadow-sm mr-3 text-danger" onclick="alterarCaixa();" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Clique para abrir">
+                        <i class="fas fa-toggle-off"></i> <span class="d-none d-sm-inline"> Caixa
+                            fechado                        </span>
+                    </a>
+
+                    <a href="javascript:void(0);" class="d-sm-inline-block btn btn-sm btn-light shadow-sm mr-3 text-warning" onclick="alterarStatusLoja();" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Fechamento automático interrompido (Funcionamento automático das 10h00 às 23h00)">
+                        <i class="fas fa-toggle-off"></i> <span class="d-none d-sm-inline">Loja
+                            fechada                        </span>
+                    </a>
+
+                                            <a href="/adm/relatorios/caixas/" class="d-sm-inline-block btn btn-sm btn-light shadow-sm mr-3"><i class="fas fa-print fa-fw"></i>
+                            <span class="d-none d-sm-inline">Reimprimir fechamento</span></a>
+                    
+                    
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/" data-tooltip="tooltip" data-placement="top" title="" target="_blank" data-original-title="Visualizar site">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </li>
+
+                    
+                    <li class="nav-item hide status-qz-tray" style="display: none;">
+                        <a class="nav-link text-warning" href="/adm/configuracoes/qztray/" data-tooltip="tooltip" data-placement="top" title="" data-original-title="QZ Tray: Conectando...">
+                            <i class="fas fa-print"></i>
+                        </a>
+                    </li>
+
+                                            <li class="nav-item status-whatsapp">
+                            <a class="nav-link text-danger" href="/adm/integracoes/index/" data-tooltip="tooltip" data-placement="top" title="" data-original-title="WhatsApp desconectado">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </li>
+                    
+                                            <li class="nav-item">
+                            <a class="nav-link text-light" href="javascript:void(0);" data-toggle="modal" data-target="#modal-portal-motoboy" data-tooltip="tooltip" data-placement="top" title="" data-original-title="App Motoboy">
+                                <i class="fas fa-motorcycle"></i>
+                            </a>
+                        </li>
+                    
+                                            <li class="nav-item">
+                            <a class="nav-link text-light" href="javascript:void(0);" data-toggle="modal" data-target="#modal-cardapio-digital" data-tooltip="tooltip" data-placement="top" title="" data-original-title="App Garçom">
+                                <i class="fa fa-tablet"></i>
+                            </a>
+                        </li>
+                    
+                                            <li class="nav-item">
+                            <a class="nav-link text-light" href="/adm/faturas/index" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Faturas (Próximo vencimento: 31/05)">
+                                <i class="fas fa-credit-card"></i>
+                            </a>
+                        </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/adm/suporte/index/" data-tooltip="tooltip" data-placement="top" title="" target="_blank" data-original-title="Central de ajuda">
+                            <i class="fas fa-question-circle"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle text-light ver-notificacoes" href="javascript:void(0);" data-tooltip="tooltip" data-placement="top" title="" onclick="limparNotificacoes();" id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-original-title="Notificações">
+                            <i class="fas fa-bell fa-fw"></i>
+                            <span class="badge badge-danger badge-counter hide" id="notificacoes">0</span>
+                        </a>
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">
+                                Notificações
+                            </h6>
+                            <div id="listaNotificacoes" style="max-height: 400px; overflow-y: auto;">
+                                <a class="dropdown-item text-center small text-gray-500" href="javascript:void(0);">Nenhuma notifação no momento</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <div class="my-1 d-none d-sm-block"></div>
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline small text-light font-weight-bold">
+                                Ryan Varela                            </span>
+                            <img class="img-profile rounded-circle border border-light" src="/media/css/logo.png">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                            <h6 class="dropdown-header">Perfil</h6>
+                            <a class="dropdown-item" href="/?d=d" target="_blank">Meus dados</a>
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="alertaConfirmacao(() => window.location.href = `${RAIZ}sair/index/`);">Desconectar</a>
+                                                    </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Menu -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white my-0 mb-4" style="z-index: 100;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link pr-3" href="/adm/inicio/index/"><i class="fas fa-home"></i>
+                                Início</a>
+                        </li>
+
+                                                    <li class="nav-item">
+                                <a class="nav-link pr-3" href="/adm/inicio/dashboard/"><i class="fas fa-signal"></i> Dashboard</a>
+                            </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link pr-3" href="/adm/pedidos/index/"><i class="fas fa-bell"></i>
+                                Pedidos</a>
+                        </li>
+
+                                                    <li class="nav-item dropdown">
+                                <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-box-open"></i> Estoque</a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <h6 class="dropdown-header">Estoque</h6>
+                                    <a class="dropdown-item" href="/adm/produtos/dashboard/">Dashboard</a>
+                                    <a class="dropdown-item" href="/adm/produtos/lista/">Produtos</a>
+                                                                    </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-users"></i> Usuários</a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <h6 class="dropdown-header">Usuários</h6>
+                                    <a class="dropdown-item" href="/adm/usuarios/dashboard/">Dashboard</a>
+                                    <a class="dropdown-item active" href="/adm/usuarios/lista/">Clientes</a>
+                                </div>
+                            </li>
+
+                                                            <li class="nav-item dropdown">
+                                    <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bullseye"></i> Marketing
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <h6 class="dropdown-header">Ferramentas</h6>
+                                        <a class="dropdown-item" href="/adm/marketing/fidelidade/">Fidelização</a>
+                                        <a class="dropdown-item" href="/adm/cupons/lista/">Cupons de desconto</a>
+                                        <a class="dropdown-item" href="/adm/banners/lista/">Banners</a>
+                                        <a class="dropdown-item" href="/adm/marketing/vitrine/">Vitrine</a>
+                                        <a class="dropdown-item" href="/adm/marketing/recado/">Recado</a>
+                                        <a class="dropdown-item" href="/adm/marketing/sorteio/">Sorteio</a>
+                                                                                    <a class="dropdown-item" href="/adm/robo/index/">Robô de
+                                                atendimento</a>
+                                                                                                                                                                    <h6 class="dropdown-header">Campanhas</h6>
+                                            <a class="dropdown-item" href="/adm/campanhas/dashboard/">Dashboard</a>
+                                            <a class="dropdown-item" href="/adm/campanhas/index/">Campanhas</a>
+                                                                            </div>
+                                </li>
+                            
+                                                            <li class="nav-item dropdown">
+                                    <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-desktop"></i> Monitores
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <h6 class="dropdown-header">Monitores</h6>
+                                                                                    <a class="dropdown-item" href="/adm/monitor/senhas/" target="_blank">Senhas</a>
+                                                                                                                            <a class="dropdown-item" href="/adm/monitor/preparo/" target="_blank">Preparo
+                                            </a>
+                                                                                                                    </div>
+                                </li>
+                            
+                                                            <li class="nav-item dropdown">
+                                    <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-chart-bar"></i> Financeiro</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <h6 class="dropdown-header">Movimentações</h6>
+                                        <a class="dropdown-item" href="/adm/extrato/dashboard/">Dashboard</a>
+                                        <a class="dropdown-item" href="/adm/extrato/lista/pagar/">Contas a Pagar</a>
+                                        <a class="dropdown-item" href="/adm/extrato/lista/receber/">Contas a
+                                            Receber</a>
+                                        <a class="dropdown-item" href="/adm/extrato/lista/caixa/">Movimento do
+                                            Caixa</a>
+                                        <div class="dropdown-divider"></div>
+                                        <h6 class="dropdown-header">Ajustes</h6>
+                                        <a class="dropdown-item" href="/adm/contas/lista/">Contas</a>
+                                        <a class="dropdown-item" href="/adm/planoDeContas/lista/">Plano de Contas</a>
+                                    </div>
+                                </li>
+                            
+                                                            <li class="nav-item dropdown">
+                                    <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-file-export"></i> Fiscal</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <h6 class="dropdown-header">Fiscal</h6>
+                                        <a class="dropdown-item" href="/adm/NfeIO/dashboard/">Dashboard</a>
+                                                                                    <a class="dropdown-item" href="/adm/relatorios/nfces/">NFC-e</a>
+                                                                                                                                                                    <a class="dropdown-item" href="/adm/relatorios/dfes/">DF-e
+                                            </a>
+                                                                                <div class="dropdown-divider"></div>
+                                        <h6 class="dropdown-header">Contador</h6>
+                                                                                    <a class="dropdown-item" href="/adm/relatorios/exportarXmls/">Exportação</a>
+                                                                            </div>
+                                </li>
+                            
+                            <li class="nav-item dropdown">
+                                <a class="nav-link pr-3  dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-chart-line"></i> Relatórios
+                                </a>
+
+                                <div class="dropdown-menu multi-column" aria-labelledby="navbarDropdown">
+                                    <div class="row">
+
+                                        <!-- BARRA 1 -->
+                                        <div class="col-md-4">
+                                            <h6 class="dropdown-header mt-2">Vendas</h6>
+                                            <a class="dropdown-item" href="/adm/relatorios/pedidos/">Histórico de
+                                                pedidos</a>
+                                                                                            <a class="dropdown-item" href="/adm/relatorios/mesas/">Histórico de
+                                                    mesas
+                                                </a>
+                                                                                        <a class="dropdown-item" href="/adm/relatorios/caixas/">Caixas</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/faturamento/">Faturamento</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/avaliacoes/">Avaliações</a>
+                                                                                            <a class="dropdown-item" href="/adm/relatorios/taxaServico/">Taxas de
+                                                    serviços</a>
+                                                                                        <a class="dropdown-item" href="/adm/relatorios/vendedor/">Vendas por
+                                                vendedor <span class="badge badge-warning">novo!</span></a>
+
+                                                                                            <a class="dropdown-item" href="/adm/relatorios/garcom/">Vendas por
+                                                    garçom</a>
+                                            
+                                            <h6 class="dropdown-header mt-2">Cardápio</h6>
+                                            <a class="dropdown-item" href="/adm/relatorios/categorias/">Vendas
+                                                analíticas</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/validade/">Itens a
+                                                vencer</a>
+
+                                            <h6 class="dropdown-header mt-2">Entregas</h6>
+                                            <a class="dropdown-item" href="/adm/relatorios/entregasDetalhadas/">Entregas detalhadas
+                                            </a>
+                                            <a class="dropdown-item" href="/adm/relatorios/entregasConsolidadas/">Entregas
+                                                consolidadas</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/bairros/">Pedidos por
+                                                bairro</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/dispositivos/">Pedidos
+                                                por
+                                                dispositivos</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/origemPedidos/">Pedidos por
+                                                origem</a>
+                                        </div>
+
+                                        <!-- BARRA 2 -->
+                                        <div class="col-md-4">
+                                            <h6 class="dropdown-header mt-2">Analíticos</h6>
+                                            <a class="dropdown-item" href="/adm/relatorios/visitas/">Visitas
+                                            </a>
+                                            <a class="dropdown-item" href="/adm/relatorios/rankPedidos/">Ranking
+                                                de
+                                                pedidos</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/carrinhos/">Carrinhos
+                                                abandonados</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/aniversariantes/">Aniversariantes</a>
+                                            <a class="dropdown-item" href="/adm/relatorios/sessoesAtivas/">Sessões
+                                                ativas</a>
+                                            
+                                                                                            <h6 class="dropdown-header mt-2">Fidelização</h6>
+                                                <a class="dropdown-item" href="/adm/relatorios/carteira/">Carteira
+                                                    virtual</a>
+                                                <a class="dropdown-item" href="/adm/relatorios/descontos/">Pedidos
+                                                    com descontos</a>
+                                                                                                                                                                                            
+                                            <h6 class="dropdown-header mt-2">Gerenciais</h6>
+                                            <a class="dropdown-item" href="/adm/relatorios/abc/categorias/">Curva
+                                                ABC</a>
+                                        </div>
+
+                                        <!-- BARRA 3 -->
+                                        <div class="col-md-4">
+                                            
+                                            <h6 class="dropdown-header mt-2">Outros</h6>
+                                                                                            <a class="dropdown-item" href="/adm/relatorios/publicos/">Publicos</a>
+                                                <a class="dropdown-item" href="/adm/relatorios/campanhas/">Campanhas
+                                                </a>
+                                                                                        <a class="dropdown-item" href="/adm/relatorios/auditoria/">Auditoria</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-cogs"></i> Configurações
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                                    <h6 class="dropdown-header">Ajustes</h6>
+                                    <a class="dropdown-item" href="/adm/configuracoes/global/">Geral</a>
+                                                                            <a class="dropdown-item" href="/adm/bairros/lista/">Taxas de entrega</a>
+                                                                        <a class="dropdown-item" href="/adm/configuracoes/pagamentos/">Formas de
+                                        pagamento</a>
+                                    <a class="dropdown-item" href="/adm/acrescimos/lista/">Acréscimos</a>
+                                    <a class="dropdown-item" href="/adm/configuracoes/funcionamento/">Horário de
+                                        funcionamento</a>
+                                                                            <a class="dropdown-item" href="/adm/configuracoes/agendamentos/">Agendamentos
+                                        </a>
+                                                                        <div class="dropdown-divider"></div>
+                                                                                                    <h6 class="dropdown-header">Ferramentas</h6>
+                                    <a class="dropdown-item" href="/adm/configuracoes/qztray/">QZ Tray</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="validarCep();">Validador de
+                                        CEP</a><a class="dropdown-item" href="javascript:void(0);" onclick="gerarEAN13();">Gerador de EAN13</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="gerarPedidoTeste();">Gerar
+                                        pedido de teste
+                                    </a>
+                                                                                                    <div class="dropdown-divider"></div>
+                                    <h6 class="dropdown-header">Avançado</h6>
+                                    <a class="dropdown-item" href="/adm/mensagens/index/">Mensagens
+                                        personalizadas</a>
+                                                                            <a class="dropdown-item" href="/adm/integracoes/index/">Integrações</a>
+                                                                                                </div>
+                        </li>
+
+                                                    <li class="nav-item">
+                                <a class="nav-link pr-3 text-warning" href="/adm/loja/index/"><i class="fas fa-rocket"></i> Turbinar plataforma!</a>
+                            </li>
+                                            </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid conteudo-central">
+                
+<div class="float-right">
+    <a href="javascript:void(0);" class="btn btn-info btn-sm btn-icon-split float-right" data-toggle="modal" data-target="#usuarioModal" onclick="setUsuario(false);">
+        <span class="icon text-white-50">
+            <i class="fas fa-plus"></i>
+        </span>
+        <span class="text">Cadastrar</span>
+    </a>
+
+    <a href="javascript:void(0);" class="btn btn-primary btn-sm btn-icon-split float-right mr-2" onclick="assistirVideo('Cadastro de usuários', '961964165');">
+        <span class="icon text-white-50">
+            <i class="fas fa-video"></i>
+        </span>
+        <span class="text">Tutorial</span>
+    </a>
+</div>
+
+<ul class="nav nav-tabs border-bottom-0" role="tablist" data-title="Usuários" data-intro="Vamos gerenciar a sua equipe e seus clientes?">
+    <li class="nav-item">
+        <a class="nav-link" href="/adm/usuarios/dashboard/">Dashboard</a>
+    </li>
+                <li class="nav-item">
+            <a class="nav-link administradores" adm="1.5" href="javascript:void(0);" onclick="alterarTipoUsuario('administradores');" role="tab" data-toggle="tab">Administradores</a>
+        </li>
+                <li class="nav-item" data-title="Usuários" data-intro="Faça o cadastramento dos funcionários do seu estabelecimento.">
+            <a class="nav-link funcionarios" adm="1" href="javascript:void(0);" onclick="alterarTipoUsuario('funcionarios');" role="tab" data-toggle="tab">Funcionários</a>
+        </li>
+                <li class="nav-item" data-title="Usuários" data-intro="Faça o cadastramento dos entregadores do seu estabelecimento.">
+            <a class="nav-link entregadores" adm="0.5" href="javascript:void(0);" onclick="alterarTipoUsuario('entregadores');" role="tab" data-toggle="tab">Entregadores</a>
+        </li>
+                <li class="nav-item">
+            <a class="nav-link garcons" adm="0.4" href="javascript:void(0);" onclick="alterarTipoUsuario('garcons');" role="tab" data-toggle="tab">Garçons</a>
+        </li>
+                <li class="nav-item">
+            <a class="nav-link fornecedores" adm="0.3" href="javascript:void(0);" onclick="alterarTipoUsuario('fornecedores');" role="tab" data-toggle="tab">Fornecedores</a>
+        </li>
+        <li class="nav-item" data-title="Usuários" data-intro="Faça o cadastramento dos clientes do seu estabelecimento ou entre em contato conosco para fazer a importação.">
+        <a class="nav-link clientes active" adm="0" href="javascript:void(0);" onclick="alterarTipoUsuario('clientes');" role="tab" data-toggle="tab">Clientes</a>
+    </li>
+</ul>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="top"><div class="dt-buttons">          <button class="dt-button btn btn-sm float-right" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Atualizar"><span><span class="fas fa-redo-alt"><p></p></span></span></button> <button class="dt-button btn btn-sm float-right" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Limpar filtros"><span><span class="fas fa-brush"><p></p></span></span></button> <button class="dt-button buttons-excel buttons-html5 btn btn-sm float-right" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Exportar excel"><span><span class="fas fa-file-excel"><p></p></span></span></button> <button class="dt-button buttons-pdf buttons-html5 btn btn-sm float-right" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Exportar pdf"><span><span class="fas fa-file-pdf"><p></p></span></span></button> <button class="dt-button buttons-print btn btn-sm float-right" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Imprimir"><span><span class="fas fa-print"><p></p></span></span></button> </div><div id="DataTables_Table_0_filter" class="dataTables_filter"><label><input type="search" class="form-control form-control-sm" placeholder="Pesquisar..." aria-controls="DataTables_Table_0"></label></div></div><div id="DataTables_Table_0_processing" class="dataTables_processing card" style="display: none;">Processando...</div><table class="table table-bordered table-hover table-hover tabela dataTable no-footer" ref="/helper/apiList/usuarios/nome/clientes/" width="100%" cellspacing="0" id="DataTables_Table_0" role="grid" style="width: 100%; position: relative;">
+                <thead>
+                    <tr role="row"><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Cód.: activate to sort column ascending" style="width: 42px;">Cód.</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Nome: activate to sort column ascending" style="width: 173px;">Nome</th><th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Telefone" style="width: 149px;">Telefone</th><th class="sorting_disabled" rowspan="1" colspan="1" aria-label="E-mail" style="width: 57px;">E-mail</th><th class="dt-no-export sorting_disabled" width="120" rowspan="1" colspan="1" aria-label="Bloqueado " style="width: 120px;">Bloqueado <span class="fa fa-info-circle text-primary" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Bloquear o cliente para não realizar novos pedidos."></span></th><th class="dt-no-export sorting_disabled" width="120" rowspan="1" colspan="1" aria-label="Robô " style="width: 120px;">Robô <span class=" fa fa-info-circle text-primary" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Permitir que o robô responda automaticamente o cliente."></span></th><th class="dt-no-export sorting_disabled" width="150" rowspan="1" colspan="1" aria-label="Campanhas " style="width: 150px;">Campanhas <span class=" fa fa-info-circle text-primary" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Permitir que o cliente receba campanhas."></span></th><th class="dt-no-export sorting_disabled" width="30" rowspan="1" colspan="1" aria-label="Opções" style="width: 129px;">Opções</th></tr>
+                </thead>
+            <tbody><tr role="row" class="odd"><td>6</td><td>Cliente Balcão</td><td>(11) 0 0000-0000</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 6);" id="switch-bloqueado-6"><label for="switch-bloqueado-6">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 6);" id="switch-robo-6"><label for="switch-robo-6">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 6);" id="switch-campanhas-6"><label for="switch-campanhas-6">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 6});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (11/02/2025 17h53)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(6, 'Cliente Balcão');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(6);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=6" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="even"><td>12</td><td>Teste Cardápio Digital</td><td>(67) 9 9345-5503</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 12);" id="switch-bloqueado-12"><label for="switch-bloqueado-12">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 12);" id="switch-robo-12" checked=""><label for="switch-robo-12">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 12);" id="switch-campanhas-12" checked=""><label for="switch-campanhas-12">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 12});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (22/01/2025 19h53)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(12, 'Teste Cardápio Digital');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(12);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=12" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="odd"><td>16</td><td>Carleane Oliveira Brasil</td><td>(27) 9 9826-9517</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 16);" id="switch-bloqueado-16"><label for="switch-bloqueado-16">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 16);" id="switch-robo-16" checked=""><label for="switch-robo-16">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 16);" id="switch-campanhas-16"><label for="switch-campanhas-16">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 16});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (21/01/2025 21h49)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(16, 'Carleane Oliveira Brasil');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(16);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=16" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="even"><td>17</td><td>Luis Felipe Lima Barbosa</td><td>(27) 9 9660-5802</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 17);" id="switch-bloqueado-17"><label for="switch-bloqueado-17">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 17);" id="switch-robo-17" checked=""><label for="switch-robo-17">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 17);" id="switch-campanhas-17" checked=""><label for="switch-campanhas-17">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 17});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (16/01/2025 20h55)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(17, 'Luis Felipe Lima Barbosa');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(17);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=17" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="odd"><td>20</td><td>Maria Clara Alves</td><td>(27) 9 9834-3037</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 20);" id="switch-bloqueado-20"><label for="switch-bloqueado-20">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 20);" id="switch-robo-20" checked=""><label for="switch-robo-20">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 20);" id="switch-campanhas-20" checked=""><label for="switch-campanhas-20">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 20});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (14/01/2025 21h51)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(20, 'Maria Clara Alves');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(20);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=20" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="even"><td>31</td><td>Consumidor Final</td><td>(27) 9999-9998</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 31);" id="switch-bloqueado-31"><label for="switch-bloqueado-31">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 31);" id="switch-robo-31" checked=""><label for="switch-robo-31">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 31);" id="switch-campanhas-31" checked=""><label for="switch-campanhas-31">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 31});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (20/01/2025 19h21)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(31, 'Consumidor Final');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(31);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=31" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="odd"><td>34</td><td>Gessica Vitorino Pereira</td><td>(27) 9 9705-8280</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 34);" id="switch-bloqueado-34"><label for="switch-bloqueado-34">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 34);" id="switch-robo-34" checked=""><label for="switch-robo-34">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 34);" id="switch-campanhas-34" checked=""><label for="switch-campanhas-34">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 34});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (15/01/2025 20h23)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(34, 'Gessica Vitorino Pereira');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(34);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=34" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="even"><td>39</td><td>Jeovana Costa</td><td>(73) 9990-4712</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 39);" id="switch-bloqueado-39"><label for="switch-bloqueado-39">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 39);" id="switch-robo-39" checked=""><label for="switch-robo-39">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 39);" id="switch-campanhas-39" checked=""><label for="switch-campanhas-39">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 39});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (15/01/2025 21h51)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(39, 'Jeovana Costa');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(39);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=39" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="odd"><td>40</td><td>Breno Vulpi</td><td>(27) 9 9931-1389</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 40);" id="switch-bloqueado-40"><label for="switch-bloqueado-40">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 40);" id="switch-robo-40" checked=""><label for="switch-robo-40">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 40);" id="switch-campanhas-40" checked=""><label for="switch-campanhas-40">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 40});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (01/02/2025 22h16)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(40, 'Breno Vulpi');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(40);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=40" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr><tr role="row" class="even"><td>44</td><td>Sandra Riane</td><td>(27) 9 9835-9501</td><td></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('bloqueado', 44);" id="switch-bloqueado-44"><label for="switch-bloqueado-44">Bloqueado</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('robo', 44);" id="switch-robo-44" checked=""><label for="switch-robo-44">Permitir robô</label></div></td><td><div class="switchToggle"><input type="checkbox" onclick="alterarStatus('campanhas', 44);" id="switch-campanhas-44" checked=""><label for="switch-campanhas-44">Permitir campanhas</label></div></td><td><div class="btn-group" role="group"><button onclick="setUsuario({id: 44});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Editar (16/01/2025 18h51)">
+                            <span class="fa fa-edit"></span>
+                        </button><button onclick="getInformacoes(44, 'Sandra Riane');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button><button onclick="getSaldos(44);" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button><a href="/adm/pedidos/index/?usuario=44" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="" data-original-title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a></div></td></tr></tbody></table><div class="bottom"><div class="dataTables_length" id="DataTables_Table_0_length"><label>Mostrando <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="250">250</option><option value="500">500</option><option value="1000">1,000</option></select> registros por página</label></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item disabled" id="DataTables_Table_0_ellipsis"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="6" tabindex="0" class="page-link">…</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0" class="page-link">16</a></li><li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="8" tabindex="0" class="page-link">Próxima</a></li></ul></div></div><div class="clear"></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="usuarioModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Usuário</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="form-usuario">
+
+                    <div class="pl-3 pr-3 pt-3">
+                        <h6 class="font-weight-bold text-primary">Identificação</h6>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <label>Nome e sobrenome</label>
+                            <input type="text" class="form-control d-none" name="id">
+                            <input type="text" class="form-control" name="nome" required="">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Telefone</label>
+                            <input type="text" class="form-control mascaraTelefone" name="tel" required="" maxlength="16">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>E-mail <small class="text-muted">(Opcional)</small></label>
+                            <input type="email" class="form-control" name="email">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Nasc. <small class="text-muted">(Opcional)</small></label>
+                            <input type="date" class="form-control" name="aniversario">
+                        </div>
+                    </div>
+
+                    <div class="pl-3 pr-3 pt-3 mt-3">
+                        <h6 class="font-weight-bold text-primary">Documentos</h6>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <label>CPF/CNPJ <small class="text-muted">(Opcional)</small> <a href="javascript:void(0);" onclick="buscarCnpj();"><span class="fa fa-redo-alt small"></span></a>
+                            </label>
+                            <input type="text" class="form-control mascaraCpfCnpj" minlength="14" maxlength="18" name="cpf">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Inscrição estadual <small class="text-muted">(Opcional)</small></label>
+                            <input type="text" minlength="9" class="form-control" name="inscricao_estadual">
+                        </div>
+                    </div>
+
+                    <div class="pl-3 pr-3 pt-3 mt-3">
+                        <h6 class="font-weight-bold text-primary">Endereço</h6>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <label>CEP <small class="text-muted">(Opcional)</small></label>
+                            <input type="text" name="cep" id="cepq" onblur="buscarCep('#cepq','#endx','#bairrox', 0, 0, false, false, '#localidadex');" class="form-control mascaraCep" maxlength="9">
+                        </div>
+                        <div class="col-md-4 mt-2">
+                            <label>Bairro <small class="text-muted">(Opcional)</small></label>
+                            <select name="bairro" id="bairrox" class="form-control">
+                                <option value="" selected="">Selecione o bairro</option>
+                                <option value="Adelia Giuberti">Adelia Giuberti</option><option value="Alto Maria Ismênia">Alto Maria Ismênia</option><option value="Alto Vila Nova">Alto Vila Nova</option><option value="Anchieta">Anchieta</option><option value="Bela Vista">Bela Vista</option><option value="Brisa do Vale">Brisa do Vale</option><option value="Castelo Branco">Castelo Branco</option><option value="Centro">Centro</option><option value="Cidade Jardim">Cidade Jardim</option><option value="Colatina Velha">Colatina Velha</option><option value="Dalla Bernardina">Dalla Bernardina</option><option value="Esplanada">Esplanada</option><option value="Estrada - acréscimo de taxa de entrega">Estrada - acréscimo de taxa de entrega</option><option value="Fioravanti Marino">Fioravanti Marino</option><option value="Honório Fraga">Honório Fraga</option><option value="IBC">IBC</option><option value="Jardim Planalto">Jardim Planalto</option><option value="José de Anchieta">José de Anchieta</option><option value="Lacê">Lacê</option><option value="Luiz Iglesias">Luiz Iglesias</option><option value="Maria das Graças">Maria das Graças</option><option value="Marista">Marista</option><option value="Martinelli">Martinelli</option><option value="Moacir Brotas">Moacir Brotas</option><option value="Nossa Senhora Aparecida">Nossa Senhora Aparecida</option><option value="Nossa Senhora da Penha">Nossa Senhora da Penha</option><option value="Olívio Zanotelli">Olívio Zanotelli</option><option value="Operário">Operário</option><option value="Perpétuo Socorro">Perpétuo Socorro</option><option value="Pôr do Sol">Pôr do Sol</option><option value="Real Garden">Real Garden</option><option value="Recanto da Lagoa">Recanto da Lagoa</option><option value="Recanto dos Pássaros">Recanto dos Pássaros</option><option value="Recanto Marista">Recanto Marista</option><option value="Residencial Nobre">Residencial Nobre</option><option value="Riviera">Riviera</option><option value="San Diego">San Diego</option><option value="Santa Cecília">Santa Cecília</option><option value="Santa Margarida">Santa Margarida</option><option value="Santa Mônica">Santa Mônica</option><option value="Santa Terezinha">Santa Terezinha</option><option value="Santo Antônio">Santo Antônio</option><option value="Santos Dumont">Santos Dumont</option><option value="São Brás">São Brás</option><option value="São Judas Tadeu">São Judas Tadeu</option><option value="São Miguel">São Miguel</option><option value="São Pedro">São Pedro</option><option value="São Silvano">São Silvano</option><option value="São Vicente">São Vicente</option><option value="Simonassi">Simonassi</option><option value="Vila Amélia">Vila Amélia</option><option value="Vila Lenira">Vila Lenira</option><option value="Vila Nova">Vila Nova</option><option value="Vila Real">Vila Real</option><option value="Vila Verde">Vila Verde</option><option value="Vista da Serra">Vista da Serra</option><option value="Vitali">Vitali</option>                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Endereço <small class="text-muted">(Opcional)</small></label>
+                            <input type="text" name="end" id="endx" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Número <small class="text-muted">(Opcional)</small></label>
+                            <input type="text" name="nm" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Complemento <small class="text-muted">(Opcional)</small></label>
+                            <input type="text" name="complemento" placeholder="Apt/Bloco/Casa" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Em</label>
+                            <input type="text" class="form-control" name="localidade" id="localidadex" value="Vila Velha - ES" readonly="">
+                        </div>
+                    </div>
+
+
+                    <div class="pl-3 pr-3 pt-3 mt-3">
+                        <h6 class="font-weight-bold text-primary">Acesso</h6>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <label>Nova senha <small class="text-muted">(Opcional)</small></label>
+                            <div class="input-group" id="senha_usuario">
+                                <input class="form-control" type="password" name="senha" autocomplete="off">
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><a href="javascript:void(0);" class="text-dark" onclick="showPassword('senha_usuario');"><i class="fa fa-eye-slash" aria-hidden="true"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label>Função</label>
+                            <select class="form-control" name="adm">
+                                <option value="" selected="" disabled="">Selecione a função</option>
+                                <option value="0">Cliente</option>
+                                                                    <option value="0.3">Fornecedor</option>
+                                                                                                    <option value="0.4">Garçom</option>
+                                                                                                    <option value="0.5">Entregador</option>
+                                                                                                    <option value="1">Funcionário</option>
+                                                                                                    <option value="1.5">Administrador</option>
+                                                                                            </select>
+                        </div>
+                    </div>
+            </form></div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary">Salvar</button>
+            </div>
+
+            
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modalSaldoCarteira" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSaldoCarteira">Saldos</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <form method="post" id="form-saldos">
+                <div class="modal-body">
+                    <label>Saldo na carteira virtual</label>
+                    <div class="input-group input-group-md mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="carteiraVirtual">R$</span>
+                        </div>
+                        <input type="hidden" name="id_usuario">
+                        <input type="text" class="form-control mascaraDinheiro" name="carteira_virtual" aria-label="Carteira virtual" aria-describedby="carteiraVirtual">
+                    </div>
+
+                                    </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary">Salvar</button>
+                </div>
+
+        </form></div>
+        
+
+    </div>
+</div>
+
+<div class="modal fade" id="modal-informacoes-usuario" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">...</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+            </div>
+
+            
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let tituloPagina = "Usuários - clientes";
+    let fiado = '';
+    let robo = '1';
+    let campanhas = '1';
+    let tipoAtual = 'clientes';
+    /**
+     *
+     */
+    let colunaDataTable = [
+        [{
+                data: 'id'
+            },
+            {
+                data: 'nome',
+            },
+            {
+                data: 'tel',
+                sortable: false,
+            },
+            {
+                data: 'email',
+                sortable: false,
+            },
+            {
+                data: 'bloqueado',
+                sortable: false,
+                render: (data, type, row) => {
+                    let html = '';
+                    html += '<div class="switchToggle">';
+                    html +=
+                        `<input type="checkbox" onclick="alterarStatus('bloqueado', ${row.id});" id="switch-bloqueado-${row.id}" ${row.bloqueado === "1" ? 'checked' : ''}>`
+                    html += `<label for="switch-bloqueado-${row.id}">Bloqueado</label>`;
+                    html += '</div>';
+                    return html;
+                }
+            },
+            {
+                data: 'permitir_fiado',
+                sortable: false,
+                visible: (fiado ? true : false),
+                render: (data, type, row) => {
+                    let html = '';
+                    html += '<div class="switchToggle">';
+                    html +=
+                        `<input type="checkbox" onclick="alterarStatus('permitir_fiado', ${row.id});" id="switch-fiado-${row.id}" ${row.permitir_fiado === "1" ? 'checked' : ''}>`
+                    html += `<label for="switch-fiado-${row.id}">Permitir fiado</label>`;
+                    html += '</div>';
+                    return html;
+                }
+            },
+            {
+                data: 'robo',
+                sortable: false,
+                visible: (robo ? true : false),
+                render: (data, type, row) => {
+                    let html = '';
+                    html += '<div class="switchToggle">';
+                    html +=
+                        `<input type="checkbox" onclick="alterarStatus('robo', ${row.id});" id="switch-robo-${row.id}" ${row.robo === "1" ? 'checked' : ''}>`
+                    html += `<label for="switch-robo-${row.id}">Permitir robô</label>`;
+                    html += '</div>';
+                    return html;
+                }
+            },
+            {
+                data: 'campanhas',
+                sortable: false,
+                visible: (campanhas ? true : false),
+                render: (data, type, row) => {
+                    let html = '';
+                    html += '<div class="switchToggle">';
+                    html +=
+                        `<input type="checkbox" onclick="alterarStatus('campanhas', ${row.id});" id="switch-campanhas-${row.id}" ${row.campanhas === "1" ? 'checked' : ''}>`
+                    html += `<label for="switch-campanhas-${row.id}">Permitir campanhas</label>`;
+                    html += '</div>';
+                    return html;
+                }
+            },
+            {
+                data: 'opcoes',
+                sortable: false,
+                render: (data, type, row) => {
+                    let reservadoSistema = (row.id <= 5 ? true : false);
+                    let html = '';
+                    if (!reservadoSistema) {
+                        html += '<div class="btn-group" role="group">';
+                        html += `<button onclick="setUsuario({id: ${row.id}});" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modal" data-tooltip="tooltip" data-placement="top" title="Editar (${getDate(row.data_modificacao)})">
+                            <span class="fa fa-edit"></span>
+                        </button>`;
+                        html += `<button onclick="getInformacoes(${row.id}, '${row.nome}');" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="Informações">
+                            <span class="fa fa-info-circle"></span>
+                        </button>`;
+                        html += `<button onclick="getSaldos(${row.id});" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="Saldos">
+                            <span class="fa fa-credit-card"></span>
+                        </button>`;
+                        html += `<a href="${RAIZ}adm/pedidos/index/?usuario=${row.id}" target="_blank" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="Histórico de pedidos">
+                            <span class="fa fa-list"></span>
+                        </a>`;
+                        if (SUPORTE) {
+                            html += `<button onclick="setDelete({id: ${row.id}});" type="button" class="btn btn-light btn-sm" data-tooltip="tooltip" data-placement="top" title="Remover">
+                            <span class="fa fa-trash"></span>
+                        </button>`;
+                        }
+                        html += '</div>';
+                    }
+                    return html;
+                }
+            },
+        ]
+    ];
+    /**
+     *
+     *
+     */
+    let usuarioSelecionado = {};
+    let setDelete = (usuario) => {
+        alertaConfirmacao(() => setSubmit({
+            dados: usuario,
+        }, RAIZ + 'adm/usuarios/deletar/', () => atualizarTabela()));
+    }
+    let setUsuario = (usuario) => {
+        $('#form-usuario')[0].reset();
+        if (!usuario) {
+            setTimeout(() => {
+                let adm = $('.nav-item > .' + tipoAtual).attr('adm');
+                $('#form-usuario [name=adm]').val(adm);
+                $('#form-usuario [name=nome]').focus();
+            }, 150);
+            return;
+        }
+        setSubmit({
+            dados: usuario,
+            requisicao: 'GET',
+        }, RAIZ + 'adm/usuarios/buscar/', (dados) => {
+            dados = JSON.parse(dados);
+            Object.keys(dados).forEach(function(key) {
+                let field = $(`#form-usuario [name=${key}]`);
+                if (isNullOrEmptyString(dados[key])) {
+                    return;
+                }
+                /**
+                 *
+                 */
+                if (key === 'senha') {
+                    return;
+                }
+                field.val(dados[key]).trigger('input');
+            });
+            toggleModal('#usuarioModal');
+        });
+    }
+    /**
+     *
+     */
+    let alterarStatus = (coluna, id) => {
+        solicitarPin(pin => {
+            setSubmit({
+                dados: {
+                    tabela: 'usuarios',
+                    coluna: coluna,
+                    id: id,
+                    pin: pin,
+                },
+                loading: () => {},
+            }, RAIZ + 'helper/alterarSituacao/', () => {});
+        }, 'clientes_alterar');
+    }
+    /**
+     *
+     */
+    let getSaldos = (idUsuario) => {
+        setSubmit({
+            dados: {
+                id_usuario: idUsuario,
+            },
+            requisicao: 'GET',
+        }, RAIZ + 'adm/usuarios/getSaldos/', dados => {
+            let {
+                carteira_virtual,
+                limite_compras,
+            } = JSON.parse(dados);
+            /**
+             *
+             */
+            $('#form-saldos [name=id_usuario]').val(idUsuario);
+            $('#form-saldos [name=carteira_virtual]').val(carteira_virtual);
+            $('#form-saldos [name=limite_compras]').val(limite_compras);
+            toggleModal('#modalSaldoCarteira');
+        });
+    }
+    /**
+     *
+     */
+    let getInformacoes = (idUsuario, nomeUsuario) => {
+        let sucesso = (r) => {
+            let body = [];
+            let {
+                usuario,
+                marketing,
+                pedidos,
+                pedidos_cancelados,
+                pedidos_fidelidade,
+                avaliacoes,
+                extrato,
+                carrinhos,
+                chat,
+                indicacoes,
+            } = JSON.parse(r);
+            /**
+             * USUARIO
+             */
+            if (usuario.cadastro) {
+                body.push(`Cadastrado em ${getDate(usuario.cadastro)}`);
+            }
+            if (usuario.ultimo_login) {
+                body.push(`Último login em ${getDate(usuario.ultimo_login)}`);
+            }
+            if (usuario.ultima_solicitacao) {
+                body.push(`Último solicitação realizada em ${getDate(usuario.ultima_solicitacao)}`);
+            }
+            if (usuario.google_uid) {
+                body.push("Conectado através do google");
+            }
+            if (usuario.facebook_uid) {
+                body.push("Conectado através do facebook");
+            }
+            if (usuario.indicado_por) {
+                body.push(
+                    `O cliente veio por indicação do ${usuario.indicado_por.nome} ${usuario.indicado_por.tel}`);
+            }
+            /**
+             * MARKETING
+             */
+            if (marketing.email) {
+                body.push("Permitiu o envio de email marketing");
+            }
+            if (marketing.permissao_notificacao) {
+                body.push("Permitiu o envio de notificações push");
+            }
+            /**
+             * CHAT
+             */
+            body.push(`Mensagens enviadas através do chat <span class="float-right">${chat.total}</span>`);
+            /**
+             * CARRINHOS
+             */
+            body.push(`Produtos no carrinho atualmente <span class="float-right">${carrinhos.total}</span>`);
+            /**
+             * PEDIDOS
+             */
+            body.push(`Pedidos realizados <span class="float-right">${pedidos.total}</span>`);
+            body.push(`Pedidos cancelados <span class="float-right">${pedidos_cancelados.total}</span>`);
+            body.push(
+                `Pedidos com desconto de fidelidade <span class="float-right">${pedidos_fidelidade.total}</span>`
+            );
+            /**
+             * AVALIAÇÕES
+             */
+            body.push(`Avaliações realizadas <span class="float-right">${avaliacoes.total}</span>`);
+            /**
+             * INDICAÇÕES
+             */
+            body.push(`Clientes indicados <span class="float-right">${indicacoes.total}</span>`);
+            /**
+             * TOTALIZADORES
+             */
+            body.push(
+                `Cashback recebido <span class="float-right">${getMoney(pedidos.total_cashback_recebido)}</span>`
+            );
+            body.push(
+                `Saldo recebido na roleta <span class="float-right">${getMoney(pedidos.total_roleta_recebido)}</span>`
+            );
+            body.push(
+                `Saldo na carteira virtual <span class="float-right">${getMoney(usuario.carteira_virtual)}</span>`
+            );
+            if (fiado) {
+                body.push(
+                    `Saldo limite para compras (fiado) <span class="float-right">${getMoney(usuario.limite_compras)}</span>`
+                );
+            }
+            body.push(
+                `Utilizado da carteira virtual <span class="float-right">${getMoney(pedidos.total_utilizado_carteira)}</span>`
+            );
+            body.push(
+                `Descontos ganhos e utilizados <span class="float-right">${getMoney(pedidos.descontos)}</span>`);
+            body.push(`Total em compras <span class="float-right">${getMoney(pedidos.valores)}</span>`);
+            /**
+             * FINANCEIRO
+             */
+            if (extrato && fiado) {
+                body.push(`Débito em aberto (fiado) <span class="float-right">${getMoney(extrato.saldo)}</span>`);
+            }
+            /**
+             *
+             */
+            $("#modal-informacoes-usuario .modal-title").html(nomeUsuario);
+            $("#modal-informacoes-usuario .modal-body").html(body.join("<hr />"));
+            toggleModal("#modal-informacoes-usuario");
+        }
+
+        solicitarPin(pin => {
+            setSubmit({
+                dados: {
+                    id_usuario: idUsuario,
+                    pin: pin,
+                },
+                requisicao: 'GET',
+            }, RAIZ + 'adm/usuarios/getInformacoes/', sucesso);
+        }, 'clientes_visualizar_informacoes');
+    }
+    /**
+     *
+     */
+    let alterarTipoUsuario = (tipo) => {
+        if (tipoAtual === tipo) {
+            return;
+        }
+
+        tipoAtual = tipo;
+        tituloPagina = `Usuários - ${tipo}`;
+        $(".tabela").DataTable().ajax.url(`${RAIZ}helper/apiList/usuarios/nome/${tipo}/`).load();
+        history.pushState({}, null, `?tipo=${tipo}`);
+    }
+    /**
+     *
+     */
+    let buscarCnpj = () => {
+        let cnpj = $("#form-usuario [name=cpf]").val();
+        if (!cnpj) {
+            return;
+        }
+
+        let falha = (r) => {
+            setNotificacao(r, 'error');
+        }
+
+        let sucesso = (r) => {
+            let dados = JSON.parse(r);
+
+            setNotificacao(`As informações foram obtidas com sucesso.`, 'success');
+
+            for (let campo in dados) {
+                let field = campo;
+                let value = dados[campo];
+
+                switch (campo) {
+                    case 'tel1':
+                        field = 'tel';
+                        break;
+                    case 'endereco':
+                        field = 'end';
+                        break;
+                    case 'numero':
+                        field = 'nm';
+                        break;
+                    case 'cidade':
+                        field = 'localidade';
+                        value = `${value} - ${dados['uf']}`;
+                        break;
+                }
+
+                $("#form-usuario [name=" + field + "]").val(value);
+            }
+        }
+
+        setSubmit({
+            dados: {
+                cnpj: cnpj,
+            },
+            requisicao: 'GET',
+        }, RAIZ + 'adm/cnpj/buscar/', sucesso, falha);
+    }
+    /**
+     *
+     */
+    $("#form-saldos").on("submit", e => {
+        e.preventDefault();
+        let dados = $("#form-saldos").serializeArray();
+        solicitarPin(pin => {
+            dados.push({
+                name: 'pin',
+                value: pin,
+            });
+
+            setSubmit({
+                dados: dados
+            }, RAIZ + 'adm/usuarios/alterarSaldo/', () => atualizarTabela('#modalSaldoCarteira',
+                false));
+        }, 'clientes_atualizar_saldo');
+    });
+    /**
+     *
+     */
+    $("#form-usuario").on("submit", e => {
+        e.preventDefault();
+        let dados = $("#form-usuario").serializeArray();
+
+        solicitarPin(pin => {
+            dados.push({
+                name: 'pin',
+                value: pin,
+            });
+
+            setSubmit({
+                dados: dados,
+            }, RAIZ + 'adm/usuarios/alterar/', (r) => {
+                let id = JSON.parse(r);
+
+                if (id == 217) {
+                    window.location.href = RAIZ + 'sair/index/';
+                    return;
+                }
+
+                atualizarTabela('#usuarioModal', false);
+            })
+        }, 'clientes_alterar');
+    });
+    /**
+     *
+     */
+    $(document).ready(function() {
+        /**
+         * TOURS
+         */
+        let searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.get('tour')) {
+            introJs().setOptions({
+                prevLabel: 'Voltar',
+                nextLabel: 'Próximo',
+                doneLabel: 'Continuar',
+                dontShowAgain: true,
+                dontShowAgainCookie: 'tour-usuarios',
+                dontShowAgainLabel: 'Não mostrar novamente',
+                showProgress: true,
+                showBullets: false,
+                exitOnEsc: false,
+                exitOnOverlayClick: false,
+            }).oncomplete(function() {
+                window.location.href = RAIZ + 'adm/integracoes/index/?tour=true';
+            }).start();
+        }
+        /**
+         *
+         */
+        if (searchParams.get('fast')) {
+            let dados = {};
+            /**
+             *
+             */
+            try {
+                dados = JSON.parse(searchParams.get('fast'));
+                limparURL();
+            } catch (e) {
+                return;
+            }
+            /**
+             *
+             */
+            setUsuario(false);
+            Object.keys(dados).forEach(function(key) {
+                let field = $(`#form-usuario [name=${key}]`);
+                if (isNullOrEmptyString(dados[key])) {
+                    return;
+                }
+                field.val(dados[key]).trigger('input');
+            });
+            toggleModal('#usuarioModal');
+        }
+        /**
+         *
+         */
+        if (searchParams.get('tipo')) {
+            setTimeout(() => {
+                $(".nav-item > ." + searchParams.get('tipo')).trigger('click');
+            }, 500);
+            return;
+        }
+    });
+</script></div>
+</div>
+</div>
+
+<div class="video-tutorial"></div>
+
+<footer class="ml-4 mb-2 mr-4">
+    <div class="copyright text-center my-auto">
+        <p class="py-0 my-0">
+            Saborite © Todos os direitos reservados.
+        </p>
+        <p class="py-0 my-0">
+            v5.2.80        </p>
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+    </div>
+</footer>
+
+<div class="modal fade" id="modal-situacao-caixa" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><span class="d-none d-sm-inline">
+                        Abertura do caixa</span></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form method="post" id="form-situacao-loja">
+
+                    <div id="pedidosEmAberto"></div>
+
+                                            
+                        <p>Valor em dinheiro para suprimento de abertura</p>
+                        <div class="input-group input-group-md mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="suprimento">R$</span>
+                            </div>
+                            <input type="text" class="form-control mascaraDinheiro" name="valor_abertura" id="valor_abertura" aria-label="Valor" aria-describedby="suprimento" value="0" required="">
+                        </div>
+
+
+                                        <div class="my-1">
+                                                    <div class="custom-control custom-switch">
+                                <input type="checkbox" name="abrir_loja" id="abrir_loja" value="1" class="custom-control-input" checked="">
+                                <label class="custom-control-label" for="abrir_loja">
+                                    Abrir                                    também a loja junto do
+                                    caixa
+                                </label>
+                            </div>
+
+                                                                        </div>
+            </form></div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary">Continuar</button>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<div class="modal fade" id="modal-visualizar-imagem" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-visualizar-imagem">Foto</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body imagemTelaCheia">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-portal-motoboy" tabindex="-1" role="dialog" aria-labelledby="modalPortalMotoboy" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPortalMotoboy">App Motoboy</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="mt-3" style="width: 150px;" src="/bibliotecas/barcode?f=png&amp;s=qr&amp;sf=5&amp;d=https://demonstracao.saborite.com/acesso-adm/">
+                    </div>
+                    <div class="col-md-8 mt-5">
+                        <p class="my-0 py-0">Para acessar o app de motoboy, aponte a camera para o QRCode ou acesse
+                            via link.</p>
+                        <p class="small text-primary text-break">
+                            https://demonstracao.saborite.com/acesso-adm/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-cardapio-digital" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">
+                    </h5><h5 class="modal-title" id="modalLabel">App Garçom</h5>
+                
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="/bibliotecas/barcode?f=png&amp;s=qr&amp;sf=5&amp;d=https://demonstracao.saborite.com/inicio/mesa/ESCOLHER/" class="w-100">
+                        </div>
+                        <div class="col-md-8 mt-5">
+                            <p class="my-0 py-0">Compartilhe com os seus garçons.</p>
+                            <p class="small text-primary text-break">
+                                https://demonstracao.saborite.com/inicio/mesa/ESCOLHER/                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="notificacao-sonora">
+    <source src="/media/notificacao.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="notificacao-sonora-chat">
+    <source src="/media/notificacao-chat.wav" type="audio/mpeg">
+</audio>
+
+<audio id="notificacao-sonora-mesa">
+    <source src="/media/notificacao-mesa.wav" type="audio/mpeg">
+</audio>
+
+<audio id="notificacao-sonora-senhas">
+    <source src="/media/notificacao-senhas.wav" type="audio/mpeg">
+</audio>
+
+<audio id="notificacao-sonora-beep">
+    <source src="/media/notificacao-beep.wav" type="audio/mpeg">
+</audio>
+
+
+
+
+
+
+    <script src="/media/js/jquery-ui.min.js?1733886036"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js?1733886036">
+        </script>
+    <script src="/vendor/mask/jquery.mask.min.js?1733886036">
+    </script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js?1733886036">
+        </script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js?1733886036">
+        </script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js?1733886036">
+        </script>
+    <script src="/media/js/sb-admin-2.min.js?1733886036"></script>
+    <script src="/media/js/clipboard.min.js?1733886036"></script>
+    <script src="/vendor/introjs/intro.min.js?1733886036"></script>
+<script src="/vendor/sweetalert/sweetalert2@11.js?1733886036">
+    </script>
+<script src="/media/js/jquery.simulate.js?1733886036"></script>
+<script type="text/javascript" src="/vendor/autocomplete/jquery.autocomplete.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/multiselect/bootstrap-multiselect.js?1733886036">
+    </script>
+<script src="/media/js/bootstrap-input-spinner/bootstrap-input-spinner.js?1733886036">
+    </script>
+<script src="/media/js/principal.js?1747245716"></script>
+<script src="/media/js/dataTables.rowReorder.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/dataTables.buttons.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/buttons.print.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/jszip.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/pdfmake.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/buttons.html5.min.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/vfs_fonts.js?1733886036">
+    </script>
+<script type="text/javascript" src="/vendor/datatables/dataTables.rowGroup.min.js?1733886036">
+    </script>
+
+<script async="">
+    const integracaoImpressora = new Impressao();
+    const integracaoIfood = new Ifood(
+        '',
+        '',
+        '', {
+        separar_grupos_opcoes_impressao: 0,
+    });
+    /**
+     *
+     */
+    $(document).ready(function () {
+        if (ENTREGAS && !DESENVOLVIMENTO) {
+            let tempoInatividade = 15 * 60 * 1000;
+            let timerInatividade;
+            let inatividade = () => {
+                $('#imagem-fundo').css('background-image', `url(https://gamadelivery.app/banners/login/banner${getRandomArbitrary(1, 10)}.webp)`).show();
+            }
+            let resetarTimerInatividade = () => {
+                clearTimeout(timerInatividade);
+                $('#imagem-fundo').css('background-image', '').hide();
+                timerInatividade = setTimeout(inatividade, tempoInatividade);
+            }
+            $(document).on('mousemove keydown click scroll', function () {
+                resetarTimerInatividade();
+            });
+            resetarTimerInatividade();
+            /**
+             *
+             */
+            document.addEventListener('keydown', function (event) {
+                let stop = false;
+                if (event.key === 'F5' || (event.keyCode === 116)) {
+                    stop = true;
+                }
+                if (event.ctrlKey && event.key === 'r') {
+                    stop = true;
+                }
+                if (stop) {
+                    event.preventDefault();
+                    setNotificacao('Evite a atualização da página, estamos buscando por novos pedidos...',
+                        'warning');
+                }
+            });
+        }
+        /**
+         *
+         */
+        doQzChangeStatus = () => {
+            if (integracaoImpressora.isIntegrated()) {
+                $(".status-qz-tray").show();
+                if (integracaoImpressora.isActive()) {
+                    $(".status-qz-tray a").removeClass("text-danger").addClass("text-light");
+                    $(".status-qz-tray a").attr("title", "QZ Tray: Conectado");
+                } else {
+                    $(".status-qz-tray a").removeClass("text-light").addClass("text-danger");
+                    $(".status-qz-tray a").attr("title", "QZ Tray: Desconectado");
+                    /**
+                     *
+                     */
+                    setNotificacao("A conexão com o QZ Tray foi perdida.", 'error');
+                }
+            } else {
+                $(".status-qz-tray").hide();
+            }
+        };
+        /**
+         *
+         */
+        doQzChecarConexao = () => {
+            integracaoImpressora.startConnection()
+                .then(doQzChangeStatus)
+                .catch(doQzChangeStatus);
+        }
+        setInterval(doQzChecarConexao, 30000);
+        doQzChecarConexao();
+    });
+    /*
+     *
+     */
+    let pin = '';
+    let raio_entrega = '';
+    let pin_solicitar = 'obrigatorio--obrigatorio--';
+    let reload = /(pedidos)/ig.test(URL_ATUAL);
+    let reloadMesa = /(pdv)/ig.test(URL_ATUAL);
+    let funcionamento_automatico_ativar = '1';
+    let pendencias_caixa = false;
+    let nfces_correcao = 0;
+    /**
+     *
+     */
+    const notPedidos = document.getElementById("notificacao-sonora");
+    notPedidos.volume = 1;
+    const notChat = document.getElementById("notificacao-sonora-chat");
+    notChat.volume = 1;
+    const notMesa = document.getElementById("notificacao-sonora-mesa");
+    notMesa.volume = 1;
+    /**
+     *
+     */
+    let acao = () => { };
+    let solicitarPin = (callback, solicitacao) => {
+        console.info(`[${solicitacao}] - Solicitação de PIN realizada.`);
+        /**
+         *
+         */
+        let buscarSolicitacao = new RegExp(solicitacao, "g");
+        if (!pin || !pin_solicitar.match(buscarSolicitacao) || SUPORTE) {
+            console.info(`Solicitação autorizada automaticamente.`);
+            callback();
+            return;
+        }
+        /**
+         *
+         */
+        let solicitar = async () => {
+            const {
+                value: pinInformado
+            } = await Swal.fire({
+                title: 'PIN',
+                input: 'password',
+                inputLabel: 'Digite o seu código',
+                inputPlaceholder: '******',
+                inputAttributes: {
+                    autocomplete: 'off',
+                    autocorrect: 'off',
+                    autofill: 'off',
+                    autocapitalize: 'off',
+                    spellcheck: false,
+                    role: 'presentation',
+                    min: 6,
+                    minlength: 6,
+                    name: gerarUuid(),
+                    onfocus: "this.removeAttribute('readonly')",
+                    readonly: true,
+                },
+                heightAuto: false,
+                showCancelButton: true,
+                allowOutsideClick: false,
+                reverseButtons: true,
+                confirmButtonColor: '#007bff',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "Informe o seu código.";
+                    }
+                    if (value.length < 6) {
+                        return "O código precisa ter no mínimo 6 dígitos.";
+                    }
+                },
+            });
+            /**
+             *
+             */
+            if (!pinInformado) {
+                return;
+            }
+            /**
+             *
+             */
+            let sucesso = () => {
+                setTimeout(() => {
+                    console.info('Solicitação de PIN autorizada com sucesso.');
+                    callback(pinInformado);
+                    pin = pinInformado;
+                }, 150);
+            }
+            let falha = (r) => {
+                setRetorno(r, "error");
+                setTimeout(() => {
+                    solicitarPin(callback, solicitacao);
+                }, 3000);
+            }
+            /**
+             *
+             */
+            setSubmit({
+                pin: pinInformado,
+            }, RAIZ + 'adm/inicio/checarpin/', sucesso, falha);
+        }
+        /**
+         *
+         */
+        setTimeout(solicitar, 250);
+    };
+    /**
+     *
+     */
+    alterarStatusLoja = () => {
+        let pinUtilizado = "";
+
+        let concluir = () => {
+            setSubmit({
+                dados: {
+                    tipo: 'loja',
+                    acao: (ENTREGAS ? 'fechar' : 'abrir'),
+                },
+                no_timeout: true,
+            }, RAIZ + 'adm/entregas/alterar/', async (r, xhr) => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            });
+        }
+
+        solicitarPin(pin => {
+            pinUtilizado = pin;
+            if (funcionamento_automatico_ativar && !INTERROMPER_FECHAMENTO_AUTOMATICO) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: `<b>Tem certeza?</b><br />Ao continuar, o funcionamento automático será desativado até que clique em ${ENTREGAS ? 'fechar' : 'abrir'} a loja novamente.`,
+                    heightAuto: false,
+                    showCancelButton: true,
+                    allowOutsideClick: false,
+                    reverseButtons: true,
+                    confirmButtonColor: '#007bff',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        concluir();
+                    }
+                });
+            } else {
+                concluir();
+            }
+        }, (ENTREGAS ? 'status_loja_fechar' : 'status_loja_abrir'));
+    }
+    /**
+     *
+     */
+    $("#form-situacao-loja").on("submit", e => {
+        e.preventDefault();
+        /**
+         *
+         */
+        let pinUtilizado = "";
+        /**
+         *
+         */
+        concluir = (impressao) => {
+            toggleModal('#modal-situacao-caixa');
+            integracaoImpressora.doPrint('outras', impressao, 1);
+            /**
+             *
+             */
+            if (CAIXA) {
+                setProcessamento(false);
+            } else {
+                setLoading(false);
+            }
+            /**
+             *
+             */
+            setTimeout(() => {
+                window.location.reload();
+            }, 3500);
+        }
+        /**
+         *
+         */
+        falha = (erro) => {
+            if (CAIXA) {
+                setProcessamento(false);
+            } else {
+                setLoading(false);
+            }
+            /**
+             *
+             */
+            setRetorno(erro, "error", () => console.error('Falha no processamento.'));
+        }
+        /**
+         *
+         */
+        alterar = () => {
+            let dados = $('#form-situacao-loja').serializeArray();
+
+            dados.push({
+                name: 'tipo',
+                value: 'caixa',
+            });
+            dados.push({
+                name: 'acao',
+                value: (CAIXA ? 'fechar' : 'abrir'),
+            });
+            dados.push({
+                name: 'pin',
+                value: pinUtilizado,
+            });
+            dados.push({
+                name: 'pendencias_caixa',
+                value: (pendencias_caixa ? 1 : 0),
+            });
+            dados.push({
+                name: 'nfces_correcao',
+                value: nfces_correcao,
+            });
+
+            setSubmit({
+                dados: dados,
+                no_timeout: true,
+                loading: () => { },
+            }, RAIZ + 'adm/entregas/alterar/', (r, xhr) => {
+                let {
+                    impressao,
+                } = JSON.parse(r);
+                /**
+                 *
+                 */
+                concluir(impressao);
+            }, falha);
+        }
+        /**
+         *
+         */
+        solicitarPin(pin => {
+            pinUtilizado = pin;
+
+            let continuar = () => {
+                if (CAIXA) {
+                    setProcessamento("fechamento de caixa", 60);
+                } else {
+                    setLoading(true);
+                }
+
+                alterar();
+            }
+
+            if (pendencias_caixa || nfces_correcao) {
+                alertaFraseConfirmacao(continuar);
+                return
+            }
+
+            continuar();
+
+        }, (ENTREGAS ? 'status_loja_fechar' : 'status_loja_abrir'));
+    });
+    /**
+     *
+     */
+    alterarCaixa = () => {
+        setSubmit({
+            dados: {
+                pin: pin,
+            },
+            requisicao: 'GET',
+        }, RAIZ + 'adm/entregas/pedidosEmAberto/', r => {
+            let {
+                pedidos,
+                mesas,
+                nfceCorrecoes,
+            } = JSON.parse(r);
+            /**
+             *
+             */
+            pendencias_caixa = false;
+            nfces_correcao = 0;
+            /**
+             *
+             */
+            $('#pedidosEmAberto').html('');
+            /**
+             *
+             */
+            let body = [];
+            if (CAIXA) {
+                if (pedidos > 0) {
+                    pendencias_caixa = true;
+                    body.push(`<div class="alert alert-danger" role="alert">` +
+                        `<p class="font-weight-bold py-0 my-0"><i class="fas fa-exclamation-circle"></i> Pedidos pendentes de finalização</p>` +
+                        `Existem ${pedidos} pedido(s) em aberto ou em processamento, eles serão cancelados e os pedidos em preparo serão finalizados, com exceção dos pedidos agendados.</div>`
+                    );
+                }
+                if (mesas > 0) {
+                    body.push(`<div class="alert alert-danger" role="alert">` +
+                        `<p class="font-weight-bold py-0 my-0"><i class="fas fa-exclamation-circle"></i> Mesas pendentes de finalização</p>` +
+                        `Existem ${mesas} mesa(s) em aberto, elas serão canceladas.</div>`);
+                }
+                if (nfceCorrecoes > 0) {
+                    pendencias_caixa = true;
+                    nfces_correcao = nfceCorrecoes;
+                    body.push(`<div class="alert alert-danger" role="alert">` +
+                        `<p class="font-weight-bold py-0 my-0"><i class="fas fa-exclamation-circle"></i> NFC-e pendentes de correção</p>` +
+                        `Existem ${nfceCorrecoes} NFC-e para serem corrigidas podendo causar prejuízo.</div>`
+                    );
+                }
+            }
+            /**
+             *
+             */
+            if (body.length) {
+                $('#pedidosEmAberto').html(
+                    `<h5 class="text-danger text-center mb-3">Deseja realmente continuar?</h5>` + body.join(
+                        "") + `<hr />`);
+            }
+            toggleModal('#modal-situacao-caixa');
+        });
+    };
+    /**
+     *
+     */
+    let getNotificacoes = (callback) => {
+        setSubmit({
+            dados: {},
+            no_timeout: true,
+            requisicao: 'GET',
+            loading: () => { },
+        }, RAIZ + 'adm/inicio/getNotificacoes/', (r) => {
+            const {
+                notificacoes,
+                chats,
+            } = JSON.parse(r);
+            /**
+             *
+             */
+            if (notificacoes.length > 0) {
+                let body = [];
+                let novas = 0;
+                let alerta = false;
+                /**
+                 *
+                 */
+                notificacoes.map(item => {
+                    if (item.ativo == 1) {
+                        alerta = true;
+                        novas++;
+                    }
+                    body.push(
+                        `<a class="dropdown-item d-flex align-items-center ${item.ativo == 1 ? `` : `opacidade`} item-notificacao" href="${item.url}">` +
+                        '<div class="mr-3">' +
+                        '<div class="icon-circle bg-' + item.tipo + '">' +
+                        '<i class="fas fa-' + item.icone + ' text-white"></i>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div>' +
+                        item.notificacao +
+                        '<div class="small text-gray-500">em ' + getDate(item.data) + '</div>' +
+                        '</div>' +
+                        '</a>');
+                });
+                /**
+                 *
+                 */
+                if (novas > 0) {
+                    $('#notificacoes').fadeIn(250);
+                    $('#notificacoes').html(novas);
+                }
+                /**
+                 *
+                 */
+                $('#listaNotificacoes').html(body.join(''));
+                /**
+                 *
+                 */
+                if (!ocultar_notificacao_centro_monitor) {
+                    if (!callback && alerta) {
+                        let ultimo = notificacoes.shift();
+
+                        Swal.fire({
+                            icon: 'info',
+                            iconHtml: '<i class="fas fa-bell fa-fw"></i>',
+                            html: `<b>Nova notificação</b><br /> Existem uma ou mais notificações aguardando para serem lidas.` +
+                                `<div class="jumbotron my-0 mt-3 py-2 text-left">` +
+                                `<p class="my-0 py-0">${ultimo.notificacao}</p>` +
+                                `</div>`,
+                            customClass: {
+                                icon: 'no-border'
+                            },
+                            heightAuto: false,
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            reverseButtons: true,
+                            confirmButtonColor: '#007bff',
+                            confirmButtonText: 'Visualizar',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setTimeout(() => {
+                                    $(".ver-notificacoes").trigger('click');
+                                }, 500);
+                            }
+                        });
+                    }
+                }
+            }
+            /**
+             *
+             */
+            if (habilitar_chat && !/(chat)/ig.test(URL_ATUAL)) {
+                let total = chats.length;
+
+                if (total > 0) {
+                    $('.total-chats').html(total).show();
+
+
+                    if (!ocultar_notificacao_centro_monitor) {
+                        notChat.play();
+
+                        let ultima = chats.shift();
+
+                        Swal.fire({
+                            icon: 'info',
+                            iconHtml: '<i class="fas fa-comments"></i>',
+                            html: `<b>Nova mensagem</b><br /> Existem uma ou mais mensagens aguardando uma resposta.` +
+                                `<div class="jumbotron my-0 mt-3 py-2 text-left">` +
+                                (ultima.status ?
+                                    `<p class="my-0 py-0 font-weight-bold float-right">${ultima.status}</p>` :
+                                    '') +
+                                (ultima.numero ?
+                                    `<p class="my-0 py-0 font-weight-bold">${ultima.nome} #${ultima.numero}</p>` :
+                                    '') +
+                                `<p class="my-0 py-0 mt-3">${ultima.mensagem}</p>` +
+                                `</div>`,
+                            customClass: {
+                                icon: 'no-border'
+                            },
+                            heightAuto: false,
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            reverseButtons: true,
+                            confirmButtonColor: '#007bff',
+                            confirmButtonText: 'Visualizar',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = RAIZ + 'adm/chat/index?usuario=' + ultima.por;
+                            }
+                        });
+                    }
+
+                } else {
+                    $('.total-chats').html('0').hide();
+                }
+            }
+            /**
+             *
+             */
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    };
+    /**
+     *
+     */
+    let limparNotificacoes = () => {
+        let continuar = () => {
+            setSubmit({
+                dados: {},
+                loading: () => { },
+            }, RAIZ + 'adm/inicio/limparNotificacoes/', () => {
+                setTimeout(() => {
+                    $('#notificacoes').html('0');
+                    $('#notificacoes').fadeOut(250);
+                    $("#listaNotificacoes > .item-notificacao").addClass("opacidade");
+
+                }, 1000);
+            });
+        };
+
+        getNotificacoes(() => {
+            setTimeout(continuar, 1000);
+        });
+    }
+    /**
+     *
+     *
+     * PEDIDOS DA LOJA (ONLINE)
+     *
+     *
+     */
+    let impressao_vias_cupom =
+        1;
+    let impressao_vias_comanda =
+        1;
+    let impressao_vias_cancelamento =
+        1;
+    let impressao_vias_nfce = 0;
+    let impressao_automatica_cupom_alterar_preparo =
+        0;
+    let impressao_automatica_comanda_alterar_preparo =
+        0;
+    let impressao_automatica_danfe_alterar_preparo =
+        0;
+    let impressao_automatica = 1;
+    let impressao_automatica_comanda = 1;
+    let impressao_automatica_cupom_pdv =
+        1;
+    let impressao_automatica_comanda_pdv =
+        1;
+    let reimpressao_pdv =
+        0;
+    let impressao_manual_questionar =
+        1;
+    let impressao_automatica_danfe =
+        0;
+    let impressao_automatica_danfe_pdv =
+        0;
+    let impressao_agrupada_conferencia_mesa =
+        0;
+    let habilitar_visualizacao_danfe_nfce =
+        0;
+    let cliente_impressao =
+        0;
+    let cliente_padrao_automatico =
+        0;
+    let habilitar_chat =
+        0;
+    let numero_de_mesas =
+        6;
+    let numero_de_setores =
+        0;
+    let ocultar_notificacao_centro_monitor =
+        0;
+    /**
+     *
+     */
+    let cliente_padrao = 6;
+    let cliente_id = 217;
+    /**
+     *
+     */
+    const getPedidosImpressao = () => {
+        let impressoes = [];
+
+        let runIfood = async ({
+            status,
+            eventos
+        }) => {
+            integracaoIfood.reload = reload;
+            await integracaoIfood.getStatusMerchant(status);
+            await integracaoIfood.getEvents(eventos);
+        }
+
+        let runMesa = async (mesas) => {
+            let block = false;
+
+            for (var mesa in mesas) {
+                let produtos = mesas[mesa];
+                let produtosImpressao = [];
+                let setores = {};
+                let por = '';
+                let impMesa = `MESA-${mesa}`;
+
+                let block = true;
+                bloquearSaida(true);
+
+                for (var comanda in produtos) {
+                    let {
+                        produto,
+                        origem,
+                        setor,
+                        lancado_por,
+                    } = produtos[comanda];
+
+                    por = lancado_por;
+                    if (!lancado_por) {
+                        por = 'Não identificado';
+                    }
+
+                    let prodImp = `${produto.padEnd(55, ".")}\n`;
+
+                    produtosImpressao.push(prodImp);
+
+                    let imprimir_por_setor = await integracaoImpressora.printBySetores();
+                    if (imprimir_por_setor) {
+                        if (Object.keys(setores).includes(setor)) {
+                            setores[setor].push(prodImp);
+                        } else {
+                            setores[setor] = [prodImp];
+                        }
+                    }
+                }
+
+                if (Object.entries(setores).length > 0) {
+                    for (let setor in setores) {
+                        let produtos = setores[setor];
+                        let imp = prepararImpressaoComanda(impMesa, produtos, 'GARÇOM', por, impMesa);
+                        imp = btoa(unescape(encodeURIComponent(imp)));
+                        impressoes.push(() => {
+                            integracaoImpressora.doPrint(`setor_${setor}`, imp, 1);
+                        });
+                    }
+                } else {
+                    let imp = prepararImpressaoComanda(impMesa, produtosImpressao, 'GARÇOM', por, impMesa);
+                    imp = btoa(unescape(encodeURIComponent(imp)));
+                    impressoes.push(() => {
+                        integracaoImpressora.doPrint('comandas', imp, impressao_vias_comanda);
+                    });
+                }
+
+                notMesa.play();
+                setNotificacao(`Novo item recebido na Mesa ${mesa.padStart(3, "0")}.`, 'info');
+
+                if (block) {
+                    setTimeout(() => {
+                        bloquearSaida(false);
+                    }, 5000);
+                }
+            }
+        }
+
+        let runPedido = async (pedido) => {
+            if (!pedido) {
+                return;
+            }
+            /**
+             *
+             */
+            let cancelamento = false;
+            let imprimir_por_setor = await integracaoImpressora.printBySetores();
+            /**
+             *
+             */
+            let continuar = () => {
+                if (reload) {
+                    let segundos = 3000;
+
+                    if (impressao_automatica || impressao_automatica_comanda_pdv ||
+                        imprimir_por_setor) {
+                        segundos += 1000;
+                    }
+
+                    if (impressao_automatica_danfe) {
+                        segundos += 1000;
+                    }
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, segundos);
+                }
+            };
+            /**
+             *
+             */
+            switch (pedido.status) {
+                case 'Novo Pedido':
+                    if (impressao_automatica) {
+                        setNotificacao('Novo pedido recebido e impresso.', 'info');
+                    } else {
+                        setNotificacao('Novo pedido recebido aguardando confirmação.', 'warning');
+                    }
+                    break;
+                case 'Cancelado':
+                case 'Cancelado pelo ifood':
+                    cancelamento = true;
+                    setNotificacao('Um pedido foi cancelado pelo Ifood.', 'error');
+                    break;
+                default:
+                    continuar();
+                    return;
+                    break;
+            }
+            /**
+             *
+             */
+            let block = (cancelamento || impressao_automatica || impressao_automatica_comanda ||
+                imprimir_por_setor ||
+                impressao_automatica_danfe ? true : false);
+            if (block) {
+                bloquearSaida(true);
+            }
+            /**
+             *
+             */
+            notPedidos.play();
+            /**
+             *
+             */
+            if (pedido.impressao.cancelamento && cancelamento) {
+                impressoes.push(() => {
+                    integracaoImpressora.doPrint('cancelamentos', pedido.impressao.cancelamento, impressao_vias_cancelamento);
+                });
+            } else {
+                if (pedido.impressao.comprovante && impressao_automatica) {
+                    impressoes.push(() => {
+                        integracaoImpressora.doPrint('comprovantes', pedido.impressao.comprovante, impressao_vias_cupom);
+                    });
+                }
+                if ((pedido.impressao.comanda || pedido.impressao.setores.length) &&
+                    impressao_automatica_comanda) {
+                    if (imprimir_por_setor) {
+                        for (let setor in pedido.impressao.setores) {
+                            let produtos = pedido.impressao.setores[setor];
+                            let imp = prepararImpressaoComanda(pedido.identificacao, produtos, pedido.origem, pedido.atendente, pedido.cliente);
+                            imp = btoa(unescape(encodeURIComponent(imp)));
+                            impressoes.push(() => {
+                                integracaoImpressora.doPrint(`setor_${setor}`, imp, 1);
+                            });
+                        }
+                    } else {
+                        impressoes.push(() => {
+                            integracaoImpressora.doPrint('comandas', pedido.impressao.comanda, impressao_vias_comanda);
+                        });
+                    }
+                }
+                if (pedido.impressao.nfce && impressao_automatica_danfe) {
+                    impressoes.push(() => {
+                        integracaoImpressora.doPrintNfce('fiscal', pedido.impressao.nfce, impressao_vias_nfce);
+                    });
+                }
+            }
+            /**
+             *
+             */
+            if (block) {
+                setTimeout(() => {
+                    bloquearSaida(false);
+                }, 1000);
+            }
+            /**
+             *
+             */
+            continuar();
+        }
+
+        setSubmit({
+            dados: {},
+            requisicao: 'GET',
+            loading: () => { },
+        }, RAIZ + 'adm/pedidos/getPedidosImpressao', async (r, xhr) => {
+            let {
+                ifood,
+                mesas,
+                pedido,
+            } = JSON.parse(r);
+            /**
+             *
+             */
+            await runIfood(ifood);
+            await runMesa(mesas);
+            await runPedido(pedido);
+            /**
+             *
+             */
+            setTimeout(() => {
+                integracaoImpressora.doPrintFocus(impressoes);
+            }, 1000);
+        });
+    };
+    /**
+     *
+     */
+    let alterarVencimento = async () => {
+        const {
+            value: data
+        } = await Swal.fire({
+            title: 'Vencimento',
+            input: 'text',
+            inputLabel: 'Insira o novo vencimento',
+            inputPlaceholder: 'dd-mm-YYYY',
+            inputValue: '31/05/2025',
+            inputPlaceholder: 'dd/mm/YYYY',
+            heightAuto: false,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            reverseButtons: true,
+            confirmButtonColor: '#007bff',
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar',
+            inputValidator: (value) => {
+                if (!value.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                    return 'A data informada está inválida!'
+                }
+            },
+        });
+        /**
+         *
+         */
+        if (data) {
+            setSubmit({
+                dados: {
+                    vencimento: data,
+                },
+            }, RAIZ + 'app/vencimento/');
+        }
+    }
+    /**
+     *
+     */
+    let efetuarBackup = async () => {
+        const {
+            value: motivo
+        } = await Swal.fire({
+            title: "Efetuar backup",
+            input: "text",
+            inputLabel: "Informe o motivo",
+            inputPlaceholder: "apenas backup",
+            heightAuto: false,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            reverseButtons: true,
+            confirmButtonColor: "#007bff",
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+        });
+        /**
+         *
+         */
+        alertaConfirmacao(() => {
+            setSubmit({
+                dados: {
+                    motivo: motivo,
+                },
+                no_timeout: true,
+            }, RAIZ + 'app/backup/');
+        });
+    }
+    /**
+     *
+     */
+    let formatarCardapio = async () => {
+        alertaConfirmacao(() => {
+            setSubmit({
+                dados: {},
+                no_timeout: true,
+            }, RAIZ + 'app/formatarCardapio/');
+        });
+    }
+    /**
+     *
+     */
+    let gerarPedidoTeste = async () => {
+        let sucesso = (r) => {
+            let {
+                id
+            } = JSON.parse(r);
+            setRetorno(`O pedido #${id} foi gerado com sucesso.`, 'success');
+        }
+        /**
+         *
+         */
+        alertaConfirmacao(() => {
+            setSubmit({
+                dados: {},
+                no_timeout: true,
+            }, RAIZ + 'app/pedidoTeste/', sucesso);
+        });
+    }
+    /**
+     *
+     */
+    let checagemFuncionamentoAutomatico = async () => {
+        let sucesso = (r) => {
+            let {
+                atualizar
+            } = JSON.parse(r);
+            if (atualizar) {
+                window.location.reload();
+            }
+        }
+        setSubmit({
+            dados: {},
+            requisicao: 'GET',
+            loading: () => { },
+        }, RAIZ + 'adm/entregas/checagemFuncionamentoAutomatico/', sucesso);
+    }
+    /**
+     *
+     */
+    validarCep = async () => {
+        const {
+            value: cep
+        } = await Swal.fire({
+            title: "Validar endereço de cep",
+            input: "text",
+            inputLabel: "Informe o cep",
+            inputPlaceholder: "00000-000",
+            heightAuto: false,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            reverseButtons: true,
+            confirmButtonColor: "#007bff",
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+            inputValidator: (value) => {
+                if (value.length !== 9) {
+                    return "Informe um cep válido!";
+                }
+            },
+        });
+        /**
+         *
+         */
+        if (!cep) {
+            return;
+        }
+        /**
+         *
+         */
+        let resultado = (resposta) => {
+            let {
+                service,
+                endereco,
+            } = JSON.parse(resposta);
+
+            let informativo = "" +
+                `Resultados obtido<br /><br />` +
+                `${service}: ${endereco}<br /><br />`;
+
+            setRetorno(informativo, 'info', () => console.info(`Resultado: ${resposta}`));
+        }
+        /**
+         *
+         */
+        setSubmit({
+            dados: {},
+            requisicao: 'GET',
+        }, RAIZ + 'bairros/consultarCep/' + cep, resultado);
+    }
+    /**
+     *
+     */
+    gerarEAN13 = async () => {
+        const {
+            value: codigo
+        } = await Swal.fire({
+            title: "Gerar código EAN13",
+            input: "text",
+            inputLabel: "Informe o código do produto",
+            inputPlaceholder: "123",
+            heightAuto: false,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            reverseButtons: true,
+            confirmButtonColor: "#007bff",
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+            inputValidator: (value) => {
+                if (value.length <= 0) {
+                    return "Informe um código válido!";
+                }
+            },
+        });
+        /**
+         *
+         */
+        if (!codigo) {
+            return;
+        }
+        /**
+         *
+         */
+        let resultado = (resposta) => {
+            let {
+                ean,
+            } = JSON.parse(resposta);
+
+            let informativo = "" +
+                `EAN13: ${ean}`;
+
+            setRetorno(informativo, 'info', () => console.info(`Resultado: ${resposta}`));
+        }
+        /**
+         *
+         */
+        setSubmit({
+            dados: {
+                codigo: codigo,
+            },
+        }, RAIZ + 'adm/produtos/gerarCodigoEan/', resultado);
+    }
+    /**
+     *
+     */
+    playNotificacao = (notificacao) => {
+        const audio = document.getElementById(notificacao);
+        audio.volume = 1;
+    }
+    /**
+     *
+     *
+     *
+     * CHAMADAS
+     * TODAS CHAMADAS ABAIXO DEVEM CONTER AÇÃO RÁPIDA!
+     *
+     *
+     *
+     */
+    /**
+     *
+     * Checagem horario de funcionamento automatico
+     *
+     */
+    setTimeout(() => {
+        if (funcionamento_automatico_ativar) {
+            checagemFuncionamentoAutomatico();
+            setInterval(checagemFuncionamentoAutomatico, (15 * 60000));
+        }
+    }, 15000);
+    /**
+     *
+     * notificacao
+     *
+     */
+    setTimeout(() => {
+        setInterval(getNotificacoes, 60000);
+    }, 60000);
+    /**
+     *
+     */
+    if (ENTREGAS) {
+        if (!cliente_impressao || (cliente_impressao && cliente_impressao == cliente_id)) {
+            setInterval(getPedidosImpressao, 35000);
+        }
+    }
+</script></body></html>

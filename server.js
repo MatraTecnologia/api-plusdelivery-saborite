@@ -5,6 +5,7 @@ const pedidosRoutes = require('./routes/pedidos');
 const enviapedidoRoutes = require('./routes/enviapedido');
 const buscarpedidoRoutes = require('./routes/buscar-cardapio-plus');
 const buscarcardapiosabRoutes = require('./routes/buscar-cardapio-sab');
+const buscarclientesabRoutes = require('./routes/buscar-clientes-sab')
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_SECRET = process.env.API_SECRET || 'chave-secreta-padrao';
@@ -41,6 +42,7 @@ app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/enviapedido', enviapedidoRoutes);
 app.use('/api/cardapio', buscarpedidoRoutes);
 app.use('/api/cardapio-sab', buscarcardapiosabRoutes);
+app.use('/api/buscar-clientes-sab', buscarclientesabRoutes);
 
 // Rota raiz - Documentação da API em HTML estilizado
 app.get('/', (req, res) => {

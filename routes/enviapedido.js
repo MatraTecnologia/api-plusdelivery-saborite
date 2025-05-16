@@ -18,8 +18,8 @@ const TIPOS_ERRO = {
 // Rota para enviar pedido
 router.post('/', async (req, res) => {
   const pedido = req.body;
-  const email = pedido.email;
-  const senha = pedido.senha;
+  const email = req.query.email;
+  const senha = req.query.senha;
   let browser;
   let page;
 
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-      browser = await chromium.launch({ headless: true });
+      browser = await chromium.launch({ headless: false});
       page = await browser.newPage();
       
       await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
@@ -81,10 +81,10 @@ router.post('/', async (req, res) => {
       await page.goto('https://demonstracao.saborite.com/adm/pdv/index/');
       await page.waitForLoadState('networkidle');
 
-      await page.keyboard.press('Shift+D');
+      await page.keyboard.press('Shift+A');
       await page.waitForTimeout(1000);
       
-      await page.waitForSelector('#form-usuario');
+      await page.waitForSelector('#usuarioRapidoModal');
       
       await page.fill('input[name="nome"]', pedido.nome);
       await page.fill('input[name="tel"]', pedido.telefone);
@@ -120,7 +120,7 @@ router.post('/', async (req, res) => {
 
       await new Promise(resolve => setTimeout(resolve, 3000));
 
-      return res.json({
+      return res.status(200).json({
         sucesso: true,
         mensagem: 'Pedido enviado com sucesso',
         produtos_adicionados: pedido.id_produtos.length
