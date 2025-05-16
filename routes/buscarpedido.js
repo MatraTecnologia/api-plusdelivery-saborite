@@ -244,16 +244,12 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
               classes: linhaInfo.hasClass
             })}`);
 
-            // Usar JavaScript para garantir que o elemento esteja visível e receba o clique diretamente
-            const clickResult = await frameContent.evaluate((menuIdx) => {
-              const allMenus = Array.from(document.querySelectorAll('table#menus tr'));
-              if (allMenus.length <= menuIdx) {
-                return { success: false, error: `Índice ${menuIdx} fora do range (total: ${allMenus.length})` };
-              }
-              
-              const targetMenu = allMenus[menuIdx];
+            // Usar o ID específico do menu para clicar nele diretamente
+            const clickResult = await frameContent.evaluate((menuId) => {
+              // Encontrar o menu pelo ID específico
+              const targetMenu = document.querySelector(`#${menuId}`);
               if (!targetMenu) {
-                return { success: false, error: 'Menu não encontrado' };
+                return { success: false, error: `Menu com ID ${menuId} não encontrado` };
               }
               
               // Garantir que o menu está visível
@@ -269,7 +265,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
               const menuText = targetMenu.textContent.trim();
               
               try {
-                // Clicar diretamente na linha do menu
+                // Clicar diretamente no menu usando seu ID
                 targetMenu.click();
                 return { 
                   success: true, 
@@ -282,7 +278,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
                   menuText
                 };
               }
-            }, menuIndex);
+            }, menuId);
             
             console.log(`[GET /api/cardapio] Resultado do clique:`, JSON.stringify(clickResult));
             
