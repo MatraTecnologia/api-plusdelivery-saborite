@@ -16,8 +16,9 @@ const TIPOS_ERRO = {
 // Endpoint para buscar produtos do cardápio
 router.get('/', async (req, res) => {
   // Obter credenciais da requisição ou usar valores do .env como fallback
-  const email = req.body.email || process.env.EMAIL || '';
-  const senha = req.body.senha || process.env.SENHA || '';
+// Como deveria ser:
+const email = req.query.email || req.body.email || process.env.EMAIL || '';
+const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -88,7 +89,7 @@ router.get('/', async (req, res) => {
     await page.waitForTimeout(1000);
     
     console.log('[GET /api/cardapio] Procurando iframe do cardápio...');
-    const frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 10000 });
+    const frame = await page.waitForSelector('iframe', { timeout: 10000 });
     const frameContent = await frame.contentFrame();
     
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
