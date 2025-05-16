@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
   const pedido = req.body;
   const email = req.query.email;
   const senha = req.query.senha;
+  const contactIsexiste = req.body.contactIsexiste || false;
   let browser;
   let page;
 
@@ -80,7 +81,7 @@ router.post('/', async (req, res) => {
       
       await page.goto('https://demonstracao.saborite.com/adm/pdv/index/');
       await page.waitForLoadState('networkidle');
-
+if(!contactIsexiste) {
       await page.keyboard.press('Shift+A');
       await page.waitForTimeout(1000);
       
@@ -96,7 +97,7 @@ router.post('/', async (req, res) => {
       if (pedido.complemento) await page.fill('input[name="complemento"]', pedido.complemento);
       
       await page.click('button[class="btn btn-primary"]');
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(1000);}
 
       // Iterando sobre cada ID de produto
       for (const idProduto of pedido.id_produtos) {
@@ -108,8 +109,7 @@ router.post('/', async (req, res) => {
         
         await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
         await page.waitForTimeout(1000);
-        await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
-        await page.waitForTimeout(1000);
+     
       }
 
       await page.click('select[name="pagamento"]');
