@@ -190,12 +190,13 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       // Extrair nome do menu
       let nomeMenu = 'Menu Sem Nome';
       try {
-        const nomeElement = await row.$('td.nome');
+        const nomeElement = await row.$('td b');
         if (nomeElement) {
-          nomeMenu = await nomeElement.textContent();
+          const textoCompleto = await nomeElement.textContent();
+          nomeMenu = textoCompleto.replace('#', '').trim();
         }
       } catch (err) {
-        console.log(`[GET /api/cardapio] Erro ao extrair nome do menu: ${err.message}`);
+        console.log(`[GET /api/cardapio] Erro ao extrair número do pedido: ${err.message}`);
       }
       
       const menu = {
@@ -207,7 +208,6 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       if (!isDisabled) {
         console.log(`[GET /api/cardapio] Processando menu '${nomeMenu}'...`);
         
-        // Implementar retentativas para o clique no menu com timeout reduzido
         let clickTentativas = 0;
         const maxClickTentativas = 3;
         let clickSucesso = false;
@@ -216,13 +216,11 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
           try {
             console.log(`[GET /api/cardapio] Tentativa ${clickTentativas + 1} de clicar no menu '${nomeMenu}'...`);
             
-            // Verificar se o elemento está visível e clicável antes de tentar clicar
             const boundingBox = await row.boundingBox();
             if (!boundingBox) {
               throw new Error("Elemento não está visível na página");
             }
             
-            // Usando um timeout menor para o clique
             await row.click({ timeout: 10000 });
             await frameContent.waitForTimeout(1000);
             clickSucesso = true;
@@ -233,17 +231,14 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             
             if (clickTentativas >= maxClickTentativas) {
               console.log(`[GET /api/cardapio] Não foi possível clicar no menu '${nomeMenu}' após ${maxClickTentativas} tentativas. Pulando para o próximo menu.`);
-              // Adicionamos o menu à lista, mas sem produtos
               todosMenus.push(menu);
               continue;
             }
             
-            // Esperar e tentar novamente
             await frameContent.waitForTimeout(2000);
           }
         }
         
-        // Se o clique não foi bem sucedido, continuar para o próximo menu
         if (!clickSucesso) {
           continue;
         }
@@ -255,40 +250,16 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
           
           for (const produto of produtos) {
             try {
-              let id = 'ID não encontrado';
-              if (await produto.$('.id')) {
-                id = await produto.$eval('.id', el => el.textContent.trim());
-              }
+              const produtoData = {
+                id: await produto.$eval('.id', el => el.textContent.trim()).catch(() => 'ID não encontrado'),
+                nome: await produto.$eval('.nome', el => el.textContent.trim()).catch(() => 'Nome não encontrado'),
+                valor: await produto.$eval('.valor div', el => el.textContent.trim()).catch(() => 'Valor não encontrado'),
+                promocao: await produto.$eval('.promocao div div', el => el.textContent.trim()).catch(() => 'Promoção não encontrada'),
+                habilitado: await produto.$eval('.habilitado input', el => el.checked).catch(() => false)
+              };
               
-              let nome = 'Nome não encontrado';
-              if (await produto.$('.nome')) {
-                nome = await produto.$eval('.nome', el => el.textContent.trim());
-              }
-              
-              let valor = 'Valor não encontrado';
-              if (await produto.$('.valor div')) {
-                valor = await produto.$eval('.valor div', el => el.textContent.trim());
-              }
-              
-              let promocao = 'Promoção não encontrada';
-              if (await produto.$('.promocao div div')) {
-                promocao = await produto.$eval('.promocao div div', el => el.textContent.trim());
-              }
-              
-              let habilitado = false;
-              if (await produto.$('.habilitado input')) {
-                habilitado = await produto.$eval('.habilitado input', el => el.checked);
-              }
-              
-              menu.produtos.push({
-                id,
-                nome,
-                valor,
-                promocao,
-                habilitado
-              });
-              
-              console.log(`[GET /api/cardapio] Produto '${nome}' processado`);
+              menu.produtos.push(produtoData);
+              console.log(`[GET /api/cardapio] Produto '${produtoData.nome}' processado`);
             } catch (err) {
               console.log(`[GET /api/cardapio] Erro ao processar produto: ${err.message}`);
             }
