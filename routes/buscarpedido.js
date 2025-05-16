@@ -121,9 +121,98 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     while (tentativas < maxTentativas) {
       try {
         console.log(`[GET /api/cardapio] Tentativa ${tentativas + 1} de ${maxTentativas} para encontrar o iframe...`);
-        frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 30000 });
-        frameContent = await frame.contentFrame();
-        console.log('[GET /api/cardapio] Iframe encontrado com sucesso!');
+        // Modificar para permitir elementos invisíveis
+        frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { 
+          timeout: 30000,
+          state: 'attached' // Permite que elementos ocultos sejam encontrados
+        });
+        
+        // Verificar se o iframe está visível
+        const isVisible = await frame.isVisible();
+        console.log(`[GET /api/cardapio] Iframe encontrado! Visível: ${isVisible}`);
+        
+        // Se o iframe não estiver visível, tentar torná-lo visível
+        if (!isVisible) {
+          console.log('[GET /api/cardapio] Iframe está oculto. Tentando torná-lo visível...');
+          await page.evaluate(() => {
+            // Selecionar todos os iframes que correspondem ao padrão
+            const iframes = document.querySelectorAll('iframe[src*="webservice.plusdelivery.com.br"]');
+            // Para cada iframe, alterar o estilo para torná-lo visível
+            iframes.forEach(iframe => {
+              iframe.style.display = 'block';
+              iframe.style.visibility = 'visible';
+              iframe.style.opacity = '1';
+              iframe.style.position = 'fixed';
+              iframe.style.top = '0';
+              iframe.style.left = '0';
+              iframe.style.width = '100%';
+              iframe.style.height = '100%';
+              iframe.style.zIndex = '9999';
+              
+              // Tentar também remover qualquer elemento pai que possa estar escondendo o iframe
+              let parent = iframe.parentElement;
+              for (let i = 0; i < 5 && parent; i++) {
+                parent.style.display = 'block';
+                parent.style.visibility = 'visible';
+                parent.style.opacity = '1';
+                parent = parent.parentElement;
+              }
+            });
+            
+            // Tentar remover outros elementos que possam estar na frente do iframe
+            document.querySelectorAll('div, section, header, footer').forEach(el => {
+              if (el.style.zIndex > 9000) {
+                el.style.zIndex = '1';
+              }
+            });
+          });
+          
+          // Esperar um pouco para as mudanças de CSS terem efeito
+          await page.waitForTimeout(1000);
+          
+          // Verificar novamente se o iframe ficou visível
+          const isNowVisible = await frame.isVisible();
+          console.log(`[GET /api/cardapio] Após ajustes, iframe visível: ${isNowVisible}`);
+          
+          // Se ainda não estiver visível, tentar uma abordagem alternativa
+          if (!isNowVisible) {
+            console.log('[GET /api/cardapio] Iframe continua invisível. Tentando abordagem alternativa...');
+            
+            // Obter o src do iframe para acesso direto
+            const iframeSrc = await frame.getAttribute('src');
+            console.log(`[GET /api/cardapio] URL do iframe: ${iframeSrc}`);
+            
+            if (iframeSrc) {
+              // Alternativa 1: Tentar navegar diretamente para a URL do iframe em uma nova aba
+              console.log('[GET /api/cardapio] Tentando abrir a URL do iframe diretamente...');
+              const newPage = await context.newPage();
+              await newPage.goto(iframeSrc, { timeout: 30000 });
+              await newPage.waitForLoadState('networkidle', { timeout: 15000 });
+              
+              // Verificar se conseguimos carregar a página
+              const pageContent = await newPage.content();
+              if (pageContent.includes('table#menus') || pageContent.includes('menus')) {
+                console.log('[GET /api/cardapio] Conseguimos carregar a página do iframe diretamente!');
+                // Usar a nova página em vez do iframe
+                frameContent = newPage;
+              } else {
+                console.log('[GET /api/cardapio] Não conseguimos carregar o conteúdo do iframe diretamente.');
+                await newPage.close();
+              }
+            }
+          }
+        }
+        
+        // Se ainda não temos frameContent, tentar extraí-lo
+        if (!frameContent) {
+          try {
+            frameContent = await frame.contentFrame();
+            console.log('[GET /api/cardapio] Iframe carregado com sucesso!');
+          } catch (frameError) {
+            console.error(`[GET /api/cardapio] Erro ao obter conteúdo do iframe: ${frameError.message}`);
+            throw frameError;
+          }
+        }
         break;
       } catch (iframeError) {
         tentativas++;
@@ -150,11 +239,27 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
     try {
-      const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 15000 });
-      await frameContent.waitForSelector('table#menus tr', { timeout: 15000 });
+      // Verificar se frameContent é uma página (acesso direto) ou um frame
+      const isDirectPage = frameContent.url && typeof frameContent.url === 'function';
+      console.log(`[GET /api/cardapio] Usando ${isDirectPage ? 'acesso direto' : 'iframe'} para a tabela de menus`);
+      
+      // Função para recuperar menus de acordo com o tipo de acesso
+      const getMenus = async () => {
+        if (isDirectPage) {
+          // Caso de acesso direto (newPage)
+          await frameContent.waitForSelector('table#menus', { timeout: 15000 });
+          await frameContent.waitForSelector('table#menus tr', { timeout: 15000 });
+          return await frameContent.$$('table#menus tr');
+        } else {
+          // Caso de iframe
+          await frameContent.waitForSelector('table#menus', { timeout: 15000 });
+          await frameContent.waitForSelector('table#menus tr', { timeout: 15000 });
+          return await frameContent.$$('table#menus tr');
+        }
+      };
       
       console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
-      const menuRows = await frameContent.$$('table#menus tr');
+      const menuRows = await getMenus();
       console.log(`[GET /api/cardapio] Total de ${menuRows.length} menus encontrados`);
       
       if (menuRows.length === 0) {
@@ -181,6 +286,11 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     // Armazenar todos os produtos de todos os menus
     const todosMenus = [];
     
+    // Helper para determinar qual contexto usar (movendo isDirectPage para o escopo correto)
+    // Verificar novamente se frameContent é uma página ou um frame
+    const isDirectPage = frameContent.url && typeof frameContent.url === 'function';
+    const context = isDirectPage ? frameContent : frameContent;
+    
     for (const row of menuRows) {
       const isDisabled = await row.$('.indisponivel');
       
@@ -204,11 +314,11 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       if (!isDisabled) {
         console.log(`[GET /api/cardapio] Processando menu '${nomeMenu}'...`);
         await row.click();
-        await frameContent.waitForTimeout(500);
+        await context.waitForTimeout(500);
         
         try {
-          await frameContent.waitForSelector('.content', { timeout: 5000 });
-          const produtos = await frameContent.$$('table#produtos tr');
+          await context.waitForSelector('.content', { timeout: 5000 });
+          const produtos = await context.$$('table#produtos tr');
           console.log(`[GET /api/cardapio] Total de ${produtos.length} produtos encontrados no menu '${nomeMenu}'`);
           
           for (const produto of produtos) {
@@ -257,6 +367,16 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       }
       
       todosMenus.push(menu);
+    }
+    
+    // Fechar página adicional se tiver sido usada
+    if (isDirectPage && frameContent !== page) {
+      try {
+        await frameContent.close();
+        console.log('[GET /api/cardapio] Página adicional fechada');
+      } catch (e) {
+        console.error(`[GET /api/cardapio] Erro ao fechar página adicional: ${e.message}`);
+      }
     }
     
     console.log(`[GET /api/cardapio] Finalizado processamento de ${todosMenus.length} menus`);
