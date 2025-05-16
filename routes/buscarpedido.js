@@ -101,7 +101,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     
     // Verificar se existem iframes na página
-    const iframeCount = await page.$$eval('iframe', iframes => iframes.length);
+    const iframeCount = await page.$$eval('iframe[src*="webservice.plusdelivery.com.br"]', iframes => iframes.length);
     console.log(`[GET /api/cardapio] Encontrados ${iframeCount} iframes na página`);
     
     // Se não encontrou nenhum iframe, tenta recarregar a página
@@ -121,7 +121,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     while (tentativas < maxTentativas) {
       try {
         console.log(`[GET /api/cardapio] Tentativa ${tentativas + 1} de ${maxTentativas} para encontrar o iframe...`);
-        frame = await page.waitForSelector('iframe', { timeout: 30000 });
+        frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 30000 });
         frameContent = await frame.contentFrame();
         console.log('[GET /api/cardapio] Iframe encontrado com sucesso!');
         break;
