@@ -88,26 +88,93 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
+    // Verificar se estamos na página correta
+    const currentUrl = page.url();
+    console.log(`[GET /api/cardapio] URL atual: ${currentUrl}`);
+    
+    // Aguardar mais tempo para garantir que a página carregou completamente
+    await page.waitForTimeout(2000);
+    
     console.log('[GET /api/cardapio] Procurando iframe do cardápio...');
-    const frame = await page.waitForSelector('iframe', { timeout: 10000 });
-    const frameContent = await frame.contentFrame();
+    
+    // Aguardar mais tempo pelo carregamento da página
+    await page.waitForLoadState('networkidle', { timeout: 15000 });
+    
+    // Verificar se existem iframes na página
+    const iframeCount = await page.$$eval('iframe', iframes => iframes.length);
+    console.log(`[GET /api/cardapio] Encontrados ${iframeCount} iframes na página`);
+    
+    // Se não encontrou nenhum iframe, tenta recarregar a página
+    if (iframeCount === 0) {
+      console.log('[GET /api/cardapio] Nenhum iframe encontrado. Tentando recarregar a página...');
+      await page.reload();
+      await page.waitForLoadState('networkidle', { timeout: 15000 });
+      console.log('[GET /api/cardapio] Página recarregada, verificando iframes novamente...');
+    }
+    
+    // Implementar retentativas para encontrar o iframe
+    let frame = null;
+    let frameContent = null;
+    let tentativas = 0;
+    const maxTentativas = 3;
+    
+    while (tentativas < maxTentativas) {
+      try {
+        console.log(`[GET /api/cardapio] Tentativa ${tentativas + 1} de ${maxTentativas} para encontrar o iframe...`);
+        frame = await page.waitForSelector('iframe', { timeout: 30000 });
+        frameContent = await frame.contentFrame();
+        console.log('[GET /api/cardapio] Iframe encontrado com sucesso!');
+        break;
+      } catch (iframeError) {
+        tentativas++;
+        console.error(`[GET /api/cardapio] Erro ao encontrar iframe (tentativa ${tentativas}): ${iframeError.message}`);
+        
+        if (tentativas >= maxTentativas) {
+          console.error('[GET /api/cardapio] Número máximo de tentativas excedido.');
+          await browser.close();
+          return res.status(500).json({
+            error: 'Erro ao carregar iframe',
+            tipo: TIPOS_ERRO.TIMEOUT,
+            detalhes: 'Não foi possível carregar o iframe após várias tentativas',
+            codigo: 500
+          });
+        }
+        
+        // Esperar e tentar novamente
+        console.log('[GET /api/cardapio] Aguardando 2 segundos antes de tentar novamente...');
+        await page.waitForTimeout(2000);
+        await page.reload();
+        await page.waitForLoadState('networkidle', { timeout: 15000 });
+      }
+    }
     
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
-    const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 10000 });
-    await frameContent.waitForSelector('table#menus tr');
-    
-    console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
-    const menuRows = await frameContent.$$('table#menus tr');
-    console.log(`[GET /api/cardapio] Total de ${menuRows.length} menus encontrados`);
-    
-    if (menuRows.length === 0) {
-      console.log('[GET /api/cardapio] Nenhum menu encontrado');
+    try {
+      const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 15000 });
+      await frameContent.waitForSelector('table#menus tr', { timeout: 15000 });
+      
+      console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
+      const menuRows = await frameContent.$$('table#menus tr');
+      console.log(`[GET /api/cardapio] Total de ${menuRows.length} menus encontrados`);
+      
+      if (menuRows.length === 0) {
+        console.log('[GET /api/cardapio] Nenhum menu encontrado');
+        await browser.close();
+        return res.status(404).json({
+          error: 'Menus não encontrados',
+          tipo: TIPOS_ERRO.MENU_NAO_ENCONTRADO,
+          detalhes: 'Não foi possível encontrar menus disponíveis',
+          codigo: 404
+        });
+      }
+    } catch (menuError) {
+      console.error(`[GET /api/cardapio] Erro ao carregar menus: ${menuError.message}`);
       await browser.close();
-      return res.status(404).json({
-        error: 'Menus não encontrados',
-        tipo: TIPOS_ERRO.MENU_NAO_ENCONTRADO,
-        detalhes: 'Não foi possível encontrar menus disponíveis',
-        codigo: 404
+      return res.status(500).json({
+        error: 'Erro ao carregar menus',
+        tipo: TIPOS_ERRO.TIMEOUT,
+        detalhes: menuError.message,
+        codigo: 500
       });
     }
     
