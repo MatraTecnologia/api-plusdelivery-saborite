@@ -308,6 +308,27 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
               throw new Error("O conteúdo do menu não apareceu corretamente na coluna direita após o clique");
             }
             
+            // Aguardar tempo adicional para garantir a atualização completa dos produtos após o clique
+            await frameContent.waitForTimeout(3000);
+            
+            // Verificar se o título do menu na coluna direita corresponde ao menu clicado
+            const menuTitleCheck = await frameContent.evaluate((expectedMenuName) => {
+              const cardTitle = document.querySelector('.content .card-title');
+              const titleText = cardTitle ? cardTitle.textContent.trim() : '';
+              
+              return {
+                found: !!cardTitle,
+                title: titleText,
+                matches: titleText.includes(expectedMenuName)
+              };
+            }, nomeMenu);
+            
+            console.log(`[GET /api/cardapio] Verificação de título: ${JSON.stringify(menuTitleCheck)}`);
+            
+            if (!menuTitleCheck.found || !menuTitleCheck.matches) {
+              throw new Error(`O título do menu não corresponde ao menu clicado. Esperado: ${nomeMenu}, Encontrado: ${menuTitleCheck.title}`);
+            }
+            
             clickSucesso = true;
             console.log(`[GET /api/cardapio] Clique bem-sucedido no menu '${nomeMenu}'`);
           } catch (clickError) {
@@ -325,13 +346,41 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         
         if (clickSucesso) {
           try {
+            // Capturar e exibir o título real do menu atual para debug
+            const menuTitle = await frameContent.evaluate(() => {
+              const title = document.querySelector('.content .card-title');
+              return title ? title.textContent.trim() : 'Título não encontrado';
+            });
+            
+            console.log(`[GET /api/cardapio] Título do menu exibido: "${menuTitle}"`);
+            
+            // Pequena pausa adicional para garantir que os produtos foram carregados
+            await frameContent.waitForTimeout(1000);
+            
             // Extrair informações dos produtos de forma mais robusta da coluna direita
             const produtosData = await frameContent.evaluate(() => {
-              const rows = Array.from(document.querySelectorAll('table#produtos tbody tr'));
+              // Tentar obter o ID do menu atual a partir do título ou outro elemento
+              const menuTitle = document.querySelector('.content .card-title');
+              const menuId = menuTitle ? menuTitle.getAttribute('data-menu-id') || menuTitle.textContent.trim() : 'unknown';
+              
+              // Selecionar especificamente os produtos da tabela atual, ignorando cabeçalhos
+              const rows = Array.from(document.querySelectorAll('.content table#produtos tbody tr'));
+              
+              console.log(`Encontrados ${rows.length} produtos na tabela atual`);
+              
+              if (rows.length === 0) {
+                // Verificar se há alguma mensagem de carregamento ou erro
+                const emptyMessage = document.querySelector('.content .empty-message');
+                if (emptyMessage) {
+                  console.log(`Mensagem encontrada: ${emptyMessage.textContent}`);
+                }
+              }
+              
               return rows.map(row => {
-                // Obter células da linha
-                const cells = Array.from(row.querySelectorAll('td'));
-                if (cells.length === 0) return null;
+                // Verificar se a linha é um produto válido
+                if (!row || row.classList.contains('header') || row.querySelectorAll('td').length <= 1) {
+                  return null;
+                }
                 
                 // Extrair dados com segurança
                 const getData = (selector, property = 'textContent') => {
@@ -343,13 +392,15 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
                 const habilitadoEl = row.querySelector('.habilitado input[type="checkbox"]');
                 const habilitado = habilitadoEl ? !row.classList.contains('desabilitado') : false;
                 
-                // Montar objeto de produto
+                // Montar objeto de produto com informações adicionais para debug
                 return {
                   id: getData('.id'),
                   nome: getData('.nome'),
                   valor: getData('.valor div'),
                   promocao: getData('.promocao div div'),
-                  habilitado: habilitado
+                  habilitado: habilitado,
+                  rowClass: row.className,
+                  menuId: menuId
                 };
               }).filter(item => item !== null);
             });
@@ -357,8 +408,22 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             console.log(`[GET /api/cardapio] Total de ${produtosData.length} produtos encontrados no menu '${nomeMenu}'`);
             console.log(`[GET /api/cardapio] Amostra de produtos: ${JSON.stringify(produtosData.slice(0, 2))}`);
             
+            // Verificar se encontramos produtos específicos do menu
+            if (produtosData.length === 0) {
+              console.log(`[GET /api/cardapio] Aviso: Nenhum produto encontrado para o menu '${nomeMenu}'`);
+            }
+            
+            // Limpar dados de debug antes de adicionar ao resultado final
+            const produtosLimpos = produtosData.map(produto => ({
+              id: produto.id,
+              nome: produto.nome,
+              valor: produto.valor,
+              promocao: produto.promocao,
+              habilitado: produto.habilitado
+            }));
+            
             // Adicionar produtos ao menu
-            menu.produtos = produtosData;
+            menu.produtos = produtosLimpos;
             
           } catch (err) {
             console.log(`[GET /api/cardapio] Erro ao processar produtos do menu: ${err.message}`);
