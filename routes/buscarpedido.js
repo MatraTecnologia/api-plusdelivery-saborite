@@ -313,7 +313,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             
             // Verificar se o título do menu na coluna direita corresponde ao menu clicado
             const menuTitleCheck = await frameContent.evaluate((expectedMenuName) => {
-              const cardTitle = document.querySelector('.content .card-title');
+              const cardTitle = document.querySelector('.content .card-body h4.card-title');
               const titleText = cardTitle ? cardTitle.textContent.trim() : '';
               
               return {
