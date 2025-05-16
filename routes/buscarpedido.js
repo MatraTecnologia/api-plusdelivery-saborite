@@ -148,13 +148,18 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       }
     }
     
+    // Armazenar todos os produtos de todos os menus
+    const todosMenus = [];
+    // Definir menuRows em um escopo mais amplo
+    let menuRows = [];
+    
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
     try {
       const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 15000,state: 'attached' });
       await frameContent.waitForSelector('table#menus tr', { timeout: 15000,state: 'attached' });
       
       console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
-      const menuRows = await frameContent.$$('table#menus tr', { timeout: 15000,state: 'attached' });
+      menuRows = await frameContent.$$('table#menus tr', { timeout: 15000,state: 'attached' });
       console.log(`[GET /api/cardapio] Total de ${menuRows.length} menus encontrados`);
       
       if (menuRows.length === 0) {
@@ -177,9 +182,6 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         codigo: 500
       });
     }
-    
-    // Armazenar todos os produtos de todos os menus
-    const todosMenus = [];
     
     for (const row of menuRows) {
       const isDisabled = await row.$('.indisponivel');
