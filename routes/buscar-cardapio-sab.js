@@ -1,9 +1,21 @@
+const express = require('express');
 const { chromium } = require('playwright');
 const fs = require('fs');
+const router = express.Router();
 
+// Tipos de erro para facilitar a identificação de problemas
+const TIPOS_ERRO = {
+  CREDENCIAIS_INVALIDAS: 'ERR_CREDENCIAIS_INVALIDAS',
+  CREDENCIAIS_AUSENTES: 'ERR_CREDENCIAIS_AUSENTES',
+  FALHA_LOGIN: 'ERR_FALHA_LOGIN',
+  FALHA_CONEXAO: 'ERR_FALHA_CONEXAO',
+  MENU_NAO_ENCONTRADO: 'ERR_MENU_NAO_ENCONTRADO',
+  TIMEOUT: 'ERR_TIMEOUT',
+  ERRO_INTERNO: 'ERR_INTERNO'
+};
+
+// Função para extrair as variações de um produto
 const extrairVariacoesDoProduto = async (page) => {
-  console.log('Extraindo variações do produto...');
-  
   // Verifica se a tab de variações está visível, senão clica nela
   const tabVariacoes = await page.$('a[href="#variacoesTab"]');
   if (tabVariacoes) {
@@ -65,9 +77,8 @@ const extrairVariacoesDoProduto = async (page) => {
   return variacoes;
 };
 
+// Função para extrair os opcionais de um produto
 const extrairOpcionaisDoProduto = async (page) => {
-  console.log('Extraindo grupos de opcionais do produto...');
-  
   // Verifica se a tab de opcionais está visível, senão clica nela
   const tabOpcionais = await page.$('a[href="#opcionaisTab"]');
   if (tabOpcionais) {
@@ -120,9 +131,8 @@ const extrairOpcionaisDoProduto = async (page) => {
   return opcionais;
 };
 
+// Função para extrair produtos de uma página
 const extrairProdutosDaPagina = async (page) => {
-  console.log('Extraindo dados dos produtos da página atual...');
-  
   const produtos = await page.evaluate(() => {
     const result = [];
     let currentCategory = null;
@@ -186,7 +196,7 @@ const extrairProdutosDaPagina = async (page) => {
         preco,
         ativo,
         codigoBarras,
-        imagem: 'https://demonstracao.saborite.com' + imagem,
+        imagem: imagem ? 'https://demonstracao.saborite.com' + imagem : '',
         variacoes: [], // Será preenchido posteriormente
         opcionais: []  // Será preenchido posteriormente
       });
@@ -198,13 +208,11 @@ const extrairProdutosDaPagina = async (page) => {
   return produtos;
 };
 
+// Função para extrair detalhes dos produtos
 const extrairDetalhesDosProdutos = async (page, produtos) => {
-  console.log(`Extraindo detalhes de ${produtos.length} produtos...`);
-  
   // Para cada produto, extrai as variações e opcionais
   for (let i = 0; i < produtos.length; i++) {
     const produto = produtos[i];
-    console.log(`Extraindo detalhes do produto ${i+1}/${produtos.length}: ${produto.nome} (ID: ${produto.id})`);
     
     try {
       // Abre o modal de edição do produto
@@ -233,11 +241,12 @@ const extrairDetalhesDosProdutos = async (page, produtos) => {
       await page.waitForTimeout(300);
       
     } catch (error) {
-      console.error(`Erro ao extrair detalhes do produto ${produto.nome} (ID: ${produto.id}):`, error);
+      console.error(`[GET /api/cardapio-sab] Erro ao extrair detalhes do produto ${produto.nome} (ID: ${produto.id}):`, error);
     }
   }
 };
 
+// Função para contar o total de páginas
 const contarTotalDePaginas = async (page) => {
   return await page.evaluate(() => {
     // Encontra todos os links de paginação exceto "Próxima", "Anterior" e "..."
@@ -254,9 +263,8 @@ const contarTotalDePaginas = async (page) => {
   });
 };
 
+// Função para navegar para uma página específica
 const irParaPagina = async (page, numeroPagina) => {
-  console.log(`Navegando para a página ${numeroPagina}...`);
-  
   const navegouComSucesso = await page.evaluate((pagina) => {
     // Encontra o link da página desejada
     const pageLink = document.querySelector(`.paginate_button.page-item a[data-dt-idx="${pagina}"]`);
@@ -272,8 +280,6 @@ const irParaPagina = async (page, numeroPagina) => {
     await page.waitForSelector('#DataTables_Table_0 tbody tr', { state: 'attached' });
     await page.waitForTimeout(500); // Tempo extra para garantir que a tabela atualizou
   } else {
-    console.log(`Não foi possível navegar diretamente para a página ${numeroPagina}, tentando "Próxima"...`);
-    
     // Se não conseguir ir direto para a página, tenta usar o botão "Próxima"
     const clicouProxima = await page.evaluate(() => {
       const nextButton = document.querySelector('#DataTables_Table_0_next');
@@ -288,7 +294,6 @@ const irParaPagina = async (page, numeroPagina) => {
       await page.waitForSelector('#DataTables_Table_0 tbody tr', { state: 'attached' });
       await page.waitForTimeout(500);
     } else {
-      console.log('Não foi possível navegar para a próxima página.');
       return false;
     }
   }
@@ -296,288 +301,268 @@ const irParaPagina = async (page, numeroPagina) => {
   return true;
 };
 
-const extrairProdutos = async (page) => {
-  console.log('Iniciando extração de produtos de todas as páginas...');
-  
-  // Obtém o número total de páginas
-  const totalPaginas = await contarTotalDePaginas(page);
-  console.log(`Total de páginas encontradas: ${totalPaginas}`);
-  
-  let todosProdutos = [];
-  
-  // Itera por todas as páginas
-  for (let paginaAtual = 1; paginaAtual <= totalPaginas; paginaAtual++) {
-    console.log(`Processando página ${paginaAtual} de ${totalPaginas}...`);
-    
-    // Se não for a primeira página, navega para ela
-    if (paginaAtual > 1) {
-      const paginaAlcancada = await irParaPagina(page, paginaAtual);
-      if (!paginaAlcancada) break; // Se não conseguir navegar, para o loop
-    }
-    
-    // Extrai os produtos da página atual
-    const produtosDaPagina = await extrairProdutosDaPagina(page);
-    console.log(`Encontrados ${produtosDaPagina.length} produtos na página ${paginaAtual}.`);
-    
-    // Extrai os detalhes de cada produto
-    await extrairDetalhesDosProdutos(page, produtosDaPagina);
-    
-    // Adiciona aos produtos totais
-    todosProdutos = [...todosProdutos, ...produtosDaPagina];
-  }
-  
-  console.log(`Finalizada extração de detalhes de ${todosProdutos.length} produtos no total.`);
-  return todosProdutos;
-};
-
-const editarProduto = async (page, produto) => {
-  console.log(`Editando produto: ${produto.nome} (ID: ${produto.id})`);
-  
-  // Clicar no botão de editar
-  await page.evaluate((produtoId) => {
-    const editButton = document.querySelector(`button[onclick*="setProduto({id: ${produtoId}});"]`);
-    if (editButton) {
-      editButton.click();
-    }
-  }, produto.id);
-  
-  // Aguardar o modal abrir
-  await page.waitForSelector('.modal-content', { state: 'visible' });
-  
-  // Preencher os campos do formulário
-  await page.fill('#nome', produto.nome);
-  
-  if (produto.descricao) {
-    await page.fill('#descricao', produto.descricao);
-  }
-  
-  // Converter preço para formato correto se necessário
-  const preco = produto.preco.replace(',', '.');
-  await page.fill('input[name="preco"]', preco);
-  
-  // Definir status
-  const statusCheckbox = await page.$('#status');
-  const isChecked = await statusCheckbox.isChecked();
-  
-  if ((produto.ativo && !isChecked) || (!produto.ativo && isChecked)) {
-    await statusCheckbox.click();
-  }
-  
-  // Se o produto tem variações, preenche elas
-  if (produto.variacoes && produto.variacoes.length > 0) {
-    // Clica na tab de variações
-    await page.click('a[href="#variacoesTab"]');
-    await page.waitForTimeout(300);
-    
-    // Preenche cada variação
-    for (let i = 0; i < produto.variacoes.length && i < 5; i++) {
-      const variacao = produto.variacoes[i];
-      const sufixo = i === 0 ? '' : (i + 1);
-      
-      if (variacao.descricao && variacao.descricao !== 'Padrão') {
-        await page.fill(`input[name="tamanho${sufixo}"]`, variacao.descricao);
-      }
-      
-      if (variacao.qtd_atacado) {
-        await page.fill(`input[name="qtd_atacado${sufixo}"]`, variacao.qtd_atacado);
-      }
-      
-      if (variacao.preco_atacado) {
-        await page.fill(`input[name="preco_atacado${sufixo}"]`, variacao.preco_atacado);
-      }
-      
-      if (variacao.preco_custo) {
-        await page.fill(`input[name="preco_custo${sufixo}"]`, variacao.preco_custo);
-      }
-      
-      if (variacao.preco) {
-        await page.fill(`input[name="preco${sufixo}"]`, variacao.preco);
-      }
-    }
-  }
-  
-  // Se o produto tem opcionais, marca eles
-  if (produto.opcionais && produto.opcionais.length > 0) {
-    // Clica na tab de opcionais
-    await page.click('a[href="#opcionaisTab"]');
-    await page.waitForTimeout(300);
-    
-    // Marca cada opcional
-    for (const opcional of produto.opcionais) {
-      const checkbox = await page.$(`#adc${opcional.id}`);
-      if (checkbox) {
-        const isChecked = await checkbox.isChecked();
-        if (!isChecked) {
-          await checkbox.check();
-        }
-      }
-    }
-  }
-  
-  // Salvar as alterações
-  await page.click('button.btn-primary[type="submit"]');
-  
-  // Aguardar o modal fechar
-  await page.waitForSelector('.modal-content', { state: 'hidden' });
-  
-  console.log(`Produto ${produto.nome} atualizado com sucesso.`);
-};
-
-const restaurarProdutos = async (page, produtos) => {
-  console.log('Iniciando restauração dos produtos...');
-  
-  for (const produto of produtos) {
-    try {
-      await editarProduto(page, produto);
-      // Aguardar um pouco entre as atualizações para não sobrecarregar o servidor
-      await page.waitForTimeout(1000);
-    } catch (error) {
-      console.error(`Erro ao atualizar o produto ${produto.nome} (ID: ${produto.id}):`, error);
-    }
-  }
-  
-  console.log('Restauração de produtos concluída.');
-};
-
-const testPlaywright = async () => {
+// Endpoint principal para buscar o cardápio do Saborite
+router.get('/', async (req, res) => {
+  // Obter credenciais da requisição ou usar valores do .env como fallback
+  const email = req.query.email || process.env.EMAIL_SABORITE || '';
+  const senha = req.query.senha || process.env.SENHA_SABORITE || '';
+  const formatoSimples = req.query.formato_simples === 'true'; // Parâmetro para retornar formato simplificado
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
   
+  console.log(`[GET /api/cardapio-sab] Iniciando com email: ${email}`);
+
   try {
+    if (!email || !senha) {
+      console.log('[GET /api/cardapio-sab] Erro: Email ou senha não fornecidos');
+      return res.status(400).json({ 
+        error: 'Credenciais ausentes',
+        tipo: TIPOS_ERRO.CREDENCIAIS_AUSENTES,
+        detalhes: 'Email e senha são obrigatórios para acessar esta rota',
+        codigo: 400
+      });
+    }
+    
+    console.log('[GET /api/cardapio-sab] Limpando cookies...');
+    await context.clearCookies();
+    
+    console.log('[GET /api/cardapio-sab] Navegando para página de login...');
     await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
     await page.waitForLoadState('networkidle');
     
+    // Verifica se já está na página de login
     const isLoggedIn = await page.evaluate(() => {
       return document.querySelector('input[name="email"]');
     });
 
     if (!isLoggedIn) {
-      await page.waitForLoadState('networkidle');
-      console.log('Usuário não está logado. Iniciando fluxo de login...');
-      await page.waitForTimeout(8000);
-      console.log('Preenchendo o email...');
+      console.log('[GET /api/cardapio-sab] Iniciando fluxo de login...');
+      await page.waitForTimeout(100);
       await page.click('input[name="email"]');
       await page.waitForTimeout(100);
-      await page.keyboard.type("varela.suporte@gmail.com");
+      await page.keyboard.type(email);
       await page.waitForTimeout(100);
-      console.log('Preenchendo a senha...');
       await page.click('input[name="senha"]');
       await page.waitForTimeout(100);
-      await page.keyboard.type("Varela123mafra");
+      await page.keyboard.type(senha);
       await page.waitForTimeout(100);
-      console.log('Clicando no botão de login...');
+      console.log('[GET /api/cardapio-sab] Enviando formulário de login...');
       await page.click('input[type="submit"]');
       await page.waitForTimeout(1000);
     } else {
-      console.log('Usuário já está logado. Prosseguindo com o fluxo...');
+      console.log('[GET /api/cardapio-sab] Usuário já está logado');
     }
     
     await page.waitForLoadState('networkidle');
-    console.log('Página carregada com sucesso!');
+    
+    await page.waitForTimeout(5000);
+    
+    // Navegar até a página de produtos
+    console.log('[GET /api/cardapio-sab] Navegando para a página de produtos...');
     await page.goto('https://demonstracao.saborite.com/adm/produtos/lista/');
     await page.waitForLoadState('networkidle');
     
-    // Extrair os dados dos produtos
-    const produtos = await extrairProdutos(page);
+    // Obtém o número total de páginas
+    const totalPaginas = await contarTotalDePaginas(page);
+    console.log(`[GET /api/cardapio-sab] Total de páginas encontradas: ${totalPaginas}`);
     
-    // Salva os dados em um arquivo JSON
-    fs.writeFileSync('produtos-saborite.json', JSON.stringify(produtos, null, 2));
-    console.log('Dados salvos com sucesso no arquivo produtos-saborite.json');
+    let todosProdutos = [];
     
-    // Se quiser restaurar produtos de um arquivo JSON
-    // const produtosParaRestaurar = JSON.parse(fs.readFileSync('produtos-saborite.json', 'utf8'));
-    // await restaurarProdutos(page, produtosParaRestaurar);
-    
-  } catch (error) {
-    console.error('Erro durante a execução:', error);
-  } finally {
-    await browser.close();
-  }
-};
-
-// Função principal que decide qual operação realizar
-const main = async () => {
-  const args = process.argv.slice(2);
-  const comando = args[0];
-  
-  if (comando === 'extrair') {
-    await testPlaywright();
-  } else if (comando === 'restaurar') {
-    const arquivoJson = args[1] || 'produtos-saborite.json';
-    
-    // Verificar se o arquivo existe
-    if (!fs.existsSync(arquivoJson)) {
-      console.error(`Arquivo ${arquivoJson} não encontrado.`);
-      return;
-    }
-    
-    const browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    
-    try {
-      // Login e navegação para a página de produtos
-      await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
-      await page.waitForLoadState('networkidle');
+    // Itera por todas as páginas
+    for (let paginaAtual = 1; paginaAtual <= totalPaginas; paginaAtual++) {
+      console.log(`[GET /api/cardapio-sab] Processando página ${paginaAtual} de ${totalPaginas}...`);
       
-      const isLoggedIn = await page.evaluate(() => {
-        return document.querySelector('input[name="email"]');
-      });
-
-      if (!isLoggedIn) {
-        await page.waitForLoadState('networkidle');
-        console.log('Usuário não está logado. Iniciando fluxo de login...');
-        await page.waitForTimeout(8000);
-        console.log('Preenchendo o email...');
-        await page.click('input[name="email"]');
-        await page.waitForTimeout(100);
-        await page.keyboard.type("varela.suporte@gmail.com");
-        await page.waitForTimeout(100);
-        console.log('Preenchendo a senha...');
-        await page.click('input[name="senha"]');
-        await page.waitForTimeout(100);
-        await page.keyboard.type("Varela123mafra");
-        await page.waitForTimeout(100);
-        console.log('Clicando no botão de login...');
-        await page.click('input[type="submit"]');
-        await page.waitForTimeout(1000);
-      } else {
-        console.log('Usuário já está logado. Prosseguindo com o fluxo...');
+      // Se não for a primeira página, navega para ela
+      if (paginaAtual > 1) {
+        const paginaAlcancada = await irParaPagina(page, paginaAtual);
+        if (!paginaAlcancada) break; // Se não conseguir navegar, para o loop
       }
       
-      await page.waitForLoadState('networkidle');
-      console.log('Página carregada com sucesso!');
-      await page.goto('https://demonstracao.saborite.com/adm/produtos/lista/');
-      await page.waitForLoadState('networkidle');
+      // Extrai os produtos da página atual
+      const produtosDaPagina = await extrairProdutosDaPagina(page);
+      console.log(`[GET /api/cardapio-sab] Encontrados ${produtosDaPagina.length} produtos na página ${paginaAtual}.`);
       
-      // Carregar produtos do arquivo JSON
-      const produtosParaRestaurar = JSON.parse(fs.readFileSync(arquivoJson, 'utf8'));
+      // Extrai os detalhes de cada produto
+      await extrairDetalhesDosProdutos(page, produtosDaPagina);
       
-      // Restaurar produtos
-      await restaurarProdutos(page, produtosParaRestaurar);
-      
-    } catch (error) {
-      console.error('Erro durante a execução:', error);
-    } finally {
-      await browser.close();
+      // Adiciona aos produtos totais
+      todosProdutos = [...todosProdutos, ...produtosDaPagina];
     }
-  } else {
-    console.log(`
-Uso: node test-playwright.js [comando] [opções]
-
-Comandos disponíveis:
-  extrair              Extrai todos os produtos do Saborite e salva em JSON
-  restaurar [arquivo]  Restaura os produtos do arquivo JSON (padrão: produtos-saborite.json)
-
-Exemplos:
-  node test-playwright.js extrair
-  node test-playwright.js restaurar produtos-saborite.json
-    `);
+    
+    console.log(`[GET /api/cardapio-sab] Finalizada extração de ${todosProdutos.length} produtos no total.`);
+    await browser.close();
+    
+    // Opção 1: Retorno no formato simples (apenas a lista de produtos)
+    if (formatoSimples) {
+      return res.status(200).json({
+        sucesso: true,
+        produtos: todosProdutos,
+        total_produtos: todosProdutos.length
+      });
+    }
+    
+    // Opção 2: Retorno estruturado por categorias (formato padrão)
+    const categorias = {};
+    
+    todosProdutos.forEach(produto => {
+      if (!categorias[produto.categoria]) {
+        categorias[produto.categoria] = [];
+      }
+      categorias[produto.categoria].push(produto);
+    });
+    
+    return res.status(200).json({
+      sucesso: true,
+      categorias,
+      total_categorias: Object.keys(categorias).length,
+      total_produtos: todosProdutos.length
+    });
+    
+  } catch (error) {
+    console.error(`[GET /api/cardapio-sab] Erro durante a execução: ${error.message}`);
+    
+    try {
+      await browser.close();
+    } catch (e) {
+      console.error(`[GET /api/cardapio-sab] Erro ao fechar o navegador: ${e.message}`);
+    }
+    
+    return res.status(500).json({
+      error: 'Erro interno do servidor',
+      tipo: TIPOS_ERRO.ERRO_INTERNO,
+      detalhes: error.message,
+      codigo: 500
+    });
   }
-};
+});
 
-// Executa a função principal
-if (require.main === module) {
-  main();
-} 
+// Endpoint para retornar apenas os produtos, sem categorização
+router.get('/produtos', async (req, res) => {
+  // Obter credenciais da requisição ou usar valores do .env como fallback
+  const email = req.query.email || process.env.EMAIL_SABORITE || '';
+  const senha = req.query.senha || process.env.SENHA_SABORITE || '';
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  
+  console.log(`[GET /api/cardapio-sab/produtos] Iniciando com email: ${email}`);
+
+  try {
+    if (!email || !senha) {
+      console.log('[GET /api/cardapio-sab/produtos] Erro: Email ou senha não fornecidos');
+      return res.status(400).json({ 
+        error: 'Credenciais ausentes',
+        tipo: TIPOS_ERRO.CREDENCIAIS_AUSENTES,
+        detalhes: 'Email e senha são obrigatórios para acessar esta rota',
+        codigo: 400
+      });
+    }
+    
+    console.log('[GET /api/cardapio-sab/produtos] Limpando cookies...');
+    await context.clearCookies();
+    
+    console.log('[GET /api/cardapio-sab/produtos] Navegando para página de login...');
+    await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
+    await page.waitForLoadState('networkidle');
+    
+    // Verifica se já está na página de login
+    const isLoggedIn = await page.evaluate(() => {
+      return document.querySelector('input[name="email"]');
+    });
+
+    if (isLoggedIn) {
+      console.log('[GET /api/cardapio-sab/produtos] Iniciando fluxo de login...');
+      await page.waitForTimeout(100);
+      await page.click('input[name="email"]');
+      await page.waitForTimeout(100);
+      await page.keyboard.type(email);
+      await page.waitForTimeout(100);
+      await page.click('input[name="senha"]');
+      await page.waitForTimeout(100);
+      await page.keyboard.type(senha);
+      await page.waitForTimeout(100);
+      console.log('[GET /api/cardapio-sab/produtos] Enviando formulário de login...');
+      await page.click('input[type="submit"]');
+      await page.waitForTimeout(1000);
+    } else {
+      console.log('[GET /api/cardapio-sab/produtos] Usuário já está logado');
+    }
+    
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar se o login foi bem-sucedido
+    try {
+      await page.waitForSelector('.logo', { timeout: 5000 });
+    } catch (error) {
+      console.error('[GET /api/cardapio-sab/produtos] Falha no login:', error);
+      await browser.close();
+      return res.status(401).json({ 
+        error: 'Falha no login',
+        tipo: TIPOS_ERRO.FALHA_LOGIN,
+        detalhes: 'Credenciais inválidas ou site indisponível',
+        codigo: 401
+      });
+    }
+    
+    // Navegar até a página de produtos
+    console.log('[GET /api/cardapio-sab/produtos] Navegando para a página de produtos...');
+    await page.goto('https://demonstracao.saborite.com/adm/produtos/lista/');
+    await page.waitForLoadState('networkidle');
+    
+    // Obtém o número total de páginas
+    const totalPaginas = await contarTotalDePaginas(page);
+    console.log(`[GET /api/cardapio-sab/produtos] Total de páginas encontradas: ${totalPaginas}`);
+    
+    let todosProdutos = [];
+    
+    // Itera por todas as páginas
+    for (let paginaAtual = 1; paginaAtual <= totalPaginas; paginaAtual++) {
+      console.log(`[GET /api/cardapio-sab/produtos] Processando página ${paginaAtual} de ${totalPaginas}...`);
+      
+      // Se não for a primeira página, navega para ela
+      if (paginaAtual > 1) {
+        const paginaAlcancada = await irParaPagina(page, paginaAtual);
+        if (!paginaAlcancada) break; // Se não conseguir navegar, para o loop
+      }
+      
+      // Extrai os produtos da página atual
+      const produtosDaPagina = await extrairProdutosDaPagina(page);
+      console.log(`[GET /api/cardapio-sab/produtos] Encontrados ${produtosDaPagina.length} produtos na página ${paginaAtual}.`);
+      
+      // Extrai os detalhes de cada produto
+      await extrairDetalhesDosProdutos(page, produtosDaPagina);
+      
+      // Adiciona aos produtos totais
+      todosProdutos = [...todosProdutos, ...produtosDaPagina];
+    }
+    
+    console.log(`[GET /api/cardapio-sab/produtos] Finalizada extração de ${todosProdutos.length} produtos no total.`);
+    await browser.close();
+    
+    // Retorna diretamente a lista de produtos
+    return res.status(200).json({
+      sucesso: true,
+      produtos: todosProdutos,
+      total_produtos: todosProdutos.length
+    });
+    
+  } catch (error) {
+    console.error(`[GET /api/cardapio-sab/produtos] Erro durante a execução: ${error.message}`);
+    
+    try {
+      await browser.close();
+    } catch (e) {
+      console.error(`[GET /api/cardapio-sab/produtos] Erro ao fechar o navegador: ${e.message}`);
+    }
+    
+    return res.status(500).json({
+      error: 'Erro interno do servidor',
+      tipo: TIPOS_ERRO.ERRO_INTERNO,
+      detalhes: error.message,
+      codigo: 500
+    });
+  }
+});
+
+module.exports = router; 
