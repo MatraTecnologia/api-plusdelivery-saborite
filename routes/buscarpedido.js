@@ -216,13 +216,22 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
           try {
             console.log(`[GET /api/cardapio] Tentativa ${clickTentativas + 1} de clicar no menu '${nomeMenu}'...`);
             
-            const boundingBox = await row.boundingBox();
-            if (!boundingBox) {
-              throw new Error("Elemento não está visível na página");
-            }
+            // Usar JavaScript para garantir que o elemento esteja visível e receba o clique
+            await frameContent.evaluate((rowIndex) => {
+              const menus = document.querySelectorAll('table#menus tr');
+              if (menus && menus[rowIndex]) {
+                // Garantir que o elemento esteja visível
+                menus[rowIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Simular um clique via JavaScript
+                setTimeout(() => {
+                  menus[rowIndex].click();
+                }, 500);
+                return true;
+              }
+              return false;
+            }, menuRows.indexOf(row));
             
-            await row.click({ timeout: 10000 });
-            await frameContent.waitForTimeout(1000);
+            await frameContent.waitForTimeout(1500);
             clickSucesso = true;
             console.log(`[GET /api/cardapio] Clique bem-sucedido no menu '${nomeMenu}'`);
           } catch (clickError) {
