@@ -39,7 +39,6 @@ app.use(verificarSecret);
 app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/enviapedido', enviapedidoRoutes);
 app.use('/api/cardapio', buscarpedidoRoutes);
-
 // Rota raiz - Documentação da API em HTML estilizado
 app.get('/', (req, res) => {
   const htmlDocs = `
