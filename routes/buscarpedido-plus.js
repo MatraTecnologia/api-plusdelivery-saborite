@@ -16,9 +16,9 @@ const TIPOS_ERRO = {
 // Endpoint para buscar produtos do cardápio
 router.get('/', async (req, res) => {
   // Obter credenciais da requisição ou usar valores do .env como fallback
-  const email = req.body.email || process.env.EMAIL || '';
-  const senha = req.body.senha || process.env.SENHA || '';
-  const browser = await chromium.launch({ headless: true });
+  const email = req.query.email || process.env.EMAIL || '';
+  const senha = req.query.senha || process.env.SENHA || '';
+  const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
   
@@ -83,16 +83,16 @@ router.get('/', async (req, res) => {
     
     // Navegar até a página de cardápio
     console.log('[GET /api/cardapio] Navegando para a página de cardápio...');
+    await page.waitForTimeout(5000);
     await page.click('a[href="javascript:void(0)"][id="cardapio_button"]');
-    await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
     console.log('[GET /api/cardapio] Procurando iframe do cardápio...');
-    const frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 10000 });
+    const frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 5000 });
     const frameContent = await frame.contentFrame();
     
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
-    const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 10000 });
+    const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 5000 });
     await frameContent.waitForSelector('table#menus tr');
     
     console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
@@ -119,7 +119,7 @@ router.get('/', async (req, res) => {
       // Extrair nome do menu
       let nomeMenu = 'Menu Sem Nome';
       try {
-        const nomeElement = await row.$('td.nome');
+        const nomeElement = await row.$('td span');
         if (nomeElement) {
           nomeMenu = await nomeElement.textContent();
         }

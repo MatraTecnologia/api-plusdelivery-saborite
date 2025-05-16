@@ -1,0 +1,124 @@
+{
+  "sucesso": true,
+  "menus": [
+    {
+      "nome": "Avisos",
+      "disponivel": true,
+      "produtos": [
+        {
+          "id": "Cód",
+          "nome": "Nome",
+          "valor": "Valor não encontrado",
+          "promocao": "Promoção não encontrada",
+          "habilitado": false
+        },
+        {
+          "id": "1",
+          "nome": "Motoboys",
+          "valor": "R$ 0.01",
+          "promocao": "-",
+          "habilitado": false
+        },
+        {
+          "id": "1",
+          "nome": "Avaliação",
+          "valor": "R$ 0.01",
+          "promocao": "-",
+          "habilitado": true
+        }
+      ]
+    },
+    {
+      "nome": "NOVIDADE",
+      "disponivel": true,
+      "produtos": [
+        {
+          "id": "Cód",
+          "nome": "Nome",
+          "valor": "Valor não encontrado",
+          "promocao": "Promoção não encontrada",
+          "habilitado": false
+        },
+        {
+          "id": "41",
+          "nome": "Elza Vegano",
+          "valor": "R$ 30.00",
+          "promocao": "-",
+          "habilitado": false
+        },
+        {
+          "id": "485",
+          "nome": "Palito de queijo 200g",
+          "valor": "R$ 18.00",
+          "promocao": "-",
+          "habilitado": true
+        },
+        {
+          "id": "486",
+          "nome": "Aperitivos de queijo 200g",
+          "valor": "R$ 20.00",
+          "promocao": "-",
+          "habilitado": true
+        },
+        {
+          "id": "487",
+          "nome": "Batata rustica 200g",
+          "valor": "R$ 10.00",
+          "promocao": "-",
+          "habilitado": true
+        }
+      ]
+    },
+    {
+      "nome": "Porções",
+      "disponivel": true,
+      "produtos": [
+        {
+          "id": "Cód",
+          "nome": "Nome",
+          "valor": "Valor não encontrado",
+          "promocao": "Promoção não encontrada",
+          "habilitado": false
+        },
+        {
+          "id": "",
+          "nome": "Frango com Fritas",
+          "valor": "Meia: R$ 40.00Inteira: R$ 50.00",
+          "promocao": "-",
+          "habilitado": false
+        },
+        {
+          "id": "",
+          "nome": "Filé com Fritas",
+          "valor": "Meia: R$ 55.00Inteira: R$ 65.00",
+          "promocao": "-",
+          "habilitado": false
+        },
+        {
+          "id": "",
+          "nome": "Mista com Fritas",
+          "valor": "Meia: R$ 60.00Inteira: R$ 70.00",
+          "promocao": "-",
+          "habilitado": false
+        },
+        {
+          "id": "118",
+          "nome": "Fritas",
+          "valor": "Meia: R$ 30.00Inteira: R$ 35.00",
+          "promocao": "-",
+          "habilitado": true
+        },
+        {
+          "id": "120",
+          "nome": "Fritas com cheddar e bacon",
+          "valor": "Meia: R$ 35.00Inteira: R$ 40.00",
+          "promocao": "-",
+          "habilitado": true
+        }
+      ]
+    }
+
+  ],
+  "total_menus": 15,
+  "total_produtos": 116
+}
