@@ -184,66 +184,146 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       });
     }
     
-    for (const row of menuRows) {
+    for (let menuIndex = 0; menuIndex < menuRows.length; menuIndex++) {
+      const row = menuRows[menuIndex];
       const isDisabled = await row.$('.indisponivel');
       
       // Extrair nome do menu
       let nomeMenu = 'Menu Sem Nome';
+      let menuId = '';
       try {
         const nomeElement = await row.$('td span');
         if (nomeElement) {
           const textoCompleto = await nomeElement.textContent();
           nomeMenu = textoCompleto.replace('#', '').trim();
         }
+        
+        // Tentar obter ID único do menu
+        menuId = await row.evaluate(el => el.getAttribute('id') || '');
+        if (!menuId) {
+          menuId = `menu-${menuIndex}`;
+        }
+        
+        console.log(`[GET /api/cardapio] Menu ID: ${menuId}, Nome: ${nomeMenu}`);
       } catch (err) {
-        console.log(`[GET /api/cardapio] Erro ao extrair número do pedido: ${err.message}`);
+        console.log(`[GET /api/cardapio] Erro ao extrair dados do menu: ${err.message}`);
+        menuId = `menu-${menuIndex}`;
       }
       
       const menu = {
         nome: nomeMenu,
+        id: menuId,
         disponivel: !isDisabled,
         produtos: []
       };
       
       if (!isDisabled) {
-        console.log(`[GET /api/cardapio] Processando menu '${nomeMenu}'...`);
+        console.log(`[GET /api/cardapio] Processando menu '${nomeMenu}' (ID: ${menuId})...`);
         
         let clickTentativas = 0;
         const maxClickTentativas = 3;
         let clickSucesso = false;
         
+        // Caso já tenha um menu aberto, tente fechá-lo primeiro
+        try {
+          await frameContent.evaluate(() => {
+            const closeButton = document.querySelector('.close');
+            if (closeButton) closeButton.click();
+          });
+          await frameContent.waitForTimeout(1000);
+        } catch (e) {
+          // Ignorar erros ao tentar fechar
+        }
+
         while (clickTentativas < maxClickTentativas && !clickSucesso) {
           try {
             console.log(`[GET /api/cardapio] Tentativa ${clickTentativas + 1} de clicar no menu '${nomeMenu}'...`);
             
-            // Usar JavaScript para garantir que o elemento esteja visível e receba o clique diretamente
-            const clickResult = await frameContent.evaluate((rowIndex) => {
-              const menus = document.querySelectorAll('table#menus tr');
-              if (menus && menus[rowIndex]) {
-                // Garantir que o elemento esteja visível
-                menus[rowIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Simular um clique via JavaScript diretamente (sem setTimeout)
-                menus[rowIndex].click();
-                return true;
-              }
-              return false;
-            }, menuRows.indexOf(row));
+            // Obter todas as informações da linha antes de clicar
+            const linhaInfo = await row.evaluate(el => {
+              return {
+                html: el.outerHTML,
+                text: el.textContent,
+                hasClass: el.className,
+                position: el.getBoundingClientRect()
+              };
+            });
             
-            if (!clickResult) {
-              throw new Error("Não foi possível encontrar o menu para clicar");
+            console.log(`[GET /api/cardapio] Informações da linha: ${JSON.stringify({
+              texto: linhaInfo.text.substring(0, 20) + '...',
+              posicao: `(${linhaInfo.position.top}, ${linhaInfo.position.left})`,
+              classes: linhaInfo.hasClass
+            })}`);
+
+            // Usar JavaScript para garantir que o elemento esteja visível e receba o clique diretamente
+            // Utilizando o índice exato do menu na coleção
+            const clickResult = await frameContent.evaluate((menuIdx) => {
+              const allMenus = Array.from(document.querySelectorAll('table#menus tr'));
+              if (allMenus.length <= menuIdx) {
+                return { success: false, error: `Índice ${menuIdx} fora do range (total: ${allMenus.length})` };
+              }
+              
+              const targetMenu = allMenus[menuIdx];
+              if (!targetMenu) {
+                return { success: false, error: 'Menu não encontrado' };
+              }
+              
+              // Garantir que o menu está visível
+              targetMenu.scrollIntoView({ behavior: 'auto', block: 'center' });
+              
+              // Forçar o menu a ser clicável
+              targetMenu.style.pointerEvents = 'auto';
+              targetMenu.style.opacity = '1';
+              targetMenu.style.visibility = 'visible';
+              targetMenu.style.display = 'table-row';
+              
+              // Armazenar o texto do menu para verificação
+              const menuText = targetMenu.textContent.trim();
+              
+              try {
+                // Clicar diretamente na linha do menu
+                targetMenu.click();
+                return { 
+                  success: true, 
+                  menuText 
+                };
+              } catch (e) {
+                return { 
+                  success: false, 
+                  error: e.toString(),
+                  menuText
+                };
+              }
+            }, menuIndex);
+            
+            console.log(`[GET /api/cardapio] Resultado do clique:`, JSON.stringify(clickResult));
+            
+            if (!clickResult || !clickResult.success) {
+              throw new Error(`Falha ao clicar: ${clickResult?.error || 'Razão desconhecida'}`);
             }
             
             // Esperar tempo suficiente para a UI responder e o conteúdo do menu carregar
             await frameContent.waitForTimeout(2000);
             
             // Verificar se o conteúdo do menu apareceu
-            const contentVisible = await frameContent.evaluate(() => {
-              return !!document.querySelector('.content') && 
-                     !!document.querySelector('table#produtos');
+            const contentInfo = await frameContent.evaluate(() => {
+              const content = document.querySelector('.content');
+              const table = document.querySelector('table#produtos');
+              const closeBtn = document.querySelector('.close');
+              
+              return {
+                hasContent: !!content,
+                hasTable: !!table,
+                hasCloseBtn: !!closeBtn,
+                rowCount: table ? table.querySelectorAll('tr').length : 0,
+                tableHTML: table ? table.outerHTML.substring(0, 200) + '...' : 'Nenhuma tabela'
+              };
             });
             
-            if (!contentVisible) {
-              throw new Error("O conteúdo do menu não apareceu após o clique");
+            console.log(`[GET /api/cardapio] Verificação de conteúdo: ${JSON.stringify(contentInfo)}`);
+            
+            if (!contentInfo.hasContent || !contentInfo.hasTable || contentInfo.rowCount === 0) {
+              throw new Error("O conteúdo do menu não apareceu corretamente após o clique");
             }
             
             clickSucesso = true;
@@ -263,50 +343,60 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         
         if (clickSucesso) {
           try {
-            // Aguardar pelo conteúdo dos produtos
-            await frameContent.waitForSelector('.content', { timeout: 5000, state: 'attached' });
-            await frameContent.waitForSelector('table#produtos tr', { timeout: 5000, state: 'attached' });
-            
-            const produtos = await frameContent.$$('table#produtos tr');
-            console.log(`[GET /api/cardapio] Total de ${produtos.length} produtos encontrados no menu '${nomeMenu}'`);
-            
-            // Processar cada produto do menu atual
-            for (const produto of produtos) {
-              try {
-                const produtoData = {
-                  id: await produto.$eval('.id', el => el.textContent.trim()).catch(() => 'ID não encontrado'),
-                  nome: await produto.$eval('.nome', el => el.textContent.trim()).catch(() => 'Nome não encontrado'),
-                  valor: await produto.$eval('.valor div', el => el.textContent.trim()).catch(() => 'Valor não encontrado'),
-                  promocao: await produto.$eval('.promocao div div', el => el.textContent.trim()).catch(() => 'Promoção não encontrada'),
-                  habilitado: await produto.$eval('.habilitado input', el => el.checked).catch(() => false)
+            // Extrair informações dos produtos de forma mais robusta
+            const produtosData = await frameContent.evaluate(() => {
+              const rows = Array.from(document.querySelectorAll('table#produtos tr'));
+              return rows.map(row => {
+                // Obter células da linha
+                const cells = Array.from(row.querySelectorAll('td'));
+                if (cells.length === 0) return null;
+                
+                // Extrair dados com segurança
+                const getData = (selector, property = 'textContent') => {
+                  const el = row.querySelector(selector);
+                  return el ? (property === 'checked' ? el.checked : el[property].trim()) : null;
                 };
                 
-                menu.produtos.push(produtoData);
-                console.log(`[GET /api/cardapio] Produto '${produtoData.nome}' processado`);
-              } catch (err) {
-                console.log(`[GET /api/cardapio] Erro ao processar produto: ${err.message}`);
-              }
-            }
+                // Montar objeto de produto
+                return {
+                  id: getData('.id'),
+                  nome: getData('.nome'),
+                  valor: getData('.valor div'),
+                  promocao: getData('.promocao div div'),
+                  habilitado: getData('.habilitado input', 'checked')
+                };
+              }).filter(item => item !== null);
+            });
             
-            // Fechar o modal/popup do menu atual (se existir)
+            console.log(`[GET /api/cardapio] Total de ${produtosData.length} produtos encontrados no menu '${nomeMenu}'`);
+            console.log(`[GET /api/cardapio] Amostra de produtos: ${JSON.stringify(produtosData.slice(0, 2))}`);
+            
+            // Adicionar produtos ao menu
+            menu.produtos = produtosData;
+            
+            // Fechar o modal/popup do menu atual para evitar interferência
             try {
-              const fecharBotao = await frameContent.$('.close');
-              if (fecharBotao) {
-                await fecharBotao.click();
-                await frameContent.waitForTimeout(1000);
-              }
+              await frameContent.evaluate(() => {
+                const closeBtn = document.querySelector('.close');
+                if (closeBtn) closeBtn.click();
+                return !!closeBtn;
+              });
+              await frameContent.waitForTimeout(1500);
             } catch (closeError) {
               console.log(`[GET /api/cardapio] Aviso: Não foi possível fechar o modal: ${closeError.message}`);
             }
             
           } catch (err) {
-            console.log(`[GET /api/cardapio] Erro ao abrir modal de produtos: ${err.message}`);
+            console.log(`[GET /api/cardapio] Erro ao processar produtos do menu: ${err.message}`);
           }
         }
       }
       
       // Adicionar o menu atual com seus produtos à lista geral
       todosMenus.push(menu);
+      
+      // Pequena pausa antes de processar o próximo menu
+      await frameContent.waitForTimeout(1000);
     }
     
     console.log(`[GET /api/cardapio] Finalizado processamento de ${todosMenus.length} menus`);
