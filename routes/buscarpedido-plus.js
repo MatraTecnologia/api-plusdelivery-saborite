@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
   // Obter credenciais da requisição ou usar valores do .env como fallback
   const email = req.query.email || process.env.EMAIL || '';
   const senha = req.query.senha || process.env.SENHA || '';
-  const browser = await chromium.launch({ headless: false });
+  const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   
