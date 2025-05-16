@@ -307,7 +307,7 @@ router.get('/', async (req, res) => {
   const email = req.query.email || process.env.EMAIL_SABORITE || '';
   const senha = req.query.senha || process.env.SENHA_SABORITE || '';
   const formatoSimples = req.query.formato_simples === 'true'; // Parâmetro para retornar formato simplificado
-  const browser = await chromium.launch({ headless: false });
+  const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   
