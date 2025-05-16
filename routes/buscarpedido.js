@@ -224,17 +224,6 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         const maxClickTentativas = 3;
         let clickSucesso = false;
         
-        // Caso já tenha um menu aberto, tente fechá-lo primeiro
-        try {
-          await frameContent.evaluate(() => {
-            const closeButton = document.querySelector('.close');
-            if (closeButton) closeButton.click();
-          });
-          await frameContent.waitForTimeout(1000);
-        } catch (e) {
-          // Ignorar erros ao tentar fechar
-        }
-
         while (clickTentativas < maxClickTentativas && !clickSucesso) {
           try {
             console.log(`[GET /api/cardapio] Tentativa ${clickTentativas + 1} de clicar no menu '${nomeMenu}'...`);
@@ -256,7 +245,6 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             })}`);
 
             // Usar JavaScript para garantir que o elemento esteja visível e receba o clique diretamente
-            // Utilizando o índice exato do menu na coleção
             const clickResult = await frameContent.evaluate((menuIdx) => {
               const allMenus = Array.from(document.querySelectorAll('table#menus tr'));
               if (allMenus.length <= menuIdx) {
@@ -302,20 +290,18 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
               throw new Error(`Falha ao clicar: ${clickResult?.error || 'Razão desconhecida'}`);
             }
             
-            // Esperar tempo suficiente para a UI responder e o conteúdo do menu carregar
+            // Esperar tempo suficiente para a UI responder e o conteúdo dos produtos carregar na coluna direita
             await frameContent.waitForTimeout(2000);
             
-            // Verificar se o conteúdo do menu apareceu
+            // Verificar se o conteúdo do menu apareceu na coluna direita
             const contentInfo = await frameContent.evaluate(() => {
               const content = document.querySelector('.content');
               const table = document.querySelector('table#produtos');
-              const closeBtn = document.querySelector('.close');
               
               return {
                 hasContent: !!content,
                 hasTable: !!table,
-                hasCloseBtn: !!closeBtn,
-                rowCount: table ? table.querySelectorAll('tr').length : 0,
+                rowCount: table ? table.querySelectorAll('tbody tr').length : 0,
                 tableHTML: table ? table.outerHTML.substring(0, 200) + '...' : 'Nenhuma tabela'
               };
             });
@@ -323,7 +309,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             console.log(`[GET /api/cardapio] Verificação de conteúdo: ${JSON.stringify(contentInfo)}`);
             
             if (!contentInfo.hasContent || !contentInfo.hasTable || contentInfo.rowCount === 0) {
-              throw new Error("O conteúdo do menu não apareceu corretamente após o clique");
+              throw new Error("O conteúdo do menu não apareceu corretamente na coluna direita após o clique");
             }
             
             clickSucesso = true;
@@ -343,9 +329,9 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         
         if (clickSucesso) {
           try {
-            // Extrair informações dos produtos de forma mais robusta
+            // Extrair informações dos produtos de forma mais robusta da coluna direita
             const produtosData = await frameContent.evaluate(() => {
-              const rows = Array.from(document.querySelectorAll('table#produtos tr'));
+              const rows = Array.from(document.querySelectorAll('table#produtos tbody tr'));
               return rows.map(row => {
                 // Obter células da linha
                 const cells = Array.from(row.querySelectorAll('td'));
@@ -357,13 +343,17 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
                   return el ? (property === 'checked' ? el.checked : el[property].trim()) : null;
                 };
                 
+                // Extrair se o produto está habilitado
+                const habilitadoEl = row.querySelector('.habilitado input[type="checkbox"]');
+                const habilitado = habilitadoEl ? !row.classList.contains('desabilitado') : false;
+                
                 // Montar objeto de produto
                 return {
                   id: getData('.id'),
                   nome: getData('.nome'),
                   valor: getData('.valor div'),
                   promocao: getData('.promocao div div'),
-                  habilitado: getData('.habilitado input', 'checked')
+                  habilitado: habilitado
                 };
               }).filter(item => item !== null);
             });
@@ -373,18 +363,6 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
             
             // Adicionar produtos ao menu
             menu.produtos = produtosData;
-            
-            // Fechar o modal/popup do menu atual para evitar interferência
-            try {
-              await frameContent.evaluate(() => {
-                const closeBtn = document.querySelector('.close');
-                if (closeBtn) closeBtn.click();
-                return !!closeBtn;
-              });
-              await frameContent.waitForTimeout(1500);
-            } catch (closeError) {
-              console.log(`[GET /api/cardapio] Aviso: Não foi possível fechar o modal: ${closeError.message}`);
-            }
             
           } catch (err) {
             console.log(`[GET /api/cardapio] Erro ao processar produtos do menu: ${err.message}`);
