@@ -70,7 +70,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     
     // Verificar se login foi bem-sucedido
     try {
-      await page.waitForSelector('a[id="cardapio_button"]', { timeout: 5000 });
+      await page.waitForSelector('a[id="cardapio_button"]', { timeout: 5000 ,state: 'attached'});
     } catch (error) {
       console.error('[GET /api/cardapio] Falha no login:', error);
       await browser.close();
@@ -121,7 +121,7 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     while (tentativas < maxTentativas) {
       try {
         console.log(`[GET /api/cardapio] Tentativa ${tentativas + 1} de ${maxTentativas} para encontrar o iframe...`);
-        frame = await page.waitForSelector('iframe[src*="webservice.plusdelivery.com.br"]', { timeout: 15000, state: 'attached' });
+        frame = await page.waitForSelector('iframe[src^="https://webservice.plusdelivery.com.br/v1/pagina/cardapio"]', { timeout: 15000, state: 'attached' });
         frameContent = await frame.contentFrame();
         console.log('[GET /api/cardapio] Iframe encontrado com sucesso!');
         break;
@@ -150,11 +150,11 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
     
     console.log('[GET /api/cardapio] Aguardando tabela de menus...');
     try {
-      const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 15000 });
-      await frameContent.waitForSelector('table#menus tr', { timeout: 15000 });
+      const menusContainer = await frameContent.waitForSelector('table#menus', { timeout: 15000,state: 'attached' });
+      await frameContent.waitForSelector('table#menus tr', { timeout: 15000,state: 'attached' });
       
       console.log('[GET /api/cardapio] Obtendo linhas da tabela de menus...');
-      const menuRows = await frameContent.$$('table#menus tr');
+      const menuRows = await frameContent.$$('table#menus tr', { timeout: 15000,state: 'attached' });
       console.log(`[GET /api/cardapio] Total de ${menuRows.length} menus encontrados`);
       
       if (menuRows.length === 0) {
@@ -207,8 +207,8 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
         await frameContent.waitForTimeout(500);
         
         try {
-          await frameContent.waitForSelector('.content', { timeout: 5000 });
-          const produtos = await frameContent.$$('table#produtos tr');
+          await frameContent.waitForSelector('.content', { timeout: 5000,state: 'attached' });
+          const produtos = await frameContent.$$('table#produtos tr', { timeout: 5000,state: 'attached' });
           console.log(`[GET /api/cardapio] Total de ${produtos.length} produtos encontrados no menu '${nomeMenu}'`);
           
           for (const produto of produtos) {
