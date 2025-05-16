@@ -10,7 +10,8 @@ const TIPOS_ERRO = {
   FALHA_CONEXAO: 'ERR_FALHA_CONEXAO',
   MENU_NAO_ENCONTRADO: 'ERR_MENU_NAO_ENCONTRADO',
   TIMEOUT: 'ERR_TIMEOUT',
-  ERRO_INTERNO: 'ERR_INTERNO'
+  ERRO_INTERNO: 'ERR_INTERNO',
+  FALHA_CLICK_MENU: 'ERR_FALHA_CLICK_MENU'
 };
 
 // Endpoint para buscar produtos do cardápio
@@ -205,12 +206,51 @@ const senha = req.query.senha || req.body.senha || process.env.SENHA || '';
       
       if (!isDisabled) {
         console.log(`[GET /api/cardapio] Processando menu '${nomeMenu}'...`);
-        await row.click();
-        await frameContent.waitForTimeout(500);
+        
+        // Implementar retentativas para o clique no menu com timeout reduzido
+        let clickTentativas = 0;
+        const maxClickTentativas = 3;
+        let clickSucesso = false;
+        
+        while (clickTentativas < maxClickTentativas && !clickSucesso) {
+          try {
+            console.log(`[GET /api/cardapio] Tentativa ${clickTentativas + 1} de clicar no menu '${nomeMenu}'...`);
+            
+            // Verificar se o elemento está visível e clicável antes de tentar clicar
+            const boundingBox = await row.boundingBox();
+            if (!boundingBox) {
+              throw new Error("Elemento não está visível na página");
+            }
+            
+            // Usando um timeout menor para o clique
+            await row.click({ timeout: 10000 });
+            await frameContent.waitForTimeout(1000);
+            clickSucesso = true;
+            console.log(`[GET /api/cardapio] Clique bem-sucedido no menu '${nomeMenu}'`);
+          } catch (clickError) {
+            clickTentativas++;
+            console.error(`[GET /api/cardapio] Erro ao clicar no menu '${nomeMenu}' (tentativa ${clickTentativas}): ${clickError.message}`);
+            
+            if (clickTentativas >= maxClickTentativas) {
+              console.log(`[GET /api/cardapio] Não foi possível clicar no menu '${nomeMenu}' após ${maxClickTentativas} tentativas. Pulando para o próximo menu.`);
+              // Adicionamos o menu à lista, mas sem produtos
+              todosMenus.push(menu);
+              continue;
+            }
+            
+            // Esperar e tentar novamente
+            await frameContent.waitForTimeout(2000);
+          }
+        }
+        
+        // Se o clique não foi bem sucedido, continuar para o próximo menu
+        if (!clickSucesso) {
+          continue;
+        }
         
         try {
-          await frameContent.waitForSelector('.content', { timeout: 5000,state: 'attached' });
-          const produtos = await frameContent.$$('table#produtos tr', { timeout: 5000,state: 'attached' });
+          await frameContent.waitForSelector('.content', { timeout: 5000, state: 'attached' });
+          const produtos = await frameContent.$$('table#produtos tr', { timeout: 5000, state: 'attached' });
           console.log(`[GET /api/cardapio] Total de ${produtos.length} produtos encontrados no menu '${nomeMenu}'`);
           
           for (const produto of produtos) {
