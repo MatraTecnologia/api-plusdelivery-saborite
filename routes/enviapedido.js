@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-      browser = await chromium.launch({ headless: true });
+      browser = await chromium.launch({ headless: false });
       page = await browser.newPage();
 
       await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
