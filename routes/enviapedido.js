@@ -21,9 +21,8 @@ router.post('/', async (req, res) => {
   const email = req.query.email;
   const senha = req.query.senha;
   const contactIsexiste = req.body.contactIsexiste || false;
-
-  const browser = await chromium.connectOverCDP(`wss://bot-mauric-browserless.rkwxxj.easypanel.host?token=a39bc966d106d05bc0b182326f74693b`);
-  const page = await browser.newPage();
+  let browser;
+  let page;
 
   console.log(pedido);
   try {
@@ -46,6 +45,8 @@ router.post('/', async (req, res) => {
     }
 
     try {
+      browser = await chromium.launch({ headless: false });
+      page = await browser.newPage();
 
       await page.goto('https://demonstracao.saborite.com/entrar/administracao/');
       await page.waitForLoadState('networkidle');
