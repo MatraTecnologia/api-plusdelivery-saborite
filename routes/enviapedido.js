@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
       browser = await chromium.launch({ headless: false });
       page = await browser.newPage();
 
-      await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
+      await page.goto('https://demonstracao.saborite.com/entrar/administracao/');
       await page.waitForLoadState('networkidle');
 
       const isLoggedIn = await page.evaluate(() => {
@@ -58,6 +58,7 @@ router.post('/', async (req, res) => {
       if (!isLoggedIn) {
         await page.waitForLoadState('networkidle');
         console.log('Usuário não está logado. Iniciando fluxo de login...');
+        await page.click('a[class="btn btn-primary my-3"]');
         await page.waitForTimeout(100);
         console.log('Preenchendo o email...');
         await page.click('input[name="email"]');

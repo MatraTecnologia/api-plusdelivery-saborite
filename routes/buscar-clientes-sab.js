@@ -57,7 +57,7 @@ const extrairClientesDaPagina = async (page) => {
 // Função para contar o total de páginas
 const contarTotalDePaginas = async (page) => {
   console.log('[contarTotalDePaginas] Contando o total de páginas...');
-  
+
   page.waitForTimeout(10000); // Aguarda 10 segundos para garantir que a página esteja totalmente carregada
   const tabela = await page.$('#DataTables_Table_0');
   const totalPaginas = await page.evaluate(() => {
@@ -126,7 +126,7 @@ router.get('/', async (req, res) => {
     await context.clearCookies();
 
     console.log('[GET /api/clientes-sab] Navegando para página de login...');
-    await page.goto('https://demonstracao.saborite.com/adm/inicio/index/');
+    await page.goto('https://demonstracao.saborite.com/entrar/administracao/');
     await page.waitForLoadState('networkidle');
 
     const isLoggedIn = await page.evaluate(() => {
@@ -134,7 +134,10 @@ router.get('/', async (req, res) => {
     });
 
     if (!isLoggedIn) {
+
       console.log('[GET /api/clientes-sab] Iniciando fluxo de login...');
+
+      await page.click('a[class="btn btn-primary my-3"]');
       await page.waitForTimeout(1000);
       await page.click('input[name="email"]');
       await page.keyboard.type(email);
