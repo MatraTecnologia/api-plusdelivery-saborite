@@ -1,9 +1,8 @@
 const express = require('express');
 const { chromium } = require('playwright');
 const router = express.Router();
-let browser, page;
-browser = await chromium.connectOverCDP(`wss://bot-mauric-browserless.rkwxxj.easypanel.host?token=a39bc966d106d05bc0b182326f74693b`);
-page = await browser.newPage();
+
+
 // Tipos de erro para facilitar a identificação de problemas
 const TIPOS_ERRO = {
   CREDENCIAIS_INVALIDAS: 'ERR_CREDENCIAIS_INVALIDAS',
@@ -20,7 +19,7 @@ router.get('/', async (req, res) => {
   // Obter credenciais da requisição ou usar valores do .env como fallback
   const email = req.query.email || process.env.EMAIL || '';
   const senha = req.query.senha || process.env.SENHA || '';
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.connectOverCDP(`wss://bot-mauric-browserless.rkwxxj.easypanel.host?token=a39bc966d106d05bc0b182326f74693b`);
   const context = await browser.newContext();
   const page = await context.newPage();
 
