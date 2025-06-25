@@ -105,7 +105,8 @@ const irParaPagina = async (page, numeroPagina) => {
 router.get('/', async (req, res) => {
   const email = req.query.email || process.env.EMAIL_SABORITE || '';
   const senha = req.query.senha || process.env.SENHA_SABORITE || '';
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.connectOverCDP(`wss://bot-mauric-browserless.rkwxxj.easypanel.host?token=a39bc966d106d05bc0b182326f74693b`);
+
   const context = await browser.newContext();
   const page = await context.newPage();
 
