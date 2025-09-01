@@ -18,8 +18,8 @@ const TIPOS_ERRO = {
 // Rota para enviar pedido
 router.post('/', async (req, res) => {
   const pedido = req.body;
-  const email = req.query.email;
-  const senha = req.query.senha;
+  const email = req.query.email || process.env.EMAIL_SABORITE || '';
+  const senha = req.query.senha || process.env.SENHA_SABORITE || '';
   const contactIsexiste = req.body.contactIsexiste || false;
   let browser;
   let page;
@@ -101,29 +101,7 @@ router.post('/', async (req, res) => {
         await page.waitForTimeout(1000);
       } else {
         await page.fill('input[name="usuario"]', pedido.nome)
-        await page.waitForTimeout(500);
-        // Aguarda o popup de sugestões aparecer
-        await page.waitForSelector('.ui-menu.ui-autocomplete', { state: 'visible' });
-        console.log('Popup de sugestões de cliente exibido.');
-
-        // Seleciona o cliente que mais se aproxima do nome fornecido
-        const clienteSelecionado = await page.evaluate((nomeCliente) => {
-          const sugestoes = Array.from(document.querySelectorAll('.ui-menu-item .ui-menu-item-wrapper'));
-          for (const sugestao of sugestoes) {
-            if (sugestao.textContent.toLowerCase().includes(nomeCliente.toLowerCase())) {
-              sugestao.click();
-              return sugestao.textContent.trim();
-            }
-          }
-          return null;
-        }, pedido.nome);
-
-        if (clienteSelecionado) {
-          console.log(`Cliente selecionado: ${clienteSelecionado}`);
-        } else {
-          console.error('Nenhuma sugestão de cliente encontrada correspondente ao nome fornecido.');
-          throw new Error('Cliente não encontrado nas sugestões.');
-        }
+        await page.waitForTimeout(1000);
 
       }
 
@@ -144,7 +122,25 @@ router.post('/', async (req, res) => {
 
           // Confirmar a adição do produto
           await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
-          await page.waitForTimeout(1000);
+          await page.waitForTimeout(2000);
+
+          // Verificar se apareceu o modal de variações do produto
+          try {
+            const modalVariacoes = await page.waitForSelector('.modal-dialog', { state: 'visible', timeout: 5000 });
+            if (modalVariacoes) {
+              console.log(`Modal de variações apareceu para o produto ID ${idProduto}`);
+              
+              // Clicar no botão "Adicionar" do modal de variações
+              const botaoAdicionar = await page.waitForSelector('button.addProd', { state: 'visible', timeout: 3000 });
+              if (botaoAdicionar) {
+                await page.click('button.addProd');
+                console.log(`Clicou em "Adicionar" no modal de variações para o produto ID ${idProduto}`);
+                await page.waitForTimeout(1000);
+              }
+            }
+          } catch (error) {
+            console.log(`Nenhum modal de variações apareceu para o produto ID ${idProduto} (isso é normal para produtos sem variações)`);
+          }
 
           // Verificar se o produto foi adicionado à tabela
           const produtoAdicionado = await page.evaluate((id) => {
@@ -178,7 +174,25 @@ router.post('/', async (req, res) => {
             await page.keyboard.type(idProduto);
 
             await page.click('button[class="swal2-confirm swal2-styled swal2-default-outline"]');
-            await page.waitForTimeout(1000);
+            await page.waitForTimeout(2000);
+
+            // Verificar se apareceu o modal de variações do produto (segunda tentativa)
+            try {
+              const modalVariacoes = await page.waitForSelector('.modal-dialog', { state: 'visible', timeout: 5000 });
+              if (modalVariacoes) {
+                console.log(`Modal de variações apareceu para o produto ID ${idProduto} (segunda tentativa)`);
+                
+                // Clicar no botão "Adicionar" do modal de variações
+                const botaoAdicionar = await page.waitForSelector('button.addProd', { state: 'visible', timeout: 3000 });
+                if (botaoAdicionar) {
+                  await page.click('button.addProd');
+                  console.log(`Clicou em "Adicionar" no modal de variações para o produto ID ${idProduto} (segunda tentativa)`);
+                  await page.waitForTimeout(1000);
+                }
+              }
+            } catch (error) {
+              console.log(`Nenhum modal de variações apareceu para o produto ID ${idProduto} na segunda tentativa`);
+            }
 
             const produtoAdicionado = await page.evaluate((id) => {
               const linhas = Array.from(document.querySelectorAll('#tabelaPdv tbody tr'));
@@ -225,16 +239,18 @@ router.post('/', async (req, res) => {
       await page.click('select[name="pagamento"]');
       await page.selectOption('select[name="pagamento"]', pedido.pagamento);
 
-      await page.keyboard.press('Shift+F');
-      await page.waitForTimeout(1000);
+      // Clicar no botão "Finalizar" ao invés de usar tecla de atalho
+      console.log('Finalizando pedido...');
+      await page.click('button.btn.btn-primary.btn-block');
+      await page.waitForTimeout(2000);
 
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      // Retornar os resultados
+      await page.waitForTimeout(1000);
+        
 
       return res.status(200).json({
         sucesso: true,
         mensagem: 'Pedido enviado com sucesso',
-        produtos_adicionados_qtd: pedido.id_produtos.length,
+        produtos_adicionados_qtd: produtosAdicionados.length,
         produtos_adicionados: produtosAdicionados,
         produtos_nao_adicionados: produtosNaoAdicionados
       });

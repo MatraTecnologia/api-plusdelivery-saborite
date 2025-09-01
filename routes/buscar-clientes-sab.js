@@ -76,29 +76,56 @@ const contarTotalDePaginas = async (page) => {
   return totalPaginas;
 };
 
-// Função para navegar para uma página específica
-const irParaPagina = async (page, numeroPagina) => {
-  console.log(`[irParaPagina] Navegando para a página ${numeroPagina}...`);
+// Função para navegar para a página 1 (inicial)
+const irParaPrimeíraPagina = async (page) => {
+  console.log('[irParaPrimeíraPagina] Navegando para a primeira página...');
 
-  const navegouComSucesso = await page.evaluate((pagina) => {
-    const pageLink = document.querySelector(`.paginate_button.page-item a[data-dt-idx="${pagina}"]`);
-    if (pageLink) {
+  const navegouComSucesso = await page.evaluate(() => {
+    // Procura pelo link da página 1
+    const pageLink = document.querySelector('.paginate_button.page-item a[data-dt-idx="1"]');
+    if (pageLink && !pageLink.closest('.page-item').classList.contains('active')) {
       pageLink.click();
       return true;
     }
-    return false;
-  }, numeroPagina);
+    return false; // Já está na página 1 ou não encontrou o link
+  });
 
   if (navegouComSucesso) {
     await page.waitForSelector('#DataTables_Table_0 tbody tr', { state: 'attached' });
-    await page.waitForTimeout(2000); // Aguarda 2 segundos para garantir o carregamento
-    console.log(`[irParaPagina] Página ${numeroPagina} carregada com sucesso.`);
+    await page.waitForTimeout(2000);
+    console.log('[irParaPrimeíraPagina] Primeira página carregada com sucesso.');
   } else {
-    console.log(`[irParaPagina] Falha ao navegar para a página ${numeroPagina}.`);
-    return false;
+    console.log('[irParaPrimeíraPagina] Já está na primeira página ou não foi necessário navegar.');
   }
 
   return true;
+};
+
+// Função para navegar para a próxima página usando o botão "Próxima"
+const irParaProximaPagina = async (page) => {
+  console.log('[irParaProximaPagina] Clicando no botão "Próxima"...');
+
+  const temProximaPagina = await page.evaluate(() => {
+    const nextButton = document.querySelector('#DataTables_Table_0_next');
+    if (nextButton && !nextButton.classList.contains('disabled')) {
+      const nextLink = nextButton.querySelector('a');
+      if (nextLink) {
+        nextLink.click();
+        return true;
+      }
+    }
+    return false;
+  });
+
+  if (temProximaPagina) {
+    await page.waitForSelector('#DataTables_Table_0 tbody tr', { state: 'attached' });
+    await page.waitForTimeout(2000);
+    console.log('[irParaProximaPagina] Próxima página carregada com sucesso.');
+    return true;
+  } else {
+    console.log('[irParaProximaPagina] Não há próxima página ou botão está desabilitado.');
+    return false;
+  }
 };
 
 // Endpoint principal para buscar os clientes do Saborite
@@ -164,18 +191,30 @@ router.get('/', async (req, res) => {
     const totalPaginas = await contarTotalDePaginas(page);
     let todosClientes = [];
 
-    for (let paginaAtual = 1; paginaAtual <= totalPaginas; paginaAtual++) {
-      console.log(`[GET /api/clientes-sab] Processando página ${paginaAtual} de ${totalPaginas}...`);
+    // Sempre começar da página 1
+    console.log('[GET /api/clientes-sab] Garantindo que estamos na primeira página...');
+    await irParaPrimeíraPagina(page);
 
-      if (paginaAtual > 1) {
-        const paginaAlcancada = await irParaPagina(page, paginaAtual);
-        if (!paginaAlcancada) break;
-      }
+    let paginaAtual = 1;
+    let temMaisPaginas = true;
+
+    while (temMaisPaginas) {
+      console.log(`[GET /api/clientes-sab] Processando página ${paginaAtual} de ${totalPaginas}...`);
 
       const clientesDaPagina = await extrairClientesDaPagina(page);
       console.log(`[GET /api/clientes-sab] Encontrados ${clientesDaPagina.length} clientes na página ${paginaAtual}.`);
 
       todosClientes = [...todosClientes, ...clientesDaPagina];
+
+      // Tentar ir para a próxima página
+      if (paginaAtual < totalPaginas) {
+        temMaisPaginas = await irParaProximaPagina(page);
+        if (temMaisPaginas) {
+          paginaAtual++;
+        }
+      } else {
+        temMaisPaginas = false;
+      }
     }
 
     console.log(`[GET /api/clientes-sab] Finalizada extração de ${todosClientes.length} clientes no total.`);
