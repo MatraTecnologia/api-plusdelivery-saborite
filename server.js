@@ -190,7 +190,7 @@ app.get('/', (req, res) => {
   </head>
   <body>
     <h1>API do Bot Maurício - Backend</h1>
-    <p>API para scraping e retorno de pedidos do sistema de delivery.</p>
+    <p>API completa para integração com sistemas de delivery (Plus Delivery e Saborite) - busca de cardápios, clientes e envio de pedidos.</p>
     <p><strong>Versão:</strong> 1.0.0</p>
     
     <div class="author-info">
@@ -208,7 +208,48 @@ app.get('/', (req, res) => {
       <p><strong>Obrigatório:</strong> Sim, para todas as rotas exceto a documentação (/)</p>
     </div>
     
-    <h2>Endpoints</h2>
+    <h2>Endpoints Disponíveis</h2>
+    
+    <h3>Resumo das Rotas</h3>
+    <table>
+      <tr>
+        <th>Método</th>
+        <th>Endpoint</th>
+        <th>Descrição</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/pedidos</td>
+        <td>Listar todos os pedidos</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/pedidos/:id</td>
+        <td>Obter um pedido específico</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/api/enviapedido</td>
+        <td>Enviar novo pedido</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/cardapio</td>
+        <td>Buscar cardápio Plus Delivery</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/cardapio-sab</td>
+        <td>Buscar cardápio Saborite</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/buscar-clientes-sab</td>
+        <td>Buscar clientes Saborite</td>
+      </tr>
+    </table>
+    
+    <h3>Detalhamento dos Endpoints</h3>
     
     <div class="endpoint">
       <h3>Listar todos os pedidos</h3>
@@ -409,6 +450,126 @@ app.get('/', (req, res) => {
     "email": "seu-email@exemplo.com",
     "senha": "sua-senha"
   }'</div>
+
+    <div class="endpoint">
+      <h3>Buscar cardápio Plus Delivery</h3>
+      <div class="url"><span class="method">GET</span>/api/cardapio?email=seu-email@exemplo.com&senha=sua-senha</div>
+      <p>Retorna o cardápio disponível no sistema Plus Delivery.</p>
+      
+      <h4>Cabeçalhos obrigatórios:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>X-Secret</td>
+          <td>Chave de autenticação da API</td>
+        </tr>
+      </table>
+      
+      <h4>Parâmetros de consulta:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td>Email de acesso ao sistema de delivery</td>
+        </tr>
+        <tr>
+          <td>senha</td>
+          <td>string</td>
+          <td>Senha de acesso ao sistema de delivery</td>
+        </tr>
+      </table>
+      
+      <h4>Exemplo de requisição:</h4>
+      <div class="curl">curl -X GET "http://localhost:3000/api/cardapio?email=seu-email@exemplo.com&senha=sua-senha" -H "X-Secret: sua-chave-secreta"</div>
+    </div>
+    
+    <div class="endpoint">
+      <h3>Buscar cardápio Saborite</h3>
+      <div class="url"><span class="method">GET</span>/api/cardapio-sab?email=seu-email@exemplo.com&senha=sua-senha</div>
+      <p>Retorna o cardápio disponível no sistema Saborite.</p>
+      
+      <h4>Cabeçalhos obrigatórios:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>X-Secret</td>
+          <td>Chave de autenticação da API</td>
+        </tr>
+      </table>
+      
+      <h4>Parâmetros de consulta:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td>Email de acesso ao sistema de delivery</td>
+        </tr>
+        <tr>
+          <td>senha</td>
+          <td>string</td>
+          <td>Senha de acesso ao sistema de delivery</td>
+        </tr>
+      </table>
+      
+      <h4>Exemplo de requisição:</h4>
+      <div class="curl">curl -X GET "http://localhost:3000/api/cardapio-sab?email=seu-email@exemplo.com&senha=sua-senha" -H "X-Secret: sua-chave-secreta"</div>
+    </div>
+    
+    <div class="endpoint">
+      <h3>Buscar clientes Saborite</h3>
+      <div class="url"><span class="method">GET</span>/api/buscar-clientes-sab?email=seu-email@exemplo.com&senha=sua-senha</div>
+      <p>Retorna a lista de clientes do sistema Saborite.</p>
+      
+      <h4>Cabeçalhos obrigatórios:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>X-Secret</td>
+          <td>Chave de autenticação da API</td>
+        </tr>
+      </table>
+      
+      <h4>Parâmetros de consulta:</h4>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td>Email de acesso ao sistema de delivery</td>
+        </tr>
+        <tr>
+          <td>senha</td>
+          <td>string</td>
+          <td>Senha de acesso ao sistema de delivery</td>
+        </tr>
+      </table>
+      
+      <h4>Exemplo de requisição:</h4>
+      <div class="curl">curl -X GET "http://localhost:3000/api/buscar-clientes-sab?email=seu-email@exemplo.com&senha=sua-senha" -H "X-Secret: sua-chave-secreta"</div>
+    </div>
 
       <h4>Exemplo de resposta de sucesso:</h4>
       <div class="json-response">
