@@ -1,5 +1,4 @@
-# Usar uma imagem base do Node.js 18
-FROM node:18-buster
+FROM node:18-bookworm
 
 # Instalar dependências do sistema necessárias para o Playwright
 RUN apt-get update && apt-get install -y \
